@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Términos y Condiciones - Procure-X Intelligence</title>
+    <title>Términos y Condiciones - SYGNODE.</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -25,6 +25,15 @@
         html {
             scroll-behavior: smooth;
         }
+        .nav-logo { display:flex; align-items:center; gap:10px; }
+        .nav-logo-img {
+          height: 24px;       /* controla la altura en la barra */
+          width: auto;        /* mantiene proporción */
+          display: block;
+        }
+        @media (min-width: 1200px) {
+          .nav-logo-img { height: 28px; }  /* un pelín más grande en desktop grande */
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100">
@@ -34,18 +43,22 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
-                    <a href="inicio.html" class="flex items-center space-x-2">
-                        <svg class="h-8 w-8 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        </svg>
-                        <span class="text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                            Procure-X Intelligence
-                        </span>
+                    <a href="https://www.sygnode.cl" class="nav-logo" aria-label="SYGNODE inicio">
+                      <img
+                        src="/assets/img/Logo%20SYGNODE.png"
+                        alt="SYGNODE"
+                        class="nav-logo-img"
+                        width="128"
+                        height="28"
+                        decoding="async"
+                        fetchpriority="high"
+                      />
+                      <span class="nav-logo-text">SYGNODE.</span>
                     </a>
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="https://procure-x.cl/inicio" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-blue-700 hover:to-cyan-700 transition-all">Inicio</a>
+                        <a href="https://sygnode.cl/inicio" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-blue-700 hover:to-cyan-700 transition-all">Inicio</a>
                     </div>
                 </div>
             </div>
@@ -252,18 +265,18 @@
                 <div>
                     <h3 class="text-lg font-semibold mb-4 text-cyan-400">Enlaces Rápidos</h3>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="https://procure-x.cl/inicio" class="hover:text-cyan-400 transition-colors">Inicio</a></li>
-                        <li><a href="https://procure-x.cl/servicios/showcase" class="hover:text-cyan-400 transition-colors">Servicios</a></li>
-                        <li><a href="https://procure-x.cl/inicio#contact" class="hover:text-cyan-400 transition-colors">Contacto</a></li>
+                        <li><a href="https://sygnode.cl/inicio" class="hover:text-cyan-400 transition-colors">Inicio</a></li>
+                        <li><a href="https://sygnode.cl/servicios/showcase" class="hover:text-cyan-400 transition-colors">Servicios</a></li>
+                        <li><a href="https://sygnode.cl/inicio#contact" class="hover:text-cyan-400 transition-colors">Contacto</a></li>
                     </ul>
                 </div>
                 <div>
                     <h3 class="text-lg font-semibold mb-4 text-cyan-400">Legal</h3>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="https://procure-x.cl/legal/terminos-y-condiciones" class="hover:text-cyan-400 transition-colors">Términos y Condiciones</a></li>
-                        <li><a href="https://procure-x.cl/legal/politica-de-privacidad.html" class="hover:text-cyan-400 transition-colors">Política de Privacidad</a></li>
-                        <li><a href="https://procure-x.cl/legal/aviso-legal.html" class="hover:text-cyan-400 transition-colors">Aviso Legal</a></li>
-                        <li><a href="https://procure-x.cl/legal/politica-cookies.html" class="hover:text-cyan-400 transition-colors">Política de Cookies</a></li>
+                        <li><a href="https://sygnode.cl/legal/terminos-y-condiciones" class="hover:text-cyan-400 transition-colors">Términos y Condiciones</a></li>
+                        <li><a href="https://sygnode.cl/legal/politica-de-privacidad.html" class="hover:text-cyan-400 transition-colors">Política de Privacidad</a></li>
+                        <li><a href="https://sygnode.cl/legal/aviso-legal.html" class="hover:text-cyan-400 transition-colors">Aviso Legal</a></li>
+                        <li><a href="https://sygnode.cl/legal/politica-cookies.html" class="hover:text-cyan-400 transition-colors">Política de Cookies</a></li>
                     </ul>
                 </div>
             </div>
