@@ -29,7 +29,7 @@
     .nav-logo {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       font-weight: 700;
       font-size: 1.1rem;
     }
@@ -43,6 +43,11 @@
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
+    }
+    .nav-logo-img {
+      display: block;
+      height: 24px;   /* ajusta a tu preferencia */
+      width: auto;
     }
     .nav-btn {
       display: inline-block;
@@ -195,10 +200,16 @@
   <!-- Navbar -->
   <nav class="glass-navbar">
     <div class="nav-container">
-      <a href="https://www.sygnode.cl" class="nav-logo">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-        </svg>
+      <a href="https://www.sygnode.cl" class="nav-logo" aria-label="SYGNODE inicio">
+        <img
+          src="/assets/img/sygnode-logo.png"   <!-- cambia por tu nombre real -->
+          alt="SYGNODE"
+          class="nav-logo-img"
+          width="128"
+          height="28"
+          decoding="async"
+          fetchpriority="high"
+        />
         <span class="nav-logo-text">SYGNODE.</span>
       </a>
       <a href="https://www.sygnode.cl" class="nav-btn">Inicio</a>
