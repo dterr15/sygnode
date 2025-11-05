@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SYGNODE./title>
+  <meta name="description" content="Landing de una página para los servicios Starter, Basic y PRO de SYGNODE Intelligence. Decisiones rápidas, control operativo y ahorros medidos." />
+  <style>
+    /* Glass navbar styles */
+    .glass-navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .nav-logo svg {
+      width: 24px;
+      height: 24px;
+      color: #06b6d4;
+    }
+    .nav-logo-text {
+      background: linear-gradient(135deg, #3b82f6, #06b6d4);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav-btn {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      background: linear-gradient(135deg, #2563eb, #0891b2);
+      color: white;
+      transition: transform 0.2s;
+    }
+    .nav-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Footer styles */
+    .site-footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 48px 0 24px;
+      margin-top: 64px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      max-width: 1100px;
+      margin: 0 auto 32px;
+      padding: 0 20px;
+    }
+    @media (max-width: 900px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+    .footer-section h3 {
+      font-size: 1.1rem;
+      color: #22d3ee;
+      margin: 0 0 16px;
+    }
+    .footer-section p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .footer-links li {
+      margin: 8px 0;
+    }
+    .footer-links a {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover {
+      color: #22d3ee;
+    }
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 20px 0;
+      border-top: 1px solid #334155;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    /* Original showcase styles */
+    :root{
+      --primary:#1e3a8a;
+      --cyan:#06b6d4;
+      --green:#10b981;
+      --purple:#8b5cf6;
+      --slate:#94a3b8;
+      --bg:#0b1020;
+      --card:rgba(255,255,255,.06);
+      --muted:rgba(255,255,255,.08);
+      --ring:rgba(6,182,212,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,system-ui,sans-serif;background:linear-gradient(180deg,#0b1020,#0b1020 40%,#0a0f1a 100%);color:#fff;}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    .btn{display:inline-block;padding:14px 22px;border-radius:999px;font-weight:700;letter-spacing:.2px;background:linear-gradient(135deg,var(--cyan),var(--green));box-shadow:0 10px 30px var(--ring);transition:.2s transform}
+    .btn:hover{transform:translateY(-2px)}
+    .subtle{opacity:.85}
+    header{position:relative;overflow:hidden}
+    .hero{padding:120px 0 56px;text-align:center}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--muted);font-size:.85rem;color:var(--slate)}
+    h1{font-size:clamp(32px,6vw,56px);line-height:1.08;margin:16px 0}
+    .highlight{background:linear-gradient(135deg,var(--cyan),var(--green));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{max-width:820px;margin:14px auto 28px;color:#cbd5e1;font-size:1.15rem}
+    .hero-fig{position:absolute;inset:0;pointer-events:none}
+    .hero-fig:before,.hero-fig:after{content:"";position:absolute;border-radius:50%;filter:blur(60px);opacity:.18}
+    .hero-fig:before{width:520px;height:520px;background:radial-gradient(circle,var(--cyan),transparent 70%);top:-120px;right:-120px}
+    .hero-fig:after{width:420px;height:420px;background:radial-gradient(circle,var(--green),transparent 70%);bottom:-120px;left:-120px}
+
+    section{padding:64px 0}
+    h2{font-size:clamp(24px,4.2vw,36px);margin:0 0 10px}
+    .section-lead{color:#cbd5e1;margin:0 0 24px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    @media (max-width: 1200px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width: 800px){.grid{grid-template-columns:1fr}}
+    .card{position:relative;border-radius:20px;padding:26px;background:var(--card);border:1px solid var(--muted);backdrop-filter:blur(6px);transition:transform .25s,border-color .25s;display:grid;grid-template-rows:auto auto auto 1fr auto;align-items:start;gap:12px}
+    .card:hover{transform:translateY(-6px);border-color:var(--ring)}
+    .card .btn{margin-top:auto;align-self:flex-start}
+    .tag{display:inline-block;font-size:.78rem;font-weight:800;letter-spacing:.3px;padding:6px 10px;border-radius:999px;margin-bottom:10px;border:1px solid var(--muted);opacity:.9}
+    .starter .tag{color:var(--cyan)}
+    .basic .tag{color:var(--green)}
+    .pro .tag{color:var(--purple)}
+    .card h3{margin:6px 0 6px;font-size:1.4rem;min-height:2.6em;display:flex;align-items:flex-end}
+    .card .subtle{display:block;width:100%;margin:2px 0 6px;line-height:1.5;min-height:3.4em}
+    .card > *{width:100%;}
+    .card .subtle + div{min-height:76px;display:flex;flex-wrap:wrap;gap:8px} 
+    .pill{display:inline-block;margin:10px 6px 0 0;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--muted);font-size:.8rem;color:#cbd5e1}
+    .benefits{margin:14px 0 18px;padding:0;list-style:none}
+    .benefits li{position:relative;margin:12px 0;padding-left:1.4em;color:#dbeafe;line-height:1.5;word-break:normal}
+    .benefits li::before{content:"✓";position:absolute;left:0;top:.15em;color:var(--green);font-weight:900}
+    .benefits li strong{display:block;margin-top:2px}
+
+    .results{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+    @media (max-width:900px){.results{grid-template-columns:1fr}}
+    .kpi{padding:22px;border-radius:16px;background:var(--card);border:1px solid var(--muted);text-align:center}
+    .kpi strong{font-size:1.4rem;background:linear-gradient(135deg,var(--cyan),var(--green));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .kpi p{margin:6px 0 0;color:#cbd5e1}
+
+    .compare{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+    .compare .band{padding:16px;border-radius:14px;background:var(--card);border:1px solid var(--muted)}
+    .band h4{margin:0 0 8px}
+    .band p{margin:0;color:#cbd5e1}
+
+    .proof{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    @media (max-width:900px){.proof{grid-template-columns:1fr}}
+    .tick{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--muted);border-radius:14px;padding:16px}
+    .tick:before{content:"★";color:var(--green);opacity:.9}
+
+    .cta{padding:72px 0 88px;text-align:center}
+    .cta h2{font-size:clamp(28px,5vw,44px)}
+    .cta p{max-width:760px;margin:10px auto 20px;color:#cbd5e1}
+    .footer{margin-top:18px;color:#94a3b8}
+    .footer a{border-bottom:1px dashed rgba(255,255,255,.25)}
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="glass-navbar">
+    <div class="nav-container">
+      <a href="https://www.sygnode.cl" class="nav-logo">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        <span class="nav-logo-text">SYGNODE.</span>
+      </a>
+      <a href="https://www.sygnode.cl" class="nav-btn">Inicio</a>
+    </div>
+  </nav>
+
+  <header>
+    <div class="hero-fig" aria-hidden="true"></div>
+    <div class="hero container hero">
+      <span class="badge">SYGNODE. Servicio Inteligencia de Adquisiciones</span>
+      <h1>Recupera las <span class="highlight">horas perdidas</span> buscando precios. Aprueba la mejor alternativa <span class="highlight">en minutos</span></h1>
+      <p>Ten a tu equipo enfocado en producir y vender.</p>
+      <a href="#servicios" class="btn">Ver servicios</a>
+    </div>
+  </header>
+
+  <main id="servicios" class="container">
+    <!-- Services Cards -->
+    <section aria-labelledby="svc-title">
+      <h2 id="svc-title">SYGNODE: Inteligencia de adquisiciones que devuelve tiempo  y margen a tu Empresa</h2>
+      <p class="section-lead">Elige el nivel que necesitas hoy. Puedes escalar cuando quieras.</p>
+      <div class="grid">
+        <!-- STARTER -->
+        <article class="card starter" aria-labelledby="starter-title">
+          <span class="tag">STARTER</span>
+          <h3 id="starter-title">Decide en minutos, con claridad</h3>
+          <p class="subtle">Recupera horas para producir perdidas buscando precios.</p>
+          <div>
+            <span class="pill">3–5 cotizaciones comparables</span>
+            <span class="pill">recomendación experta</span>
+            <span class="pill">evidencia documentada</span>
+          </div>
+          <ul class="benefits">
+            <li>Evitas cientos de correos y llamadas.<strong>Decides rápido</strong></li>
+            <li>Decisiones claras: <strong>Comparaciones Normalizadas y Analizadas</strong></li>
+            <li>Tu equipo se dedica a producir y tú <strong>ahorras tiempo y dinero</strong></li>
+          </ul>
+          <a class="btn" href="https://demo.procure-x.cl/" aria-label="Solicitar demo Starter">Solicitar demo</a>
+        </article>
+
+        <!-- BASIC -->
+        <article class="card basic" aria-labelledby="basic-title">
+          <span class="tag">BASIC</span>
+          <h3 id="basic-title">Control y Trazabilidad</h3>
+          <p class="subtle">Cero sorpresas en logística: Alertas automáticas y seguimiento. Visibilidad de punta a punta.</p>
+          <div>
+            <span class="pill">tablero compartido</span>
+            <span class="pill">alertas de excepción</span>
+            <span class="pill">cierre trazable</span>
+          </div>
+          <ul class="benefits">
+            <li>Sabrás <strong>dónde está cada orden</strong> y qué sigue</li>
+            <li>Alertas inmediatas ante demoras, con <strong>plan de acción</strong></li>
+            <li>Recepción confirmada y <strong>registro final</strong> para auditoría</li>
+          </ul>
+          <a class="btn" href="https://demo.procure-x.cl/" aria-label="Solicitar demo Basic">Solicitar demo</a>
+        </article>
+
+        <!-- PRO -->
+        <article class="card pro" aria-labelledby="pro-title">
+          <span class="tag">PRO</span>
+          <h3 id="pro-title">Optimización y Negociación en Adquisiciones</h3>
+          <p class="subtle">Captura de Ahorros y Mejores Condiciones Comerciales.</p>
+          <div>
+            <span class="pill">plan de compras</span>
+            <span class="pill">negociación estructurada</span>
+            <span class="pill">ahorros validados</span>
+          </div>
+          <ul class="benefits">
+            <li>Consolidas demanda y <strong>mejoras condiciones</strong></li>
+            <li><strong>Planificación Estratégica</strong>de compras por categoría</li>
+            <li><strong>Negociaciones Estructuradas</strong>en base a proyecciones de consumo</li>
+          </ul>
+          <a class="btn" href="https://demo.procure-x.cl/" aria-label="Solicitar demo PRO">Solicitar demo</a>
+        </article>
+      </div>
+
+      <!-- quick compare band -->
+      <div class="compare" aria-label="Resumen comparativo">
+        <div class="band">
+          <h4>Starter · Resultado</h4>
+          <p>Decisión de compra <strong>en minutos</strong> con evidencia y trazabilidad.</p>
+        </div>
+        <div class="band">
+          <h4>Basic · Resultado</h4>
+          <p>Entrega <strong>bajo control</strong> hasta bodega, sin sorpresas.</p>
+        </div>
+        <div class="band">
+          <h4>PRO · Resultado</h4>
+          <p>Ahorros y mejoras <strong>recurrentes y medidos</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results / Outcomes section -->
+    <section aria-labelledby="outcomes-title">
+      <h2 id="outcomes-title">ROI Demostrable</h2>
+      <p class="section-lead">El ahorro absorbería el costo del servicio</p>
+      <div class="results">
+        <div class="kpi"><strong>Inversión Protegida</strong><p>Contrata hoy asegurando Tarifa Fija Garantizada: Precio congelado mientras mantengas tu plan.</p></div>
+        <div class="kpi"><strong>Costo de No Optimizar</strong><p>Horas productivas desperdiciadas - Margen no capturado por sobrecostos - Riesgo logístico y operativo por atrasos</p></div>
+        <div class="kpi"><strong>Irreversibilidad Competitiva</strong><p>Competidores con procurement estructurado capturan proveedores clave y consolidan condiciones que tu operación no puede igualar.</p></div>
+      </div>
+    </section>
+
+    <!-- Proof / Why PX -->
+    <section aria-labelledby="why-title">
+      <h2 id="why-title">¿Por qué SYGNODE?</h2>
+      <p class="section-lead">Porque combinamos claridad, control y captura de valor en un solo lugar.</p>
+      <div class="proof">
+        <div class="tick"><div>
+          <strong>Simple de adoptar</strong>
+          <p class="subtle">Sin sistemas complejos. Empezamos con tus SKUs reales y avanzamos.</p>
+        </div></div>
+        <div class="tick"><div>
+          <strong>Transparencia total</strong>
+          <p class="subtle">Evidencias y trazabilidad para auditoría y reportes internos.</p>
+        </div></div>
+        <div class="tick"><div>
+          <strong>Gobernanza ligera</strong>
+          <p class="subtle">Reuniones cortas para ajustar criterios y mantener el ritmo.</p>
+        </div></div>
+        <div class="tick"><div>
+          <strong>Escalable</strong>
+          <p class="subtle">Parte en Starter, suma seguimiento con Basic y evoluciona a PRO.</p>
+        </div></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CTA -->
+  <section id="contacto" class="cta">
+    <div class="container">
+      <h2>¿Listo para comprar mejor y con menos riesgo?</h2>
+      <p>Solicita tu demo y comienza a decidir en horas, con ejecución bajo control y ahorros medibles cuando estés listo para PRO.</p>
+      <p><a class="btn" href="mailto:cs@sygnode.cl">cs@sygnode.cl</a></p>
+      <div class="footer">
+        <span>También podemos atenderte en WhatsApp · +56 9 8596 0018</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-section">
+        <h3>SYGNODE.</h3>
+        <p>Soluciones avanzadas en inteligencia de adquisiciones para optimizar tu gestión empresarial.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Enlaces Rápidos</h3>
+        <ul class="footer-links">
+          <li><a href="https://procure-x.cl/inicio">Inicio</a></li>
+          <li><a href="https://procure-x.cl/servicios/showcase">Servicios</a></li>
+          <li><a href="https://procure-x.cl/inicio#contact">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Legal</h3>
+        <ul class="footer-links">
+          <li><a href="https://procure-x.cl/legal/terminos-y-condiciones">Términos y Condiciones</a></li>
+          <li><a href="https://procure-x.cl/legal/politica-de-privacidad.html">Política de Privacidad</a></li>
+          <li><a href="https://procure-x.cl/legal/aviso-legal.html">Aviso Legal</a></li>
+          <li><a href="https://procure-x.cl/legal/politica-cookies.html">Política de Cookies</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 SYGNODE. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+</body>
+</html>
