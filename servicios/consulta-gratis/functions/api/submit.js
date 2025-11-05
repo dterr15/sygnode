@@ -80,7 +80,7 @@ export async function onRequestPost(context) {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         personalizations: [{
-          to: [{ email: 'daniel.terreros9@gmail.com', name: 'SYGNODE Team' }]
+          to: [{ email: 'cs@sygnode.cl', name: 'SYGNODE Team' }]
         }],
         from: {
           email: 'px@procure-x.cl',
