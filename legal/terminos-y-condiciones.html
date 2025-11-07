@@ -22,22 +22,13 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
         .nav-logo { display:flex; align-items:center; gap:10px; }
-        .nav-logo-img {
-          height: 24px;       /* controla la altura en la barra */
-          width: auto;        /* mantiene proporción */
-          display: block;
-        }
-        @media (min-width: 1200px) {
-          .nav-logo-img { height: 28px; }  /* un pelín más grande en desktop grande */
-        }
+        .nav-logo-img { height: 24px; width: auto; display: block; }
+        @media (min-width: 1200px) { .nav-logo-img { height: 28px; } }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100">
-    
     <!-- Navbar -->
     <nav class="fixed w-full z-50 glass-effect">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,7 +64,7 @@
                     Términos y Condiciones de Uso
                 </h1>
                 <p class="text-xl text-slate-300">
-                    Servicios de Inteligencia de Adquisiciones | Compro Chile SpA (SYGNODE)
+                    Servicios de Inteligencia de Adquisiciones | SYGNODE
                 </p>
             </div>
         </div>
@@ -82,7 +73,6 @@
     <!-- Content Section -->
     <section class="py-16 bg-slate-900">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            
             <!-- Attention Box -->
             <div class="mb-12 p-6 border-l-4 border-cyan-500 bg-slate-800 rounded-r-lg">
                 <p class="text-slate-300 italic">
@@ -93,31 +83,22 @@
             <!-- Section 1 -->
             <div class="mb-12">
                 <h2 class="text-3xl font-bold mb-6 text-blue-400 border-b-2 border-slate-700 pb-3">
-                    1. IDENTIFICACIÓN Y NATURALEZA DE LA RELACIÓN (BLINDAJE LEGAL) 🛡️
+                    1. NATURALEZA Y VÍNCULO CONTRACTUAL
                 </h2>
 
                 <div class="space-y-6">
                     <div>
                         <h3 class="text-xl font-semibold mb-3 text-cyan-400">
-                            CLÁUSULA 1.1. PROVEEDOR Y RESPONSABLE
+                            CLÁUSULA 1.1. NATURALEZA EXCLUSIVAMENTE B2B
                         </h3>
                         <p class="text-slate-300 leading-relaxed">
-                            El servicio es prestado por <span class="font-semibold text-blue-400">Compro Chile SpA (SYGNODE)</span>, RUT 77.758.232-1, con domicilio legal en Jorge Montt 934, Punta Arenas, en adelante "SYGNODE".
+                            El Cliente (Persona Jurídica o Natural en su representación) declara y garantiza que contrata el acceso al sitio web y la provisión del servicio <span class="font-semibold text-blue-400">exclusivamente para fines profesionales, comerciales y empresariales</span>. El Cliente <span class="font-semibold text-blue-400">no actúa en calidad de consumidor final</span> de conformidad con el Art. 1°, N° 1 de la Ley N° 19.496.
                         </p>
                     </div>
 
                     <div>
                         <h3 class="text-xl font-semibold mb-3 text-cyan-400">
-                            CLÁUSULA 1.2. NATURALEZA EXCLUSIVAMENTE B2B (EXCLUSIÓN LPDC)
-                        </h3>
-                        <p class="text-slate-300 leading-relaxed">
-                            El Cliente (Persona Jurídica o Natural en su representación) declara y garantiza que contrata el acceso al sitio web y la provisión del servicio <span class="font-semibold text-blue-400">exclusivamente para fines profesionales, comerciales y empresariales</span>, relacionados con su giro, actividad o profesión. El Cliente <span class="font-semibold text-blue-400">no actúa en calidad de consumidor final</span> de conformidad con el Art. 1°, N° 1 de la Ley N° 19.496 (LPDC).
-                        </p>
-                    </div>
-
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3 text-cyan-400">
-                            CLÁUSULA 1.3. NATURALEZA MERCANTIL
+                            CLÁUSULA 1.2. NATURALEZA MERCANTIL
                         </h3>
                         <p class="text-slate-300 leading-relaxed">
                             La contratación se verifica en un contexto <span class="font-semibold text-blue-400">Business to Business (B2B)</span>. El Cliente declara que los bienes o servicios adquiridos mediante la inteligencia de adquisiciones tienen por objeto ser vendidos, permutados o <span class="font-semibold text-blue-400">incorporados a su cadena productiva</span>, conforme al Art. 3° del Código de Comercio. La relación contractual se regirá exclusivamente por el <span class="font-semibold text-blue-400">Código de Comercio y el Código Civil</span>.
@@ -126,10 +107,10 @@
 
                     <div>
                         <h3 class="text-xl font-semibold mb-3 text-cyan-400">
-                            CLÁUSULA 1.4. EXCLUSIÓN DEL DERECHO A RETRACTO
+                            CLÁUSULA 1.3. EXCLUSIÓN DEL DERECHO A RETRACTO
                         </h3>
                         <p class="text-slate-300 leading-relaxed">
-                            Como consecuencia directa de la naturaleza B2B del servicio y la exclusión de la calidad de consumidor final, el Cliente declara conocer y aceptar que <span class="font-semibold text-blue-400">no le asiste el Derecho a Retracto</span> establecido en el artículo 3° Bis de la LPDC.
+                            Como consecuencia directa de la naturaleza B2B del servicio y la exclusión de la calidad de consumidor final, el Cliente declara conocer y aceptar que <span class="font-semibold text-blue-400">no le asiste el Derecho a Retracto</span> establecido en el artículo 3° Bis de la Ley N° 19.496.
                         </p>
                     </div>
                 </div>
@@ -138,7 +119,7 @@
             <!-- Section 2 -->
             <div class="mb-12">
                 <h2 class="text-3xl font-bold mb-6 text-blue-400 border-b-2 border-slate-700 pb-3">
-                    2. FORMACIÓN DEL CONSENTIMIENTO (C. DE C.)
+                    2. FORMACIÓN DEL CONSENTIMIENTO
                 </h2>
 
                 <div class="space-y-6">
@@ -147,16 +128,13 @@
                             CLÁUSULA 2.1. ETAPAS DEL CONSENTIMIENTO Y PERFECCIONAMIENTO
                         </h3>
                         <p class="text-slate-300 leading-relaxed mb-4">
-                            El consentimiento del Cliente para adherir a estos T&C se entenderá <span class="font-semibold text-blue-400">perfeccionado</span> una vez que haya completado las siguientes etapas:
+                            El consentimiento del Cliente para adherir a estos T&amp;C se entenderá <span class="font-semibold text-blue-400">perfeccionado</span> una vez que haya completado las siguientes etapas:
                         </p>
                         <ol class="list-decimal list-inside space-y-2 text-slate-300 ml-4">
-                            <li>Aceptación Expresa de estos T&C mediante <span class="font-semibold text-blue-400">Checkbox</span> no pre-marcado.</li>
+                            <li>Aceptación Expresa de estos T&amp;C mediante <span class="font-semibold text-blue-400">Checkbox</span> no pre-marcado.</li>
                             <li>Solicitud formal de inicio de la contratación.</li>
                             <li>Recepción de la <span class="font-semibold text-blue-400">aceptación de la solicitud</span> por parte de SYGNODE, mediante correo electrónico.</li>
                         </ol>
-                        <p class="text-slate-300 leading-relaxed mt-4">
-                            Los registros electrónicos del sistema SYGNODE serán plena prueba de la manifestación de voluntad.
-                        </p>
                     </div>
 
                     <div>
@@ -164,7 +142,7 @@
                             CLÁUSULA 2.2. REQUISITO VINCULANTE
                         </h3>
                         <p class="text-slate-300 leading-relaxed">
-                            La aceptación de estos T&C es un <span class="font-semibold text-blue-400">requisito esencial</span> para la formalización y validez del <span class="font-semibold text-blue-400">Contrato Marco de Servicios de Inteligencia de Adquisiciones</span>, que el Cliente deberá formalizar separadamente.
+                            La aceptación de estos T&amp;C es un <span class="font-semibold text-blue-400">requisito esencial</span> para la formalización y validez del <span class="font-semibold text-blue-400">Contrato Marco de Servicios de Inteligencia de Adquisiciones</span>.
                         </p>
                     </div>
                 </div>
@@ -173,16 +151,16 @@
             <!-- Section 3 -->
             <div class="mb-12">
                 <h2 class="text-3xl font-bold mb-6 text-blue-400 border-b-2 border-slate-700 pb-3">
-                    3. GARANTÍA Y RESPONSABILIDAD (OBLIGACIÓN DE MEDIOS)
+                    3. ALCANCE DE LA RESPONSABILIDAD Y ASESORÍA
                 </h2>
 
                 <div class="space-y-6">
                     <div>
                         <h3 class="text-xl font-semibold mb-3 text-cyan-400">
-                            CLÁUSULA 3.1. OBLIGACIÓN DE MEDIOS Y ESTÁNDAR DE DILIGENCIA (CLÁUSULA CRÍTICA)
+                            CLÁUSULA 3.1. OBLIGACIÓN DE MEDIOS Y ESTÁNDAR DE DILIGENCIA
                         </h3>
                         <p class="text-slate-300 leading-relaxed">
-                            SYGNODE declara que su obligación es de <span class="font-semibold text-blue-400">medios o diligencia profesional, y no de resultado</span>. SYGNODE se compromete únicamente a aplicar la máxima diligencia y cuidado, conforme al estándar del <span class="font-semibold text-blue-400">buen comerciante</span> (C. de C.) y del <span class="font-semibold text-blue-400">buen padre de familia (culpa leve)</span> (Art. 1547 C.C.). La obligación se limita a la entrega de la inteligencia y el soporte operativo, no a asegurar el éxito comercial de la adquisición.
+                            SYGNODE declara que su obligación, <span class="font-semibold text-blue-400">incluyendo la información y asesoría precontractual</span>, es de <span class="font-semibold text-blue-400">medios o diligencia profesional, y no de resultado</span>. SYGNODE se compromete únicamente a aplicar la máxima diligencia y cuidado, conforme al estándar del <span class="font-semibold text-blue-400">buen comerciante</span> y del <span class="font-semibold text-blue-400">buen padre de familia (culpa leve)</span> (Art. 1547 C.C.).
                         </p>
                     </div>
 
@@ -191,7 +169,7 @@
                             CLÁUSULA 3.2. EXCLUSIÓN DE RESPONSABILIDAD POR RIESGO DE MERCADO
                         </h3>
                         <p class="text-slate-300 leading-relaxed">
-                            SYGNODE <span class="font-semibold text-blue-400">no garantiza resultados finales</span> (ej. ahorro, precio más bajo, disponibilidad de stock). En consecuencia, SYGNODE <span class="font-semibold text-blue-400">no será responsable</span> por pérdidas, daños o perjuicios que provengan de factores ajenos a su control, tales como la <span class="font-semibold text-blue-400">volatilidad de precios</span>, escasez de productos, decisiones de terceros, o la ejecución defectuosa de las recomendaciones por parte del Cliente.
+                            SYGNODE <span class="font-semibold text-blue-400">no garantiza resultados finales</span> (ej. ahorro, precio más bajo, disponibilidad de stock). SYGNODE <span class="font-semibold text-blue-400">no será responsable</span> por pérdidas, daños o perjuicios que provengan de factores ajenos a su control o de la ejecución defectuosa de las recomendaciones por parte del Cliente.
                         </p>
                     </div>
 
@@ -200,7 +178,7 @@
                             CLÁUSULA 3.3. LÍMITE PATRIMONIAL Y REMISIÓN
                         </h3>
                         <p class="text-slate-300 leading-relaxed">
-                            Los límites de responsabilidad patrimonial, exclusión de daños indirectos y lucro cesante, y el tope máximo de indemnización por incumplimiento se regirán exclusivamente por las cláusulas establecidas en el <span class="font-semibold text-blue-400">Contrato Marco de Servicios de Inteligencia de Adquisiciones</span>.
+                            Los límites de responsabilidad patrimonial y el tope máximo de indemnización por incumplimiento se regirán exclusivamente por las cláusulas establecidas en el <span class="font-semibold text-blue-400">Contrato Marco de Servicios de Inteligencia de Adquisiciones</span>.
                         </p>
                     </div>
 
@@ -218,7 +196,7 @@
             <!-- Section 4 -->
             <div class="mb-12">
                 <h2 class="text-3xl font-bold mb-6 text-blue-400 border-b-2 border-slate-700 pb-3">
-                    4. VALIDEZ GENERAL, INTERPRETACIÓN Y JURISDICCIÓN (C.C. Y C. DE C.)
+                    4. VALIDEZ GENERAL, INTERPRETACIÓN Y JURISDICCIÓN
                 </h2>
 
                 <div class="space-y-6">
@@ -227,7 +205,7 @@
                             CLÁUSULA 4.1. LEY APLICABLE Y JURISDICCIÓN
                         </h3>
                         <p class="text-slate-300 leading-relaxed">
-                            Estos T&C se rigen íntegra y exclusivamente por las <span class="font-semibold text-blue-400">leyes de la República de Chile</span>. Para la resolución de cualquier controversia, las Partes, con renuncia expresa a cualquier otro fuero, prorrogan competencia ante los <span class="font-semibold text-blue-400">Tribunales Ordinarios de Justicia de la comuna y ciudad de Santiago de Chile</span>.
+                            Estos T&amp;C se rigen íntegra y exclusivamente por las <span class="font-semibold text-blue-400">leyes de la República de Chile</span>. Para la resolución de cualquier controversia, las Partes, con renuncia expresa a cualquier otro fuero, prorrogan competencia ante los <span class="font-semibold text-blue-400">Tribunales Ordinarios de Justicia de la comuna y ciudad de Santiago de Chile</span>.
                         </p>
                     </div>
 
@@ -236,7 +214,7 @@
                             CLÁUSULA 4.2. REGLAS DE INTERPRETACIÓN
                         </h3>
                         <p class="text-slate-300 leading-relaxed">
-                            Estos T&C se interpretarán siempre con el fin de reflejar la <span class="font-semibold text-blue-400">intención B2B</span> y profesional de las partes, de conformidad con el Artículo 1560 del Código Civil. En caso de ambigüedad, la interpretación que mejor salvaguarde la <span class="font-semibold text-blue-400">naturaleza de obligación de medios</span> y el fin estratégico del servicio prevalecerá.
+                            Estos T&amp;C se interpretarán siempre con el fin de reflejar la <span class="font-semibold text-blue-400">intención B2B</span> y profesional de las partes, de conformidad con el Artículo 1560 del Código Civil. En caso de ambigüedad, la interpretación que mejor salvaguarde la <span class="font-semibold text-blue-400">naturaleza de obligación de medios</span> y el fin estratégico del servicio prevalecerá.
                         </p>
                     </div>
 
@@ -245,12 +223,31 @@
                             CLÁUSULA 4.3. INTEGRIDAD Y NULIDAD PARCIAL
                         </h3>
                         <p class="text-slate-300 leading-relaxed">
-                            Estos T&C, junto con el Contrato Marco y sus Anexos, constituyen la <span class="font-semibold text-blue-400">totalidad del acuerdo</span>. La eventual declaración de nulidad de alguna cláusula <span class="font-semibold text-blue-400">no afectará la validez de las demás disposiciones</span>, las cuales permanecerán en pleno vigor.
+                            Estos T&amp;C, junto con el Contrato Marco y sus Anexos, constituyen la <span class="font-semibold text-blue-400">totalidad del acuerdo</span>. La eventual declaración de nulidad de alguna cláusula <span class="font-semibold text-blue-400">no afectará la validez de las demás disposiciones</span>.
                         </p>
                     </div>
                 </div>
             </div>
 
+            <!-- Section 5 -->
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold mb-6 text-blue-400 border-b-2 border-slate-700 pb-3">
+                    5. IDENTIFICACIÓN Y CONTACTO LEGAL
+                </h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3 text-cyan-400">CLÁUSULA 5.0. PROVEEDOR Y RESPONSABLE DEL SERVICIO</h3>
+                        <p class="text-slate-300 leading-relaxed">
+                            El servicio es prestado por <span class="font-semibold text-blue-400">Compro Chile SpA (SYGNODE)</span>, Rol Único Tributario (RUT) 77.758.232-1, con domicilio legal en Jorge Montt 934, Punta Arenas. Todas las comunicaciones, notificaciones y requerimientos legales deben dirigirse al domicilio indicado o a la <span class="font-semibold text-blue-400">casilla de correo electrónico de contacto</span> publicada en el Sitio Web.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Last updated -->
+            <div class="mt-8 text-sm text-slate-400">
+                <p><span class="font-semibold text-slate-300">Fecha de Última Actualización:</span> 7 de noviembre de 2025</p>
+            </div>
         </div>
     </section>
 
@@ -285,6 +282,5 @@
             </div>
         </div>
     </footer>
-
 </body>
 </html>
