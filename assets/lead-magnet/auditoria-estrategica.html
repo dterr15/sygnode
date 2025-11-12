@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Flujo de Adquisiciones de Máxima Fluidez Operacional</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px;
+            overflow-x: auto;
+        }
+        
+        .container {
+            display: flex;
+            gap: 30px;
+            min-width: min-content;
+            padding: 20px;
+        }
+        
+        .page {
+            width: 500px;
+            background: white;
+            border-radius: 16px;
+            padding: 45px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            flex-shrink: 0;
+        }
+        
+        .logo-space {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            width: 110px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-space img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        /* PÁGINA 1 STYLES */
+        .page-1 {
+            position: relative;
+        }
+        
+        .hero-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .hero-icon {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+        
+        .clock {
+            font-size: 65px;
+        }
+        
+        .arrow {
+            position: absolute;
+            right: -15px;
+            font-size: 45px;
+        }
+        
+        .page-1 h1 {
+            font-size: 36px;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .page-1 h2 {
+            font-size: 22px;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        
+        .page-1 h3 {
+            font-size: 16px;
+            color: #888;
+            margin-bottom: 30px;
+            font-weight: 500;
+            font-style: italic;
+        }
+        
+        .tagline {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+            margin: 0 auto 30px;
+            text-align: left;
+        }
+        
+        .tagline-header {
+            font-size: 17px;
+            font-weight: 700;
+            color: #ff6b6b;
+            margin-bottom: 18px;
+            text-align: left;
+            line-height: 1.4;
+        }
+        
+        .impact-box {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 14px;
+            box-shadow: 0 12px 35px rgba(238, 90, 111, 0.4);
+            margin-top: 35px;
+        }
+        
+        .impact-stat {
+            font-size: 16px;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+        
+        .impact-stat strong {
+            font-weight: 700;
+        }
+        
+        .impact-question {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 22px;
+            border-top: 2px solid rgba(255,255,255,0.3);
+            padding-top: 20px;
+            line-height: 1.4;
+        }
+        
+        .impact-signal {
+            font-size: 14px;
+            margin-top: 12px;
+            opacity: 0.95;
+            line-height: 1.4;
+        }
+        
+        /* PÁGINA 2 STYLES */
+        .page-2 {
+            position: relative;
+        }
+        
+        .page-2 h1 {
+            font-size: 30px;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 15px;
+            color: #667eea;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+            margin-bottom: 20px;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        th {
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 10px;
+            line-height: 1.3;
+            vertical-align: top;
+        }
+        
+        th:first-child {
+            width: 5%;
+            text-align: center;
+        }
+        
+        th:nth-child(2) {
+            width: 22%;
+        }
+        
+        th:nth-child(3) {
+            width: 33%;
+        }
+        
+        th:nth-child(4) {
+            width: 15%;
+        }
+        
+        th:nth-child(5) {
+            width: 25%;
+        }
+        
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+            line-height: 1.4;
+        }
+        
+        td:first-child {
+            text-align: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        .icon {
+            font-size: 13px;
+            margin-right: 4px;
+        }
+        
+        tr.low-criticality {
+            background-color: #e8f5e9;
+        }
+        
+        tr.medium-criticality {
+            background-color: #fff9e6;
+        }
+        
+        tr.high-criticality {
+            background-color: #ffebee;
+        }
+        
+        .etapa-col {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .costo-oculto {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+        
+        .total-box {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 22px 0;
+            box-shadow: 0 10px 30px rgba(238, 90, 111, 0.4);
+        }
+        
+        .footer-note {
+            font-size: 11px;
+            color: #666;
+            font-style: italic;
+            text-align: center;
+            margin-top: 18px;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 15px;
+            line-height: 1.5;
+        }
+        
+        /* PÁGINA 3 STYLES */
+        .page-3 {
+            position: relative;
+        }
+        
+        .page-3 h1 {
+            font-size: 30px;
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .cost-section {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 22px;
+            box-shadow: 0 10px 30px rgba(238, 90, 111, 0.4);
+        }
+        
+        .cost-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.4;
+        }
+        
+        .cost-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .stat-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 18px 12px;
+            border-radius: 12px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            line-height: 1.4;
+        }
+        
+        .problem-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 22px;
+            border-left: 6px solid #ff6b6b;
+        }
+        
+        .section-title {
+            font-size: 19px;
+            color: #1a1a1a;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .problem-text {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        
+        .problem-bullets {
+            font-size: 12px;
+            color: #ff6b6b;
+            font-weight: 600;
+            line-height: 1.8;
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .problem-acumulativo {
+            font-size: 11px;
+            color: #333;
+            background: rgba(255, 107, 107, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            line-height: 1.6;
+        }
+        
+        .solution-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 22px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .comparison-table {
+            margin-top: 18px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr 1fr;
+            align-items: center;
+            padding: 12px 10px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+        
+        .comparison-label {
+            font-size: 11px;
+            color: #555;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        
+        .manual-value {
+            font-size: 10px;
+            color: #ff6b6b;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.5;
+        }
+        
+        .sygnode-value {
+            font-size: 10px;
+            color: #667eea;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.5;
+        }
+        
+        .benefit-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 18px;
+            border-radius: 12px;
+            margin-top: 18px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .benefit-text {
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+        
+        .cta-section {
+            background: #1a1a1a;
+            color: white;
+            padding: 25px;
+            border-radius: 14px;
+            text-align: center;
+        }
+        
+        .cta-question {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+        
+        .cta-text {
+            font-size: 13px;
+            margin-bottom: 12px;
+            color: #ddd;
+            line-height: 1.6;
+        }
+        
+        .cta-benefits {
+            text-align: left;
+            margin: 16px 0;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 35px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
+            transition: transform 0.2s;
+            display: inline-block;
+            margin-top: 12px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+        }
+        
+        .cta-exclusivity {
+            margin-top: 16px;
+            font-size: 10px;
+            color: #999;
+            font-style: italic;
+            border-top: 1px solid #333;
+            padding-top: 14px;
+            line-height: 1.5;
+        }
+        
+        .cta-definition {
+            margin-top: 16px;
+            font-size: 9px;
+            color: #999;
+            line-height: 1.5;
+            padding-top: 14px;
+        }
+        
+        /* PRINT STYLES - TODO EN UNA HOJA HORIZONTAL */
+        @media print {
+            @page {
+                size: 11in 8.5in;
+                margin: 0.3in;
+            }
+            
+            body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                overflow: visible !important;
+            }
+            
+            .container {
+                display: flex !important;
+                gap: 0.15in !important;
+                min-width: auto !important;
+                width: 100% !important;
+                padding: 0 !important;
+                page-break-inside: avoid !important;
+            }
+            
+            .page {
+                width: 3.4in !important;
+                flex-shrink: 0 !important;
+                background: white !important;
+                border-radius: 8px !important;
+                padding: 0.25in !important;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+                page-break-inside: avoid !important;
+                font-size: 8pt !important;
+            }
+            
+            .logo-space {
+                width: 0.8in !important;
+                height: 0.3in !important;
+                top: 0.1in !important;
+                right: 0.15in !important;
+            }
+            
+            .logo-space img {
+                max-width: 100% !important;
+                max-height: 100% !important;
+            }
+            
+            .hero-icon {
+                width: 0.9in !important;
+                height: 0.9in !important;
+                margin-bottom: 0.2in !important;
+            }
+            
+            .clock {
+                font-size: 36pt !important;
+            }
+            
+            .arrow {
+                font-size: 24pt !important;
+                right: -8px !important;
+            }
+            
+            .page-1 h1 {
+                font-size: 19pt !important;
+                margin-bottom: 0.1in !important;
+            }
+            
+            .page-1 h2 {
+                font-size: 12pt !important;
+                margin-bottom: 0.08in !important;
+            }
+            
+            .page-1 h3 {
+                font-size: 9pt !important;
+                margin-bottom: 0.15in !important;
+            }
+            
+            .tagline-header {
+                font-size: 9pt !important;
+                margin-bottom: 0.1in !important;
+            }
+            
+            .tagline {
+                font-size: 8pt !important;
+                margin-bottom: 0.15in !important;
+            }
+            
+            .impact-box {
+                padding: 0.18in !important;
+                margin-top: 0.2in !important;
+            }
+            
+            .impact-stat {
+                font-size: 8.5pt !important;
+                margin-bottom: 0.08in !important;
+            }
+            
+            .impact-question {
+                font-size: 9pt !important;
+                margin-top: 0.12in !important;
+                padding-top: 0.12in !important;
+            }
+            
+            .impact-signal {
+                font-size: 7.5pt !important;
+                margin-top: 0.08in !important;
+            }
+            
+            .page-2 h1 {
+                font-size: 16pt !important;
+                margin-bottom: 0.08in !important;
+            }
+            
+            .subtitle {
+                font-size: 8pt !important;
+                margin-bottom: 0.12in !important;
+            }
+            
+            table {
+                font-size: 6.5pt !important;
+                margin-bottom: 0.12in !important;
+            }
+            
+            th {
+                padding: 0.06in 0.04in !important;
+                font-size: 6.5pt !important;
+            }
+            
+            td {
+                padding: 0.05in 0.04in !important;
+            }
+            
+            td:first-child {
+                font-size: 9pt !important;
+            }
+            
+            .icon {
+                font-size: 8pt !important;
+            }
+            
+            .total-box {
+                padding: 0.12in !important;
+                font-size: 11pt !important;
+                margin: 0.12in 0 !important;
+            }
+            
+            .footer-note {
+                font-size: 6.5pt !important;
+                margin-top: 0.1in !important;
+                padding-top: 0.08in !important;
+            }
+            
+            .page-3 h1 {
+                font-size: 16pt !important;
+                margin-bottom: 0.15in !important;
+            }
+            
+            .cost-section {
+                padding: 0.15in !important;
+                margin-bottom: 0.12in !important;
+            }
+            
+            .cost-title {
+                font-size: 10pt !important;
+                margin-bottom: 0.12in !important;
+            }
+            
+            .cost-stats {
+                gap: 0.08in !important;
+            }
+            
+            .stat-box {
+                padding: 0.1in 0.06in !important;
+            }
+            
+            .stat-number {
+                font-size: 14pt !important;
+                margin-bottom: 0.05in !important;
+            }
+            
+            .stat-label {
+                font-size: 6.5pt !important;
+            }
+            
+            .problem-section {
+                padding: 0.15in !important;
+                margin-bottom: 0.12in !important;
+            }
+            
+            .section-title {
+                font-size: 10pt !important;
+                margin-bottom: 0.1in !important;
+            }
+            
+            .problem-text {
+                font-size: 7pt !important;
+                margin-bottom: 0.08in !important;
+            }
+            
+            .problem-bullets {
+                font-size: 7pt !important;
+                margin-top: 0.08in !important;
+                margin-bottom: 0.08in !important;
+            }
+            
+            .problem-acumulativo {
+                font-size: 6.5pt !important;
+                padding: 0.08in !important;
+                margin-top: 0.08in !important;
+            }
+            
+            .solution-section {
+                padding: 0.15in !important;
+                margin-bottom: 0.12in !important;
+            }
+            
+            .comparison-table {
+                margin-top: 0.1in !important;
+            }
+            
+            .comparison-row {
+                padding: 0.06in 0.05in !important;
+            }
+            
+            .comparison-label {
+                font-size: 6.5pt !important;
+            }
+            
+            .manual-value, .sygnode-value {
+                font-size: 6pt !important;
+            }
+            
+            .benefit-box {
+                padding: 0.1in !important;
+                margin-top: 0.1in !important;
+            }
+            
+            .benefit-text {
+                font-size: 8pt !important;
+            }
+            
+            .cta-section {
+                padding: 0.15in !important;
+            }
+            
+            .cta-question {
+                font-size: 9pt !important;
+                margin-bottom: 0.1in !important;
+            }
+            
+            .cta-text {
+                font-size: 7.5pt !important;
+                margin-bottom: 0.08in !important;
+            }
+            
+            .cta-benefits {
+                margin: 0.1in 0 !important;
+                font-size: 6.5pt !important;
+            }
+            
+            .cta-button {
+                padding: 0.1in 0.2in !important;
+                font-size: 8pt !important;
+                margin-top: 0.08in !important;
+            }
+            
+            .cta-exclusivity {
+                margin-top: 0.1in !important;
+                font-size: 6pt !important;
+                padding-top: 0.08in !important;
+            }
+            
+            .cta-definition {
+                margin-top: 0.08in !important;
+                font-size: 5.5pt !important;
+                padding-top: 0.08in !important;
+            }
+        }
+        a.cta-button {
+        text-decoration: none;
+        display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- PÁGINA 1: PORTADA -->
+        <div class="page page-1">
+            <div class="logo-space">
+                <img src="https://sygnode.cl/assets/img/Logo%20SYGNODE.png" alt="SYGNODE">
+            </div>            
+            <div class="hero-section">
+                <div class="hero-icon">
+                    <span class="clock">⏱️</span>
+                    <span class="arrow">→</span>
+                </div>
+                
+                <h1>El Flujo de Adquisiciones de Máxima Fluidez Operacional</h1>
+                <h2>Playbook Manual en 9 Pasos Críticos</h2>
+                <h3>(Y las 16+ horas ocultas que frenan su margen competitivo)</h3>
+                
+                <div class="tagline-header">
+                    🔴 CADA DÍA DE DEMORA EN PROCUREMENT LE DA LA VENTAJA DE SU COMPETENCIA.
+                </div>
+                
+                <p class="tagline">
+                    Mientras su equipo consolida cotizaciones en Excel (Paso 6), empresas 
+                    con procurement automatizado ya cerraron la compra con 8-12% menos de costo.
+                </p>
+                
+                <div class="impact-box">
+                    <div class="impact-stat">
+                        <strong>→ 16+ horas</strong> de capital ejecutivo por ciclo
+                    </div>
+                    <div class="impact-stat">
+                        <strong>→ 5-15% de margen</strong> evaporado sin visibilidad
+                    </div>
+                    <div class="impact-stat">
+                        <strong>→ Cero blindaje</strong> contra variación de precios
+                    </div>
+                    <div class="impact-stat">
+                        <strong>→ 4+ días de latencia</strong> en cierre (vs. minutos con automatización)
+                    </div>
+                    <div class="impact-question">
+                        ¿Cuánto margen operativo perdió en Q3 2025 por demoras en compras?
+                    </div>
+                    <div class="impact-signal">
+                        (¿Y, cuánto dejó de ganar por usar tiempo para buscar precios/comprar?)
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- PÁGINA 2: PLAYBOOK -->
+        <div class="page page-2">
+            <h1>El Playbook Manual: 9 Pasos Críticos</h1>
+            <p class="subtitle">Proceso PR-to-PO con Ejecución Óptima (Máxima Fluidez)</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>ETAPA</th>
+                        <th>TAREAS MANUALES</th>
+                        <th>TIEMPO</th>
+                        <th>💸 COSTO OCULTO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="low-criticality">
+                        <td>1</td>
+                        <td class="etapa-col"><span class="icon">📋</span>PREPARACIÓN:<br>Maestro SKUs</td>
+                        <td>Mantener catálogo MDC con 80% SKUs + 5-7 proveedores homologados</td>
+                        <td><strong>½-1 Día/<br>Semana</strong></td>
+                        <td class="costo-oculto">20% tiempo semanal sin ROI estratégico</td>
+                    </tr>
+                    <tr class="low-criticality">
+                        <td>2</td>
+                        <td class="etapa-col"><span class="icon">✓</span>ESTÁNDAR:<br>Requisición</td>
+                        <td>Checklist Cero-Defectos: SKU exacto, specs, cantidad, fecha</td>
+                        <td><strong>30 Min/<br>Req.</strong></td>
+                        <td class="costo-oculto">Validación manual repetitiva</td>
+                    </tr>
+                    <tr class="medium-criticality">
+                        <td>3</td>
+                        <td class="etapa-col"><span class="icon">🎯</span>ASIGNACIÓN:<br>Memoria Histórica</td>
+                        <td>Manager selecciona 5-7 proveedores basándose en experiencia personal y recuerdo subjetivo (sin algoritmo predictivo)</td>
+                        <td><strong>15-45<br>Min</strong></td>
+                        <td class="costo-oculto">Decisión intuitiva sin benchmark = sesgo de confirmación y pérdida del mejor pricing</td>
+                    </tr>
+                    <tr class="medium-criticality">
+                        <td>4</td>
+                        <td class="etapa-col"><span class="icon">📧</span>RFP/Q:<br>Lanzamiento</td>
+                        <td>Envío RFQ por email. Deadline estricto (36 horas)</td>
+                        <td><strong>1-2<br>Hrs</strong></td>
+                        <td class="costo-oculto">Coordinación manual intensiva</td>
+                    </tr>
+                    <tr class="high-criticality">
+                        <td>5</td>
+                        <td class="etapa-col"><span class="icon">⚠️</span>MONITOREO:<br>Escalamiento</td>
+                        <td>Email de presión con copia a gerencia del proveedor</td>
+                        <td><strong>2-4<br>Hrs</strong></td>
+                        <td class="costo-oculto">Capital humano en seguimiento reactivo</td>
+                    </tr>
+                    <tr class="high-criticality">
+                        <td>6</td>
+                        <td class="etapa-col"><span class="icon">📊</span>CONSOLIDACIÓN:<br>Normalización</td>
+                        <td>Consolidar en Excel, estandarizar unidades. Propenso a errores</td>
+                        <td><strong>2-4<br>Hrs</strong></td>
+                        <td class="costo-oculto">⚠️ CRÍTICO: Errores impactan pricing 5-15%</td>
+                    </tr>
+                    <tr class="high-criticality">
+                        <td>7</td>
+                        <td class="etapa-col"><span class="icon">💡</span>ESTRATEGIA:<br>Análisis</td>
+                        <td>Decisión: ganador directo, negociación 5%, o adjudicación dividida</td>
+                        <td><strong>1.5<br>Hrs</strong></td>
+                        <td class="costo-oculto">Sin inteligencia predictiva de mercado</td>
+                    </tr>
+                    <tr class="medium-criticality">
+                        <td>8</td>
+                        <td class="etapa-col"><span class="icon">🤝</span>NEGOCIACIÓN:<br>Ejecución</td>
+                        <td>Negociación por email/llamada. Confirmación escrita de términos</td>
+                        <td><strong>1-4<br>Hrs</strong></td>
+                        <td class="costo-oculto">Negociación reactiva sin apalancamiento</td>
+                    </tr>
+                    <tr class="low-criticality">
+                        <td>9</td>
+                        <td class="etapa-col"><span class="icon">📄</span>CIERRE:<br>OC y Autorización</td>
+                        <td>Creación manual de OC + envío + seguimiento hasta bodega</td>
+                        <td><strong>2 Hrs +<br>3-4 días<br>latencia</strong></td>
+                        <td class="costo-oculto">Cada día = pérdida ventana precio óptimo por volatilidad. Sin trazabilidad automatizada</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="total-box">
+                ⏱️ TOTAL: 16+ HORAS POR CICLO DE COMPRA
+            </div>
+            
+            <div class="footer-note">
+                * Basado en ejecución óptima. La mayoría de empresas se estanca entre Pasos 3-7
+            </div>
+        </div>
+        
+        <!-- PÁGINA 3: SOLUCIÓN -->
+        <div class="page page-3">
+            <h1>La Solución Real</h1>
+            
+            <!-- Sección: El Costo Real -->
+            <div class="cost-section">
+                <div class="cost-title">⚠️ El Costo Real de la Ejecución Manual</div>
+                <div class="cost-stats">
+                    <div class="stat-box">
+                        <div class="stat-number">16+</div>
+                        <div class="stat-label">Horas de concentración por ciclo</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">20%</div>
+                        <div class="stat-label">Del tiempo semanal en mantenimiento</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">5-15%</div>
+                        <div class="stat-label">Errores en normalización (Paso 6)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección: El Problema -->
+            <div class="problem-section">
+                <div class="section-title">⚠️ EL COSTO OCULTO DEL PROCUREMENT MANUAL</div>
+                <p class="problem-text" style="font-weight: 700; margin-bottom: 12px;">
+                    PASOS 3-7: LA ZONA DE MÁXIMA FUGA DE MARGEN
+                </p>
+                <p class="problem-text">
+                    Mientras su dpto. de compras busca proveedores en el histórico (Paso 3) 
+                    basándose en memoria subjetiva, su competencia ya ejecutó una asignación 
+                    predictiva con IA validada por datos históricos.
+                </p>
+                <p class="problem-text">
+                    Mientras consolidan cotizaciones en Excel (Paso 6), exponen el pricing 
+                    final a errores manuales que pueden costar 5-15% del valor de compra.
+                </p>
+                <div class="problem-bullets">
+                    → Pérdida sistemática de 5-15% por ciclo<br>
+                    → Exposición a varianza sin blindaje estructural<br>
+                    → Decisiones reactivas sin inteligencia predictiva
+                </div>
+                <div class="problem-acumulativo">
+                    <strong>Acumulado en 50 compras trimestrales:</strong><br>
+                    Impacto directo en EBITDA medible en 6 cifras.
+                </div>
+                <p class="problem-text" style="font-weight: 700; margin-top: 12px;">
+                    Su competencia ya automatizó esto. Usted está financiando su ventaja.
+                </p>
+            </div>
+            
+            <!-- Sección: La Solución SYGNODE -->
+            <div class="solution-section">
+                <div class="section-title" style="color: white;">✨ La Solución SYGNODE</div>
+                
+                <div class="comparison-table">
+                    <div class="comparison-row">
+                        <div class="comparison-label" style="font-weight: 700;">Métrica de Control</div>
+                        <div class="comparison-label" style="text-align: center; font-weight: 700;">Manual</div>
+                        <div class="comparison-label" style="text-align: center; font-weight: 700;">SYGNODE<br>(Blindaje Operativo)</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-label">⏱️ Ciclo PR-to-PO</div>
+                        <div class="manual-value">16+ horas de capital humano</div>
+                        <div class="sygnode-value">Minutos (autonomía sistémica)</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-label">🎯 Exposición a Error</div>
+                        <div class="manual-value">Alta (Paso 6: normalización manual)</div>
+                        <div class="sygnode-value">Cero (IA valida y normaliza)</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-label">💡 Inteligencia Pricing</div>
+                        <div class="manual-value">Reactiva (sin histórico estructurado)</div>
+                        <div class="sygnode-value">Predictiva (benchmark en tiempo real)</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-label">📊 Trazabilidad</div>
+                        <div class="manual-value">Ceguera operativa total</div>
+                        <div class="sygnode-value">Visibilidad 360° tablero ejecutivo</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-label">💰 Preservación Margen</div>
+                        <div class="manual-value">Fuga 5-15% por ciclo</div>
+                        <div class="sygnode-value">Captura sistemática spread óptimo</div>
+                    </div>
+                </div>
+                
+                <div class="benefit-box">
+                    <div class="benefit-text">
+                        💰 Recupere el tiempo perdido + captura de 5-15% por compra
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CTA Final -->
+            <div class="cta-section">
+                <div class="cta-question">
+                    ¿CUÁNTO MARGEN ESTÁ PERDIENDO SU EMPRESA HOY?
+                </div>
+                <div class="cta-text" style="font-weight: 700; font-size: 14px;">
+                    → AUDITORÍA DE LATENCIA OPERATIVA — 15 MINUTOS
+                </div>
+                <div class="cta-text">
+                    (Exclusiva para C-Level)
+                </div>
+                <div class="cta-benefits">
+                    En esta auditoría estratégica de 15 minutos, cuantificaremos:<br><br>
+                    ✅ Los 3 puntos exactos de máxima fuga de margen en su flujo PR-to-PO<br>
+                    ✅ Su brecha de latencia vs. procurement automatizado (benchmark sectorial)<br>
+                    ✅ Proyección de captura de margen + BLINDAJE OPERACIONAL en Q1 2025
+                </div>
+                <a class="cta-button" href="https://calendar.app.google/mbaAbP32faNsDArz5">
+                    📅 SOLICITAR AUDITORÍA ESTRATÉGICA
+                </a>
+                <div class="cta-exclusivity">
+                    *Esta auditoría es exclusiva para ejecutivos 
+                    que gestionan procurement como activo estratégico generador de margen, 
+                    no como centro de costo administrativo.
+                </div>
+                <div class="cta-definition">
+                    BLINDAJE OPERACIONAL = Predictibilidad del 98% en ciclo de compra con 
+                    eliminación del 87% de varianza manual en pricing, plazos y errores de normalización.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
