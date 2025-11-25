@@ -1215,7 +1215,7 @@
                 };
                 
                 // Send to webhook
-                const response = await fetch(WEBHOOK_URL, {
+                const response = await fetch("/api/lead", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
