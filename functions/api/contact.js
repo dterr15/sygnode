@@ -1,5 +1,4 @@
 // functions/api/contact.js
-
 export const onRequestPost = async (context) => {
   const DB = context.env.DB;
 
@@ -25,13 +24,14 @@ export const onRequestPost = async (context) => {
     privacy,
     language,
     timezone,
-    userAgent,
+    user_agent,
     ip,
     utm_source,
     utm_medium,
     utm_campaign,
   } = body || {};
 
+  // Validación mínima
   if (!full_name || !email) {
     return new Response(
       JSON.stringify({ error: "Nombre y correo son obligatorios" }),
@@ -45,11 +45,25 @@ export const onRequestPost = async (context) => {
   try {
     await DB.prepare(
       `INSERT INTO contacts 
-      (full_name, email, phone, company, message,
-       inquiry_type, country, timestamp, privacy, language,
-       timezone, user_agent, ip,
-       utm_source, utm_medium, utm_campaign)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      (
+        full_name,
+        email,
+        phone,
+        company,
+        message,
+        inquiry_type,
+        country,
+        timestamp,
+        privacy,
+        language,
+        timezone,
+        user_agent,
+        ip,
+        utm_source,
+        utm_medium,
+        utm_campaign
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
       .bind(
         full_name,
@@ -63,7 +77,7 @@ export const onRequestPost = async (context) => {
         privacy ? 1 : 0,
         language || "",
         timezone || "",
-        userAgent || "",
+        user_agent || "",
         ip || "",
         utm_source || "",
         utm_medium || "",
