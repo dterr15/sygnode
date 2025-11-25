@@ -1222,6 +1222,9 @@
                     },
                     body: JSON.stringify(submissionData)
                 });
+
+                // ALSO send to Cloudflare D1
+                await sendToCloudflare(formData);
                 
                 if (response.ok) {
                     showMessage('success');
@@ -1349,6 +1352,39 @@
                 }
             });
         });
+    </script>
+    <script>
+        async function sendToCloudflare(formData) {
+            const payload = {
+                full_name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                company: formData.company,
+                message: `
+        Tipo: ${formData.inquiry_type}
+        País: ${formData.country}
+
+        Mensaje:
+        ${formData.message}
+                `,
+                utm_source: new URLSearchParams(window.location.search).get("utm_source") || "",
+                utm_medium: new URLSearchParams(window.location.search).get("utm_medium") || "",
+                utm_campaign: new URLSearchParams(window.location.search).get("utm_campaign") || "",
+            };
+
+            try {
+                const res = await fetch("/api/contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                return res.ok;
+            } catch (err) {
+                console.error("Error enviando a Cloudflare:", err);
+                return false;
+            }
+        }
     </script>
 </body>
 </html>
