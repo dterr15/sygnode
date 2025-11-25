@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard de Leads – SYGNODE</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+
+<style>
+body {
+    background: #f1f5f9;
+}
+</style>
+</head>
+<body class="p-6">
+
+<h1 class="text-3xl font-bold mb-6 text-gray-800">📊 Dashboard de Leads – SYGNODE</h1>
+
+<!-- Filters -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <input id="search" type="text" placeholder="Buscar por nombre, email, empresa..." 
+        class="px-4 py-2 border rounded shadow-sm">
+
+    <select id="filterType" class="px-4 py-2 border rounded shadow-sm">
+        <option value="">Tipo de consulta (todos)</option>
+        <option value="sales">Ventas</option>
+        <option value="support">Soporte</option>
+        <option value="other">Otro</option>
+    </select>
+
+    <select id="filterCountry" class="px-4 py-2 border rounded shadow-sm">
+        <option value="">País (todos)</option>
+        <option value="CL">Chile</option>
+        <option value="AR">Argentina</option>
+        <option value="MX">México</option>
+        <option value="CO">Colombia</option>
+        <option value="US">Estados Unidos</option>
+        <option value="ES">España</option>
+        <option value="OTHER">Otro</option>
+    </select>
+</div>
+
+<!-- Export Button -->
+<button id="exportCSV" class="mb-4 px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700">
+    Exportar CSV
+</button>
+
+<!-- Table -->
+<div class="overflow-auto rounded shadow bg-white">
+<table class="min-w-full text-sm">
+<thead class="bg-gray-100">
+<tr>
+    <th class="p-2 text-left">Nombre</th>
+    <th class="p-2 text-left">Email</th>
+    <th class="p-2 text-left">Empresa</th>
+    <th class="p-2 text-left">Tipo</th>
+    <th class="p-2 text-left">País</th>
+    <th class="p-2 text-left">Fecha</th>
+</tr>
+</thead>
+<tbody id="leadsTable"></tbody>
+</table>
+</div>
+
+<script>
+let leads = [];
+let filteredLeads = [];
+
+async function loadLeads() {
+    const res = await fetch("/api/leads-list");
+    const json = await res.json();
+    leads = json.data || [];
+    filteredLeads = leads;
+    renderTable();
+}
+
+function renderTable() {
+    const tbody = document.getElementById("leadsTable");
+    tbody.innerHTML = "";
+
+    filteredLeads.forEach(lead => {
+        const tr = document.createElement("tr");
+        tr.className = "border-b hover:bg-gray-50";
+
+        tr.innerHTML = `
+            <td class="p-2">${lead.full_name}</td>
+            <td class="p-2">${lead.email}</td>
+            <td class="p-2">${lead.company}</td>
+            <td class="p-2">${lead.inquiry_type || ''}</td>
+            <td class="p-2">${lead.country || ''}</td>
+            <td class="p-2">${lead.timestamp ? new Date(lead.timestamp).toLocaleString() : ''}</td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+function applyFilters() {
+    const search = document.getElementById("search").value.toLowerCase();
+    const type = document.getElementById("filterType").value;
+    const country = document.getElementById("filterCountry").value;
+
+    filteredLeads = leads.filter(lead => {
+        return (
+            (lead.full_name.toLowerCase().includes(search) ||
+             lead.email.toLowerCase().includes(search) ||
+             lead.company.toLowerCase().includes(search)) &&
+            (type === "" || lead.inquiry_type === type) &&
+            (country === "" || lead.country === country)
+        );
+    });
+
+    renderTable();
+}
+
+document.getElementById("search").addEventListener("input", applyFilters);
+document.getElementById("filterType").addEventListener("change", applyFilters);
+document.getElementById("filterCountry").addEventListener("change", applyFilters);
+
+document.getElementById("exportCSV").addEventListener("click", () => {
+    if (!filteredLeads.length) return;
+
+    const header = Object.keys(filteredLeads[0]).join(",");
+    const rows = filteredLeads.map(obj => 
+        Object.values(obj).map(val => `"${(val || "").toString().replace(/"/g, '""')}"`).join(",")
+    );
+
+    const csvContent = [header, ...rows].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "leads.csv";
+    a.click();
+});
+
+loadLeads();
+</script>
+
+</body>
+</html>
