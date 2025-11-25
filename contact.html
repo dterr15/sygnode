@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contáctanos - SYGNODE. Agenda una consulta gratuita o envíanos tu consulta. Respondemos en menos de 24 horas.">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Security Headers via Meta Tags -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <title>Contacto - SYGNODE | Inteligencia de Compras</title>
+    
+    <!-- Zod for validation -->
+    <script src="https://cdn.jsdelivr.net/npm/zod@3.22.4/lib/index.umd.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #1e3a8a;
+            --secondary-cyan: #06b6d4;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --bg-light: #f1f5f9;
+            --bg-white: #FFFFFF;
+            --border-light: #e2e8f0;
+            --warning-yellow: #fbbf24;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-white);
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-cyan));
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 20px 0;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 40px;         /* igual que el contenedor actual */
+            width: auto;          /* mantiene proporciones */
+            display: block;
+            object-fit: contain;  /* evita deformaciones */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .btn-primary {
+            background: var(--accent-green);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: #0ea15b;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: var(--text-gray);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* HERO SECTION */
+        .hero-contact {
+            margin-top: 100px;
+            padding: 80px 30px 60px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.03), rgba(6, 182, 212, 0.03));
+        }
+
+        .hero-contact h1 {
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .hero-contact .subheadline {
+            font-size: 20px;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        /* QUICK ACTIONS */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto 80px;
+            padding: 0 30px;
+        }
+
+        .quick-action-card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .quick-action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            border-color: var(--secondary-cyan);
+        }
+
+        .quick-action-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .quick-action-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--primary-blue);
+        }
+
+        .quick-action-card p {
+            font-size: 15px;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+        }
+
+        .quick-action-card a {
+            display: inline-block;
+            padding: 10px 24px;
+            background: var(--accent-green);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .quick-action-card a:hover {
+            background: #0ea15b;
+            transform: scale(1.05);
+        }
+
+        /* MAIN CONTENT */
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 30px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+        }
+
+        /* CONTACT INFO SIDEBAR */
+        .contact-info {
+            background: var(--bg-light);
+            padding: 40px;
+            border-radius: 16px;
+            height: fit-content;
+        }
+
+        .contact-info h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: var(--primary-blue);
+            text-align: left;
+        }
+
+        .info-item {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .info-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            font-size: 18px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .info-value a {
+            color: var(--secondary-cyan);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .info-value a:hover {
+            color: var(--primary-blue);
+        }
+
+        .business-hours {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .business-hours h3 {
+            font-size: 16px;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+
+        .hours-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .hours-day {
+            color: var(--text-gray);
+        }
+
+        .hours-time {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* FORM SECTION */
+        .contact-form-section {
+            background: white;
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .contact-form-section h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+            text-align: left;
+        }
+
+        .form-description {
+            font-size: 16px;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+        }
+
+        /* TYPE SELECTOR */
+        .inquiry-type-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .type-option {
+            position: relative;
+        }
+
+        .type-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .type-option label {
+            display: block;
+            padding: 20px;
+            background: var(--bg-light);
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .type-option input[type="radio"]:checked + label {
+            background: var(--secondary-cyan);
+            color: white;
+            border-color: var(--secondary-cyan);
+        }
+
+        .type-option label:hover {
+            border-color: var(--secondary-cyan);
+        }
+
+        /* FORM ELEMENTS */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 15px;
+        }
+
+        .required {
+            color: var(--accent-red);
+            margin-left: 2px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-cyan);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group.error input,
+        .form-group.error select,
+        .form-group.error textarea {
+            border-color: var(--accent-red);
+        }
+
+        .error-message {
+            color: var(--accent-red);
+            font-size: 14px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* RUT INPUT */
+        .rut-info {
+            font-size: 13px;
+            color: var(--text-gray);
+            margin-top: 6px;
+        }
+
+        /* PRIVACY POLICY */
+        .privacy-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 30px 0;
+        }
+
+        .privacy-checkbox input[type="checkbox"] {
+            margin-top: 4px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .privacy-checkbox label {
+            font-size: 14px;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        .privacy-checkbox a {
+            color: var(--secondary-cyan);
+            text-decoration: none;
+        }
+
+        .privacy-checkbox a:hover {
+            text-decoration: underline;
+        }
+
+        /* SUBMIT BUTTON */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: #0ea15b;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: var(--text-gray);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        .submit-btn.loading .spinner {
+            display: block;
+        }
+
+        .submit-btn.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* SUCCESS/ERROR MESSAGES */
+        .form-message {
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .form-message.show {
+            display: block;
+        }
+
+        .form-message.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 2px solid var(--accent-green);
+        }
+
+        .form-message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 2px solid var(--accent-red);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* FAQ SECTION */
+        .faq-section {
+            max-width: 900px;
+            margin: 80px auto 60px;
+            padding: 0 30px;
+        }
+
+        .faq-section h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: var(--primary-blue);
+            text-align: center;
+        }
+
+        .faq-item {
+            background: white;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--text-dark);
+            transition: all 0.3s;
+        }
+
+        .faq-question:hover {
+            background: var(--bg-light);
+        }
+
+        .faq-icon {
+            font-size: 24px;
+            color: var(--secondary-cyan);
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 25px;
+            color: var(--text-gray);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 25px 25px;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 60px 30px 30px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-contact {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-contact a {
+            color: var(--accent-green);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-bottom {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* WHATSAPP FLOAT */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25d366;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-contact h1 {
+                font-size: 32px;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .contact-form-section {
+                padding: 30px 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .inquiry-type-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <a href="/" class="logo">
+                <img src="https://sygnode.cl/assets/img/Logo%20SYGNODE.png" alt="SYGNODE logo" class="logo-img">
+                SYGNODE
+            </a>
+            <div class="nav-links">
+                <a href="https://sygnode.cl/servicios/showcase">Servicios</a>
+                <a href="/#precios">Precios</a>
+                <a href="https://www.sygnode.cl/servicios/consulta-gratis/" class="btn-primary">Consulta sin Costo</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero-contact">
+        <h1>¿Cómo podemos ayudarte?</h1>
+    </section>
+
+    <!-- QUICK ACTIONS -->
+    <div class="quick-actions">
+        <div class="quick-action-card">
+            <div class="quick-action-icon">📞</div>
+            <h3>Llamar ahora</h3>
+            <p>Habla directamente con un especialista</p>
+            <a href="tel:+56985960018">+56 9 8596 0018</a>
+        </div>
+
+        <div class="quick-action-card">
+            <div class="quick-action-icon">📅</div>
+            <h3>Agendar reunión</h3>
+            <p>Análisis gratuito de 10 minutos</p>
+            <a href="https://calendar.app.google/G8wuiywz8P1DXuDSA" target="_blank">Agendar ahora</a>
+        </div>
+
+        <div class="quick-action-card">
+            <div class="quick-action-icon">💬</div>
+            <h3>WhatsApp</h3>
+            <p>Respuesta inmediata por chat</p>
+            <a href="https://wa.me/56985960018" target="_blank">Iniciar chat</a>
+        </div>
+    </div>
+
+    <!-- MAIN CONTACT SECTION -->
+    <div class="contact-container">
+        <!-- SIDEBAR INFO -->
+        <aside class="contact-info">
+            <h2>Información de contacto</h2>
+            
+            <div class="info-item">
+                <div class="info-label">Email</div>
+                <div class="info-value">
+                    <a href="/cdn-cgi/l/email-protection#1f7770737e5f6c667871707b7a317c7072"><span class="__cf_email__" data-cfemail="5f3730333e1f2c263831303b3a713c3032">cs@sygnode.cl</span></a>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label">Teléfono/WhatsApp</div>
+                <div class="info-value">
+                    <a href="https://wa.me/56985960018" target="_blank">+56 9 8596 0018</a>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label">Ubicación</div>
+                <div class="info-value">
+                    Santiago, Chile<br>
+                    <small style="color: var(--text-gray); font-size: 14px;">Atención internacional remota</small>
+                </div>
+            </div>
+
+            <div class="business-hours">
+                <h3>Horarios de atención</h3>
+                <div class="hours-item">
+                    <span class="hours-day">Lunes - Viernes</span>
+                    <span class="hours-time">9:00 - 18:00</span>
+                </div>
+                <div class="hours-item">
+                    <span class="hours-day">Sábado - Domingo</span>
+                    <span class="hours-time">Cerrado</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTACT FORM -->
+        <div class="contact-form-section">
+            <h2>Envíanos tu consulta</h2>
+            <p class="form-description">
+                Completa el formulario y nos pondremos en contacto contigo a la brevedad.
+            </p>
+
+            <form id="contactForm" novalidate>
+                <!-- INQUIRY TYPE -->
+                <div class="inquiry-type-selector">
+                    <div class="type-option">
+                        <input type="radio" id="type_sales" name="inquiry_type" value="sales" checked>
+                        <label for="type_sales">💼 Ventas</label>
+                    </div>
+                    <div class="type-option">
+                        <input type="radio" id="type_support" name="inquiry_type" value="support">
+                        <label for="type_support">🛠️ Soporte</label>
+                    </div>
+                    <div class="type-option">
+                        <input type="radio" id="type_other" name="inquiry_type" value="other">
+                        <label for="type_other">📧 Otro</label>
+                    </div>
+                </div>
+
+                <!-- NAME & COMPANY -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Nombre<span class="required">*</span></label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            required
+                            autocomplete="name"
+                            placeholder="Juan Pérez"
+                        >
+                        <div class="error-message" id="error-name"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company">Empresa <span class="required">*</span></label>
+                        <input 
+                            type="text" 
+                            id="company" 
+                            name="company" 
+                            required
+                            autocomplete="organization"
+                            placeholder="Mi Empresa S.A."
+                        >
+                        <div class="error-message" id="error-company"></div>
+                    </div>
+                </div>
+
+                <!-- EMAIL & PHONE -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required
+                            autocomplete="email"
+                            placeholder="tu@email.com"
+                        >
+                        <div class="error-message" id="error-email"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="phone" 
+                            autocomplete="tel"
+                            placeholder="+56 9 1234 5678"
+                        >
+                        <div class="error-message" id="error-phone"></div>
+                    </div>
+                </div>
+
+                <!-- COUNTRY -->
+                <div class="form-group">
+                    <label for="country">País <span class="required">*</span></label>
+                    <select id="country" name="country" required>
+                        <option value="">Seleccionar país</option>
+                        <option value="CL" selected>Chile</option>
+                        <option value="AR">Argentina</option>
+                        <option value="BO">Bolivia</option>
+                        <option value="BR">Brasil</option>
+                        <option value="CO">Colombia</option>
+                        <option value="CR">Costa Rica</option>
+                        <option value="EC">Ecuador</option>
+                        <option value="SV">El Salvador</option>
+                        <option value="GT">Guatemala</option>
+                        <option value="HN">Honduras</option>
+                        <option value="MX">México</option>
+                        <option value="NI">Nicaragua</option>
+                        <option value="PA">Panamá</option>
+                        <option value="PY">Paraguay</option>
+                        <option value="PE">Perú</option>
+                        <option value="DO">República Dominicana</option>
+                        <option value="UY">Uruguay</option>
+                        <option value="VE">Venezuela</option>
+                        <option value="ES">España</option>
+                        <option value="US">Estados Unidos</option>
+                        <option value="OTHER">Otro</option>
+                    </select>
+                    <div class="error-message" id="error-country"></div>
+                </div>
+
+                <!-- MESSAGE -->
+                <div class="form-group">
+                    <label for="message">Mensaje <span class="required">*</span></label>
+                    <textarea 
+                        id="message" 
+                        name="message" 
+                        required
+                        placeholder="Cuéntanos cómo podemos ayudarte..."
+                    ></textarea>
+                    <div class="error-message" id="error-message"></div>
+                </div>
+
+                <!-- PRIVACY POLICY -->
+                <div class="privacy-checkbox">
+                    <input type="checkbox" id="privacy" name="privacy" required>
+                    <label for="privacy">
+                        Acepto la <a href="/privacy-policy.html" target="_blank">Política de Privacidad</a> 
+                        y autorizo el tratamiento de mis datos conforme a la 
+                        <a href="https://www.bcn.cl/leychile/navegar?idNorma=141599" target="_blank">Ley 19.628</a> 
+                        sobre protección de datos personales.
+                        <span class="required">*</span>
+                    </label>
+                </div>
+                <div class="error-message" id="error-privacy"></div>
+
+                <!-- SUBMIT -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span class="btn-text">Enviar consulta</span>
+                    <div class="spinner"></div>
+                </button>
+
+                <!-- MESSAGES -->
+                <div class="form-message success" id="successMessage">
+                    ✓ ¡Gracias por contactarnos! Hemos recibido tu mensaje y nos pondremos en contacto contigo en menos de 24 horas hábiles.
+                </div>
+                <div class="form-message error" id="errorMessage">
+                    ✗ Hubo un error al enviar el formulario. Por favor, intenta nuevamente o contáctanos directamente por WhatsApp.
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FAQ SECTION -->
+    <section class="faq-section">
+        <h2>Preguntas frecuentes</h2>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>¿Cuánto tiempo toma recibir una respuesta?</span>
+                <span class="faq-icon">▼</span>
+            </div>
+            <div class="faq-answer">
+                Nos comprometemos a responder todas las consultas en menos de 24 horas hábiles. 
+                Para atención inmediata, puedes contactarnos por WhatsApp o teléfono.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>¿El análisis inicial tiene algún costo?</span>
+                <span class="faq-icon">▼</span>
+            </div>
+            <div class="faq-answer">
+                No, el análisis inicial es completamente gratuito y sin compromiso. En 10 minutos 
+                evaluamos tu operación y te recomendamos el plan ideal.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>¿Atienden empresas fuera de Chile?</span>
+                <span class="faq-icon">▼</span>
+            </div>
+            <div class="faq-answer">
+                Sí, trabajamos de forma remota con empresas de toda América Latina y otras regiones. 
+                Nuestra plataforma permite colaboración efectiva sin importar la ubicación geográfica.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>¿Qué información debo preparar para la reunión?</span>
+                <span class="faq-icon">▼</span>
+            </div>
+            <div class="faq-answer">
+                Idealmente, tener una estimación de tu volumen anual de compras y el número de 
+                proveedores activos. No te preocupes si no tienes estas cifras exactas, 
+                podemos trabajar con estimaciones.
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">SYGNODE.</div>
+            
+            <div class="footer-links">
+                <a href="https://sygnode.cl/legal/terminos-y-condiciones">Términos y Condiciones</a>
+                <a href="https://sygnode.cl/legal/politica-de-privacidad">Política de Privacidad</a>
+                <a href="https://sygnode.cl/legal/politica-cookies">Política de Cookies</a>
+                <a href="https://sygnode.cl/legal/aviso-legal">Aviso Legal</a>
+            </div>
+
+            <div class="footer-contact">
+                <a href="/cdn-cgi/l/email-protection#7e1611121f3e0d071910111a1b501d1113"><span class="__cf_email__" data-cfemail="97fff8fbf6d7e4eef0f9f8f3f2b9f4f8fa">cs@sygnode.cl</span></a>
+                <a href="https://wa.me/56985960018">WhatsApp · +56 9 8596 0018</a>
+            </div>
+
+            <div class="footer-bottom">
+                © 2025 SYGNODE · Todos los derechos reservados
+            </div>
+        </div>
+    </footer>
+
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://wa.me/56985960018" class="whatsapp-float" target="_blank">
+        <span>💬</span>
+    </a>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // ========================================
+        // CONFIGURATION
+        // ========================================
+        
+        // IMPORTANT: Replace with your actual n8n webhook URL
+        // This should be stored as an environment variable in production
+        const WEBHOOK_URL = 'YOUR_N8N_WEBHOOK_URL_HERE';
+        
+        // Honeypot field for bot detection (not visible in UI)
+        const honeypot = document.createElement('input');
+        honeypot.type = 'text';
+        honeypot.name = 'website';
+        honeypot.style.display = 'none';
+        honeypot.tabIndex = -1;
+        honeypot.autocomplete = 'off';
+        document.getElementById('contactForm').appendChild(honeypot);
+
+        // ========================================
+        // VALIDATION SCHEMAS WITH ZOD
+        // ========================================
+        
+        const { z } = window.Zod;
+
+        // International phone validation (more flexible for multiple countries)
+        const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/;
+        
+        // Email validation
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        // Main validation schema
+        const contactFormSchema = z.object({
+            inquiry_type: z.enum(['sales', 'support', 'other']),
+            name: z.string()
+                .min(2, 'El nombre debe tener al menos 2 caracteres')
+                .max(100, 'El nombre es demasiado largo')
+                .regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/, 'El nombre solo puede contener letras'),
+            company: z.string()
+                .min(2, 'El nombre de la empresa debe tener al menos 2 caracteres')
+                .max(100, 'El nombre de la empresa es demasiado largo'),
+            email: z.string()
+                .email('Email inválido')
+                .regex(emailRegex, 'Por favor ingresa un email válido')
+                .toLowerCase(),
+            phone: z.string()
+                .regex(phoneRegex, 'Formato de teléfono inválido')
+                .optional()
+                .or(z.literal('')),
+            country: z.string()
+                .min(2, 'Por favor selecciona un país'),
+            message: z.string()
+                .min(10, 'El mensaje debe tener al menos 10 caracteres')
+                .max(1000, 'El mensaje es demasiado largo'),
+            privacy: z.literal(true, {
+                errorMap: () => ({ message: 'Debes aceptar la política de privacidad' })
+            }),
+            website: z.string().length(0).optional() // Honeypot
+        });
+
+        // ========================================
+        // FORM BEHAVIOR
+        // ========================================
+        
+        // ========================================
+        // FORM VALIDATION & SUBMISSION
+        // ========================================
+        
+        function clearErrors() {
+            document.querySelectorAll('.form-group').forEach(group => {
+                group.classList.remove('error');
+            });
+            document.querySelectorAll('.error-message').forEach(msg => {
+                msg.textContent = '';
+            });
+        }
+
+        function showError(fieldName, message) {
+            const field = document.getElementById(fieldName);
+            const formGroup = field ? field.closest('.form-group') : null;
+            const errorMsg = document.getElementById(`error-${fieldName}`);
+            
+            if (formGroup) formGroup.classList.add('error');
+            if (errorMsg) errorMsg.textContent = message;
+            
+            // Special case for privacy checkbox
+            if (fieldName === 'privacy') {
+                const privacyError = document.getElementById('error-privacy');
+                if (privacyError) {
+                    privacyError.style.display = 'block';
+                    privacyError.textContent = message;
+                }
+            }
+        }
+
+        function showMessage(type, customMessage = null) {
+            const successMsg = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+            
+            successMsg.classList.remove('show');
+            errorMsg.classList.remove('show');
+            
+            if (type === 'success') {
+                if (customMessage) successMsg.textContent = customMessage;
+                successMsg.classList.add('show');
+                successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                if (customMessage) errorMsg.textContent = customMessage;
+                errorMsg.classList.add('show');
+                errorMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // Rate limiting
+        let lastSubmission = 0;
+        const RATE_LIMIT_MS = 5000; // 5 seconds between submissions
+
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Rate limiting check
+            const now = Date.now();
+            if (now - lastSubmission < RATE_LIMIT_MS) {
+                showMessage('error', 'Por favor espera unos segundos antes de enviar nuevamente.');
+                return;
+            }
+            
+            clearErrors();
+            
+            // Get form data
+            const formData = {
+                inquiry_type: document.querySelector('input[name="inquiry_type"]:checked').value,
+                name: document.getElementById('name').value.trim(),
+                company: document.getElementById('company').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                country: document.getElementById('country').value,
+                message: document.getElementById('message').value.trim(),
+                privacy: document.getElementById('privacy').checked,
+                website: honeypot.value // Honeypot check
+            };
+            
+            // Honeypot validation
+            if (formData.website) {
+                console.warn('Bot detected via honeypot');
+                showMessage('success'); // Show success to bot
+                return;
+            }
+            
+            // Validate with Zod
+            try {
+                contactFormSchema.parse(formData);
+            } catch (error) {
+                if (error instanceof z.ZodError) {
+                    error.errors.forEach(err => {
+                        const fieldName = err.path[0];
+                        showError(fieldName, err.message);
+                    });
+                    
+                    // Focus on first error
+                    const firstError = document.querySelector('.form-group.error input, .form-group.error select, .form-group.error textarea');
+                    if (firstError) firstError.focus();
+                }
+                return;
+            }
+            
+            // Prepare submission
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            
+            try {
+                // Add metadata
+                const submissionData = {
+                    ...formData,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent,
+                    language: navigator.language,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                };
+                
+                // Send to webhook
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(submissionData)
+                });
+                
+                if (response.ok) {
+                    showMessage('success');
+                    document.getElementById('contactForm').reset();
+                    lastSubmission = Date.now();
+                    
+                    // Analytics event (if you use Google Analytics)
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'form_submit', {
+                            event_category: 'contact',
+                            event_label: formData.inquiry_type
+                        });
+                    }
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+                
+            } catch (error) {
+                console.error('Submission error:', error);
+                showMessage('error');
+                
+                // Log error for monitoring (send to your error tracking service)
+                if (typeof Sentry !== 'undefined') {
+                    Sentry.captureException(error);
+                }
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+            }
+        });
+
+        // ========================================
+        // FAQ ACCORDION
+        // ========================================
+        
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all items
+                document.querySelectorAll('.faq-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // ========================================
+        // REAL-TIME VALIDATION
+        // ========================================
+        
+        // Add blur validation for better UX
+        ['name', 'company', 'email', 'phone', 'country', 'message'].forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.addEventListener('blur', function() {
+                    // Skip validation for empty optional fields
+                    if ((fieldId === 'phone') && !this.value.trim()) {
+                        return;
+                    }
+                    
+                    try {
+                        const fieldSchema = contactFormSchema.shape[fieldId];
+                        fieldSchema.parse(this.value.trim());
+                        
+                        // Clear error if validation passes
+                        const formGroup = this.closest('.form-group');
+                        if (formGroup) formGroup.classList.remove('error');
+                    } catch (error) {
+                        if (error instanceof z.ZodError && this.value.trim()) {
+                            showError(fieldId, error.errors[0].message);
+                        }
+                    }
+                });
+            }
+        });
+
+        // ========================================
+        // SECURITY: CSP VIOLATION REPORTING
+        // ========================================
+        
+        if (typeof SecurityPolicyViolationEvent !== 'undefined') {
+            document.addEventListener('securitypolicyviolation', (e) => {
+                console.warn('CSP Violation:', e.violatedDirective, e.sourceFile);
+                // Send to your monitoring service
+            });
+        }
+
+        // ========================================
+        // ACCESSIBILITY IMPROVEMENTS
+        // ========================================
+        
+        // Announce validation errors to screen readers
+        function announceError(message) {
+            const announcement = document.createElement('div');
+            announcement.setAttribute('role', 'alert');
+            announcement.setAttribute('aria-live', 'assertive');
+            announcement.className = 'sr-only';
+            announcement.textContent = message;
+            document.body.appendChild(announcement);
+            
+            setTimeout(() => announcement.remove(), 3000);
+        }
+
+        // Add screen reader only class for announcements
+        const style = document.createElement('style');
+        style.textContent = `
+            .sr-only {
+                position: 
