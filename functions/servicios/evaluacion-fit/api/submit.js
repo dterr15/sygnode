@@ -24,35 +24,34 @@ export async function onRequestPost(context) {
     // Construir email HTML profesional
     const emailHTML = buildEmailHTML(data);
 
-    // Enviar email usando MailChannels (gratis en Cloudflare)
-    const mailResponse = await fetch('https://api.mailchannels.net/tx/v1/send', {
+    // Enviar email usando Mailgun
+    const MAILGUN_API_KEY = context.env.MAILGUN_API_KEY;
+    const MAILGUN_DOMAIN = context.env.MAILGUN_DOMAIN || 'pxi.sygnode.cl';
+    
+    if (!MAILGUN_API_KEY) {
+      throw new Error('MAILGUN_API_KEY no configurada');
+    }
+
+    const mailgunUrl = `https://api.mailgun.net/v3/${MAILGUN_DOMAIN}/messages`;
+    
+    const formData = new FormData();
+    formData.append('from', `SYGNODE Fit Intake <fit@${MAILGUN_DOMAIN}>`);
+    formData.append('to', 'cs@sygnode.cl');
+    formData.append('subject', `${getFitEmoji(data.fit_status)} ${data.fit_status} - ${data.nombre} (${data.empresa})`);
+    formData.append('html', emailHTML);
+
+    const mailResponse = await fetch(mailgunUrl, {
       method: 'POST',
-      headers: { 
-        'content-type': 'application/json' 
+      headers: {
+        'Authorization': 'Basic ' + btoa('api:' + MAILGUN_API_KEY)
       },
-      body: JSON.stringify({
-        personalizations: [{
-          to: [{ 
-            email: 'cs@sygnode.cl', 
-            name: 'SYGNODE Team' 
-          }]
-        }],
-        from: {
-          email: 'fit@sygnode.cl',
-          name: 'SYGNODE Fit Intake'
-        },
-        subject: `${getFitEmoji(data.fit_status)} ${data.fit_status} - ${data.nombre} (${data.empresa})`,
-        content: [{ 
-          type: 'text/html', 
-          value: emailHTML 
-        }]
-      })
+      body: formData
     });
 
     if (!mailResponse.ok) {
       const errorText = await mailResponse.text();
-      console.error('Mailgun error:', mailResponse.status, errorText);
-      throw new Error(`Mailgun error ${mailResponse.status}: ${errorText}`);
+      console.error('Mailgun error:', errorText);
+      throw new Error('Error al enviar email vía Mailgun');
     }
 
     return new Response(JSON.stringify({ 
