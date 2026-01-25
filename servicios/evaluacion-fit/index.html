@@ -1424,7 +1424,7 @@
       data.source = window.location.hostname;
 
       try {
-        const response = await fetch('https://sygnode.pages.dev/api/submit', {
+        const response = await fetch('api/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
@@ -1476,6 +1476,24 @@
 
       return { fit_status, banda_sugerida, exposicion };
     }
+    // Detectar Enter para avanzar
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        const activeStep = document.querySelector('.step.active');
+        
+        // Si no está en un textarea, avanzar
+        if (document.activeElement.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          
+          // Si está en el último paso, submit
+          if (currentStep === totalSteps) {
+            submitForm();
+          } else {
+            nextStep();
+          }
+        }
+      }
+    });
   </script>
 </body>
 </html>
