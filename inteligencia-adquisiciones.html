@@ -190,13 +190,13 @@
     .starter .tag{color:var(--cyan)}
     .basic .tag{color:var(--green)}
     .pro .tag{color:var(--purple)}
-    .card h3{margin:6px 0 6px;font-size:1.4rem;min-height:2.6em;display:flex;align-items:flex-end}
+    .card h3{margin:6px 0 6px;font-size:1.4rem;min-height:2.8em;display:flex;align-items:center}
     .card .subtle{display:block;width:100%;margin:2px 0 6px;line-height:1.5;min-height:3.4em}
     .card > *{width:100%;}
-    .card .subtle + div{min-height:76px;display:flex;flex-wrap:wrap;gap:8px} 
+    .card .subtle + div{min-height:76px;display:flex;flex-wrap:wrap;gap:8px;align-content: flex-start} 
     .pill{display:inline-block;margin:10px 6px 0 0;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--muted);font-size:.8rem;color:#cbd5e1}
     .benefits{margin:14px 0 18px;padding:0;list-style:none}
-    .benefits li{position:relative;margin:12px 0;padding-left:1.4em;color:#dbeafe;line-height:1.5;word-break:normal}
+    .benefits li{position:relative;margin:12px 0;padding-left:1.4em;color:#dbeafe;line-height:1.5;word-break:normal;flex:1}
     .benefits li::before{content:"✓";position:absolute;left:0;top:.15em;color:var(--green);font-weight:900}
     .benefits li strong{display:block;margin-top:2px}
 
@@ -246,9 +246,10 @@
   <header>
     <div class="hero-fig" aria-hidden="true"></div>
     <div class="hero container hero">
-      <span class="badge">SYGNODE. Servicio Inteligencia de Adquisiciones</span>
-      <h1>Recupera las <span class="highlight">horas perdidas</span> buscando precios. Aprueba la mejor alternativa <span class="highlight">en minutos</span></h1>
-      <p>Ten a tu equipo enfocado en producir y vender.</p>
+      <span class="badge">SYGNODE. Decisiones de Compra Defendibles</span>
+      <h1>Sin <span class="highlight">Respaldo</span>, tus <span class="highlight">Decisiones</span> 
+        no son <span class="highlight">Defendibles</span>. El problema no es una decisión, es el <span class="highlight">Volumen</span></h1>
+      <p>Y cuando alguien pregunta “¿por qué este proveedor?”, improvisar sale caro.</p>
       <a href="#servicios" class="btn">Ver servicios</a>
     </div>
   </header>
@@ -256,112 +257,112 @@
   <main id="servicios" class="container">
     <!-- Services Cards -->
     <section aria-labelledby="svc-title">
-      <h2 id="svc-title">SYGNODE: Inteligencia de adquisiciones que devuelve tiempo  y margen a tu Empresa</h2>
-      <p class="section-lead">Elige el nivel que necesitas hoy. Puedes escalar cuando quieras.</p>
+      <h2 id="svc-title">Tres niveles de cobertura del respaldo</h2>
+      <p class="section-lead">Decice. Controla la entrega. Ordena categorías.</p>
       <div class="grid">
-        <!-- STARTER -->
+        <!-- BASE -->
         <article class="card starter" aria-labelledby="starter-title">
-          <span class="tag">STARTER</span>
-          <h3 id="starter-title">Decide en minutos, con claridad</h3>
-          <p class="subtle">Recupera horas para producir perdidas buscando precios.</p>
+          <span class="tag">BASE</span>
+          <h3 id="starter-title">Comparativo con Respaldo</h3>
+          <p class="subtle">El estándar mínimo de una compra, aplicado en volumen sin improvisación.</p>
           <div>
-            <span class="pill">3–5 cotizaciones comparables</span>
-            <span class="pill">recomendación experta</span>
-            <span class="pill">evidencia documentada</span>
+            <span class="pill">Cotizaciones adjuntas</span>
+            <span class="pill">Comparativo ordenado</span>
+            <span class="pill">Plantilla de justificación</span>
           </div>
           <ul class="benefits">
-            <li>Evitas cientos de correos y llamadas.<strong>Decides rápido</strong></li>
-            <li>Decisiones claras: <strong>Comparaciones Normalizadas y Analizadas</strong></li>
-            <li>Tu equipo se dedica a producir y tú <strong>ahorras tiempo y dinero</strong></li>
+            <li>Comparativo por requerimiento (formato estandarizado)</li>
+            <li>Cotizaciones adjuntas y trazables</li>
+            <li>Template para registrar: “por qué elegimos así” (interno)</li>
           </ul>
-          <a class="btn" href="https://www.sygnode.cl/servicios/consulta-gratis/" aria-label="Solicitar demo Starter">Solicitar demo</a>
+          <a class="btn" href="https://www.sygnode.cl/servicios/consulta-gratis/" aria-label="Solicitar demo Starter">Evaluar Fit</a>
         </article>
 
-        <!-- BASIC -->
+        <!-- SEGUIMIENTO -->
         <article class="card basic" aria-labelledby="basic-title">
-          <span class="tag">BASIC</span>
-          <h3 id="basic-title">Control y Trazabilidad</h3>
-          <p class="subtle">Cero sorpresas en logística: Alertas automáticas y seguimiento. Visibilidad de punta a punta.</p>
+          <span class="tag">SEGUIMIENTO</span>
+          <h3 id="basic-title">Seguimiento Despacho → Recepción</h3>
+          <p class="subtle">Estado por hito y evidencia asociada al requerimiento, hasta recepción.</p>
           <div>
-            <span class="pill">tablero compartido</span>
-            <span class="pill">alertas de excepción</span>
-            <span class="pill">cierre trazable</span>
+            <span class="pill">estado por hito</span>
+            <span class="pill">desviaciones marcadas</span>
+            <span class="pill">aprobado vs recibido</span>
           </div>
           <ul class="benefits">
-            <li>Sabrás <strong>dónde está cada orden</strong> y qué sigue</li>
-            <li>Alertas inmediatas ante demoras, con <strong>plan de acción</strong></li>
-            <li>Recepción confirmada y <strong>registro final</strong> para auditoría</li>
+            <li>Estado por hito (despacho → recepción)</li>
+            <li>Desviaciones registradas (plazo/cantidad/condición)</li>
+            <li>Respaldo actualizado por orden</li>
           </ul>
-          <a class="btn" href="https://www.sygnode.cl/servicios/consulta-gratis/" aria-label="Solicitar demo Basic">Solicitar demo</a>
+          <a class="btn" href="https://www.sygnode.cl/servicios/consulta-gratis/" aria-label="Solicitar demo Basic">Evaluar Fit</a>
         </article>
 
-        <!-- PRO -->
+        <!-- CATEGORIAS -->
         <article class="card pro" aria-labelledby="pro-title">
-          <span class="tag">PRO</span>
-          <h3 id="pro-title">Optimización y Negociación en Adquisiciones</h3>
-          <p class="subtle">Captura de Ahorros y Mejores Condiciones Comerciales.</p>
+          <span class="tag">CATEGORIAS</span>
+          <h3 id="pro-title">Olas por Categoría (negociación)</h3>
+          <p class="subtle">Condiciones comparables por categoría, sostenidas en el tiempo.</p>
           <div>
-            <span class="pill">plan de compras</span>
-            <span class="pill">negociación estructurada</span>
-            <span class="pill">ahorros validados</span>
+            <span class="pill">priorización</span>
+            <span class="pill">olas</span>
+            <span class="pill">estándar por categoría</span>
           </div>
           <ul class="benefits">
-            <li>Consolidas demanda y <strong>mejoras condiciones</strong></li>
-            <li><strong>Planificación Estratégica</strong>de compras por categoría</li>
-            <li><strong>Negociaciones Estructuradas</strong>en base a proyecciones de consumo</li>
+            <li>Categorías priorizadas por volumen/criticidad</li>
+            <li>Condiciones comparables por categoría</li>
+            <li>Historial de decisiones y cambios</li>
           </ul>
-          <a class="btn" href="https://www.sygnode.cl/servicios/consulta-gratis/" aria-label="Solicitar demo PRO">Solicitar demo</a>
+          <a class="btn" href="https://www.sygnode.cl/servicios/consulta-gratis/" aria-label="Solicitar demo PRO">Evaluar Fit</a>
         </article>
       </div>
 
       <!-- quick compare band -->
       <div class="compare" aria-label="Resumen comparativo">
         <div class="band">
-          <h4>Starter · Resultado</h4>
-          <p>Decisión de compra <strong>en minutos</strong> con evidencia y trazabilidad.</p>
+          <h4>Base · Resultado</h4>
+          <p>Evita que el volumen te lleve a improvisación.</p>
         </div>
         <div class="band">
-          <h4>Basic · Resultado</h4>
-          <p>Entrega <strong>bajo control</strong> hasta bodega, sin sorpresas.</p>
+          <h4>Seguimiento · Resultado</h4>
+          <p>Lo aprobado queda trazable hasta recepción</p>
         </div>
         <div class="band">
-          <h4>PRO · Resultado</h4>
-          <p>Ahorros y mejoras <strong>recurrentes y medidos</strong>.</p>
+          <h4>Categorías · Resultado</h4>
+          <p>Dejas de renegociar desde cero y comparas con el mismo estándar.</p>
         </div>
       </div>
     </section>
 
     <!-- Results / Outcomes section -->
     <section aria-labelledby="outcomes-title">
-      <h2 id="outcomes-title">ROI Demostrable</h2>
-      <p class="section-lead">El ahorro absorbería el costo del servicio</p>
+      <h2 id="outcomes-title">Respaldo que se puede explicar</h2>
+      <p class="section-lead">Evidencia trazable + registro del “por qué”</p>
       <div class="results">
-        <div class="kpi"><strong>Inversión Protegida</strong><p>Contrata hoy asegurando Tarifa Fija Garantizada: Precio congelado mientras mantengas tu plan.</p></div>
-        <div class="kpi"><strong>Costo de No Optimizar</strong><p>Horas productivas desperdiciadas - Margen no capturado por sobrecostos - Riesgo logístico y operativo por atrasos</p></div>
-        <div class="kpi"><strong>Irreversibilidad Competitiva</strong><p>Competidores con procurement estructurado capturan proveedores clave y consolidan condiciones que tu operación no puede igualar.</p></div>
+        <div class="kpi"><strong>Decisión Reconstruible</strong><p>Comparativo + cotizaciones trazables + registro interno del “por qué”.</p></div>
+        <div class="kpi"><strong>Menos decisiones a ciegas</strong><p>Condiciones comparables antes de decidir.</p></div>
+        <div class="kpi"><strong>Control sin Dependencia</strong><p>Todo queda en tus manos: evidencia, historial y cambios.</p></div>
       </div>
     </section>
 
     <!-- Proof / Why PX -->
     <section aria-labelledby="why-title">
       <h2 id="why-title">¿Por qué SYGNODE?</h2>
-      <p class="section-lead">Porque combinamos claridad, control y captura de valor en un solo lugar.</p>
+      <p class="section-lead">Porque estandariza el respaldo y lo vuelve trazable por requerimiento.</p>
       <div class="proof">
         <div class="tick"><div>
           <strong>Simple de adoptar</strong>
-          <p class="subtle">Sin sistemas complejos. Empezamos con tus SKUs reales y avanzamos.</p>
+          <p class="subtle">Operamos sobre requerimientos reales. Sin integración. Sin implementación.</p>
         </div></div>
         <div class="tick"><div>
           <strong>Transparencia total</strong>
-          <p class="subtle">Evidencias y trazabilidad para auditoría y reportes internos.</p>
+          <p class="subtle">Evidencia trazable y registro por requerimiento.</p>
         </div></div>
         <div class="tick"><div>
-          <strong>Gobernanza ligera</strong>
-          <p class="subtle">Reuniones cortas para ajustar criterios y mantener el ritmo.</p>
+          <strong>Estandar Consistente</strong>
+          <p class="subtle">Mismo formato, mismos mínimos y excepciones registradas.</p>
         </div></div>
         <div class="tick"><div>
-          <strong>Escalable</strong>
-          <p class="subtle">Parte en Starter, suma seguimiento con Basic y evoluciona a PRO.</p>
+          <strong>Se ajusta a tu operación.</strong>
+          <p class="subtle">Eliges Base, Seguimiento o Categorías según dónde hoy se te rompe el control.</p>
         </div></div>
       </div>
     </section>
@@ -370,11 +371,11 @@
   <!-- CTA -->
   <section id="contacto" class="cta">
     <div class="container">
-      <h2>¿Listo para comprar mejor y con menos riesgo?</h2>
-      <p>Solicita tu demo y comienza a decidir en horas, con ejecución bajo control y ahorros medibles cuando estés listo para PRO.</p>
+      <h2>Decisiones de Compra que Resisten Revisión Externa</h2>
+      <p>Absorbemos volumen de requerimientos y devolvemos comparativos con evidencia, listos para aprobar - 
+         sin desgaste interno y ni exposición.</p>
       <p><a class="btn" href="mailto:cs@sygnode.cl">cs@sygnode.cl</a></p>
       <div class="footer">
-        <span>También podemos atenderte en WhatsApp · +56 9 8596 0018</span>
       </div>
     </div>
   </section>
