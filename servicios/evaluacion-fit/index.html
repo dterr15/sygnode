@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Evaluación de fit — SYGNODE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --navy: #0f172a;
+      --slate: #334155;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --green: #10b981;
+      --red: #ef4444;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --gray-900: #0f172a;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+      min-height: 100vh;
+      background: white;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 100;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: var(--gray-200);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    .step-indicator {
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      color: var(--gray-600);
+      font-weight: 500;
+    }
+
+    .step-number {
+      color: var(--gray-900);
+      font-weight: 600;
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 48px 24px 24px;
+      position: relative;
+    }
+
+    .step {
+      display: none;
+      animation: fadeSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-direction: column;
+      min-height: 400px;
+    }
+
+    .step.active {
+      display: flex;
+    }
+
+    .step.exiting {
+      animation: fadeSlideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeSlideOut {
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+    }
+
+    .step-header {
+      margin-bottom: 32px;
+    }
+
+    .step-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .step-subtitle {
+      font-size: 16px;
+      color: var(--gray-600);
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 24px;
+      flex: 1;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 8px;
+    }
+
+    label .optional {
+      color: var(--gray-500);
+      font-weight: 400;
+      font-size: 13px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: inherit;
+      transition: all 0.2s;
+      background: white;
+      color: var(--gray-900);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* Option Cards (para select visual) */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .option-card {
+      padding: 16px 20px;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: white;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+    }
+
+    .option-card:hover {
+      border-color: var(--blue);
+      background: var(--gray-50);
+    }
+
+    .option-card.selected {
+      border-color: var(--blue);
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .option-card::before {
+      content: '';
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--gray-300);
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .option-card.selected::before {
+      border-color: var(--blue);
+      background: var(--blue);
+      box-shadow: inset 0 0 0 3px white;
+    }
+
+    .option-label {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--gray-900);
+    }
+
+    /* Multi-select cards */
+    .multi-select-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .multi-option {
+      padding: 14px 16px;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: white;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gray-700);
+      position: relative;
+    }
+
+    .multi-option:hover {
+      border-color: var(--blue);
+      background: var(--gray-50);
+    }
+
+    .multi-option.selected {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: white;
+    }
+
+    .multi-option.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Checkbox */
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      background: var(--gray-50);
+      border-radius: 10px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .checkbox-group:hover {
+      border-color: var(--blue);
+      background: white;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      cursor: pointer;
+      accent-color: var(--blue);
+    }
+
+    .checkbox-label {
+      font-size: 14px;
+      color: var(--gray-700);
+      line-height: 1.5;
+      cursor: pointer;
+    }
+
+    /* Buttons */
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 24px;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: white;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #2563eb;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--gray-700);
+      border: 2px solid var(--gray-200);
+    }
+
+    .btn-secondary:hover {
+      background: var(--gray-50);
+      border-color: var(--gray-300);
+    }
+
+    /* Welcome Screen */
+    .welcome-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      padding: 48px 24px;
+      min-height: 70vh;
+    }
+
+    .welcome-icon {
+      font-size: 64px;
+      margin-bottom: 24px;
+    }
+
+    .welcome-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .welcome-subtitle {
+      font-size: 18px;
+      color: var(--gray-600);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .welcome-time {
+      font-size: 14px;
+      color: var(--gray-500);
+      margin-bottom: 32px;
+    }
+
+    .feature-list {
+      text-align: left;
+      margin: 32px 0;
+      max-width: 400px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 15px;
+      color: var(--gray-700);
+    }
+
+    .feature-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--blue);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Conditional field */
+    .conditional-field {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--gray-200);
+      display: none;
+    }
+
+    .conditional-field.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Error state */
+    .error-message {
+      color: var(--red);
+      font-size: 13px;
+      margin-top: 6px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    input.error,
+    select.error {
+      border-color: var(--red);
+    }
+
+    /* Loading state */
+    .btn-primary.loading {
+      position: relative;
+      color: transparent;
+    }
+
+    .btn-primary.loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      margin-left: -8px;
+      margin-top: -8px;
+      border: 2px solid white;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .container {
+        max-width: 100%;
+      }
+
+      .content {
+        padding: 32px 20px 20px;
+      }
+
+      .step-title {
+        font-size: 24px;
+      }
+
+      .welcome-title {
+        font-size: 28px;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      .multi-select-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Progress Bar -->
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="step-indicator">
+        <span class="step-number" id="stepIndicator">Paso 1 de 18</span>
+        <span id="stepLabel">Comenzar</span>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <form id="fitForm">
+        
+        <!-- Welcome -->
+        <div class="step active" data-step="0">
+          <div class="welcome-screen">
+            <div class="welcome-icon">🎯</div>
+            <h1 class="welcome-title">Evaluación de fit</h1>
+            <p class="welcome-subtitle">Descubre si SYGNODE calza con tu operación</p>
+            <p class="welcome-time">⏱️ Toma 3-4 minutos</p>
+            
+            <div class="feature-list">
+              <div class="feature-item">
+                <div class="feature-icon">✓</div>
+                <span>Sin compromiso</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">✓</div>
+                <span>Respuesta en 24-48 hrs</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">✓</div>
+                <span>Arranque acotado si hay fit</span>
+              </div>
+            </div>
+
+            <div class="button-group">
+              <button type="button" class="btn btn-primary" onclick="nextStep()">
+                Comenzar evaluación
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 1: Nombre -->
+        <div class="step" data-step="1">
+          <div class="step-header">
+            <h2 class="step-title">¿Cuál es tu nombre?</h2>
+            <p class="step-subtitle">Así sabremos cómo contactarte</p>
+          </div>
+          <div class="form-group">
+            <input 
+              type="text" 
+              id="nombre" 
+              name="nombre" 
+              placeholder="Juan Pérez"
+              required
+            >
+            <div class="error-message" id="error-nombre">Este campo es requerido</div>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Cargo -->
+        <div class="step" data-step="2">
+          <div class="step-header">
+            <h2 class="step-title">¿Cuál es tu cargo?</h2>
+            <p class="step-subtitle">Nos ayuda a entender tu rol</p>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="cargoOptions">
+              <div class="option-card" data-value="CEO/Founder">
+                <span class="option-label">CEO / Founder</span>
+              </div>
+              <div class="option-card" data-value="CFO/Finanzas">
+                <span class="option-label">CFO / Finanzas</span>
+              </div>
+              <div class="option-card" data-value="Operaciones/COO">
+                <span class="option-label">Operaciones / COO</span>
+              </div>
+              <div class="option-card" data-value="Compras">
+                <span class="option-label">Compras</span>
+              </div>
+              <div class="option-card" data-value="Administración">
+                <span class="option-label">Administración</span>
+              </div>
+              <div class="option-card" data-value="Otro">
+                <span class="option-label">Otro</span>
+              </div>
+            </div>
+            <input type="hidden" id="cargo" name="cargo" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Email & Teléfono -->
+        <div class="step" data-step="3">
+          <div class="step-header">
+            <h2 class="step-title">¿Cómo te contactamos?</h2>
+            <p class="step-subtitle">Email y teléfono</p>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              placeholder="juan@empresa.com"
+              required
+            >
+            <div class="error-message" id="error-email">Ingresa un email válido</div>
+          </div>
+          <div class="form-group">
+            <label for="telefono">WhatsApp / Teléfono</label>
+            <input 
+              type="tel" 
+              id="telefono" 
+              name="telefono" 
+              placeholder="+56 9 1234 5678"
+              required
+            >
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Empresa -->
+        <div class="step" data-step="4">
+          <div class="step-header">
+            <h2 class="step-title">¿En qué empresa trabajas?</h2>
+          </div>
+          <div class="form-group">
+            <input 
+              type="text" 
+              id="empresa" 
+              name="empresa" 
+              placeholder="Mi Empresa SpA"
+              required
+            >
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 5: País & Tamaño -->
+        <div class="step" data-step="5">
+          <div class="step-header">
+            <h2 class="step-title">Ubicación y tamaño</h2>
+            <p class="step-subtitle">Unos datos más de la empresa</p>
+          </div>
+          <div class="form-group">
+            <label for="pais">País</label>
+            <select id="pais" name="pais" required>
+              <option value="">Selecciona...</option>
+              <option value="Chile">Chile</option>
+              <option value="USA">USA</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="tamano_equipo">Número de empleados</label>
+            <select id="tamano_equipo" name="tamano_equipo" required>
+              <option value="">Selecciona...</option>
+              <option value="1–10">1–10</option>
+              <option value="11–20">11–20</option>
+              <option value="21–50">21–50</option>
+              <option value="51–150">51–150</option>
+              <option value="150+">150+</option>
+            </select>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 6: Consentimiento -->
+        <div class="step" data-step="6">
+          <div class="step-header">
+            <h2 class="step-title">Política de privacidad</h2>
+            <p class="step-subtitle">Tus datos están protegidos. Nunca spam.</p>
+          </div>
+          <div class="form-group">
+            <div class="checkbox-group" onclick="toggleCheckbox('consentimiento')">
+              <input 
+                type="checkbox" 
+                id="consentimiento" 
+                name="consentimiento" 
+                required
+              >
+              <label class="checkbox-label" for="consentimiento">
+                Acepto recibir comunicaciones profesionales de SYGNODE sobre mi evaluación y servicios relacionados.
+              </label>
+            </div>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 7: Requerimientos/semana -->
+        <div class="step" data-step="7">
+          <div class="step-header">
+            <h2 class="step-title">¿Cuántos requerimientos de compra manejan por semana?</h2>
+            <p class="step-subtitle">Estimado aproximado</p>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="reqSemanaOptions">
+              <div class="option-card" data-value="1–5">
+                <span class="option-label">1–5</span>
+              </div>
+              <div class="option-card" data-value="6–15">
+                <span class="option-label">6–15</span>
+              </div>
+              <div class="option-card" data-value="16–30">
+                <span class="option-label">16–30</span>
+              </div>
+              <div class="option-card" data-value="31–60">
+                <span class="option-label">31–60</span>
+              </div>
+              <div class="option-card" data-value="60+">
+                <span class="option-label">60+</span>
+              </div>
+            </div>
+            <input type="hidden" id="req_semana" name="req_semana" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 8: Áreas solicitantes -->
+        <div class="step" data-step="8">
+          <div class="step-header">
+            <h2 class="step-title">¿Cuántas áreas solicitan compras?</h2>
+            <p class="step-subtitle">Departamentos o equipos diferentes</p>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="areasSolicitantesOptions">
+              <div class="option-card" data-value="1">
+                <span class="option-label">1 área</span>
+              </div>
+              <div class="option-card" data-value="2–3">
+                <span class="option-label">2–3 áreas</span>
+              </div>
+              <div class="option-card" data-value="4–6">
+                <span class="option-label">4–6 áreas</span>
+              </div>
+              <div class="option-card" data-value="7+">
+                <span class="option-label">7+ áreas</span>
+              </div>
+            </div>
+            <input type="hidden" id="areas_solicitantes" name="areas_solicitantes" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 9: Categorías (multi-select) -->
+        <div class="step" data-step="9">
+          <div class="step-header">
+            <h2 class="step-title">¿Qué categorías compran más frecuentemente?</h2>
+            <p class="step-subtitle">Selecciona hasta 3</p>
+          </div>
+          <div class="form-group">
+            <div class="multi-select-grid" id="categoriasGrid">
+              <div class="multi-option" data-value="Insumos/Materiales">Insumos/Materiales</div>
+              <div class="multi-option" data-value="Mantención/Repuestos">Mantención/Repuestos</div>
+              <div class="multi-option" data-value="Servicios">Servicios</div>
+              <div class="multi-option" data-value="Logística">Logística</div>
+              <div class="multi-option" data-value="TI">TI</div>
+              <div class="multi-option" data-value="EPP">EPP</div>
+              <div class="multi-option" data-value="MRO">MRO</div>
+              <div class="multi-option" data-value="Otros">Otros</div>
+            </div>
+            <input type="hidden" id="categorias_top" name="categorias_top" required>
+            
+            <div class="conditional-field" id="categoriasOtroField">
+              <label for="categorias_otro_texto">Especifica la categoría</label>
+              <input 
+                type="text" 
+                id="categorias_otro_texto" 
+                name="categorias_otro_texto" 
+                placeholder="Ej: Packaging, Químicos industriales"
+              >
+            </div>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 10: Impacto de error -->
+        <div class="step" data-step="10">
+          <div class="step-header">
+            <h2 class="step-title">Si se equivoca la compra, ¿cuál es el impacto típico?</h2>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="impactoErrorOptions">
+              <div class="option-card" data-value="Bajo (molestia)">
+                <span class="option-label">Bajo (molestia)</span>
+              </div>
+              <div class="option-card" data-value="Medio (retrabajo / atraso)">
+                <span class="option-label">Medio (retrabajo / atraso)</span>
+              </div>
+              <div class="option-card" data-value="Alto (operación se detiene / cliente / seguridad)">
+                <span class="option-label">Alto (operación se detiene / cliente / seguridad)</span>
+              </div>
+            </div>
+            <input type="hidden" id="impacto_error" name="impacto_error" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 11: Presión externa -->
+        <div class="step" data-step="11">
+          <div class="step-header">
+            <h2 class="step-title">¿Tienen auditoría, directorio, cliente grande o presión externa?</h2>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="presionExternaOptions">
+              <div class="option-card" data-value="Sí">
+                <span class="option-label">Sí</span>
+              </div>
+              <div class="option-card" data-value="No">
+                <span class="option-label">No</span>
+              </div>
+              <div class="option-card" data-value="No aplica">
+                <span class="option-label">No aplica</span>
+              </div>
+            </div>
+            <input type="hidden" id="presion_externa" name="presion_externa" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 12: Compras críticas/semana -->
+        <div class="step" data-step="12">
+          <div class="step-header">
+            <h2 class="step-title">¿Cuántas compras críticas realizan por semana?</h2>
+            <p class="step-subtitle">Aproximadamente</p>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="comprasCriticasOptions">
+              <div class="option-card" data-value="0">
+                <span class="option-label">0</span>
+              </div>
+              <div class="option-card" data-value="1–2">
+                <span class="option-label">1–2</span>
+              </div>
+              <div class="option-card" data-value="3–5">
+                <span class="option-label">3–5</span>
+              </div>
+              <div class="option-card" data-value="6+">
+                <span class="option-label">6+</span>
+              </div>
+            </div>
+            <input type="hidden" id="compras_criticas_semana" name="compras_criticas_semana" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 13: Comparativo con respaldo -->
+        <div class="step" data-step="13">
+          <div class="step-header">
+            <h2 class="step-title">Hoy, ¿el comparativo queda con respaldo antes de decidir?</h2>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="comparativoOptions">
+              <div class="option-card" data-value="Casi siempre">
+                <span class="option-label">Casi siempre</span>
+              </div>
+              <div class="option-card" data-value="A veces">
+                <span class="option-label">A veces</span>
+              </div>
+              <div class="option-card" data-value="Rara vez">
+                <span class="option-label">Rara vez</span>
+              </div>
+            </div>
+            <input type="hidden" id="comparativo_con_respaldo" name="comparativo_con_respaldo" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 14: Canales de intake (multi) -->
+        <div class="step" data-step="14">
+          <div class="step-header">
+            <h2 class="step-title">¿Dónde llegan los requerimientos hoy?</h2>
+            <p class="step-subtitle">Selecciona todos los que apliquen</p>
+          </div>
+          <div class="form-group">
+            <div class="multi-select-grid" id="canalesGrid">
+              <div class="multi-option" data-value="Email">Email</div>
+              <div class="multi-option" data-value="WhatsApp">WhatsApp</div>
+              <div class="multi-option" data-value="Llamadas">Llamadas</div>
+              <div class="multi-option" data-value="Excel">Excel</div>
+              <div class="multi-option" data-value="ERP">ERP</div>
+              <div class="multi-option" data-value="Otro">Otro</div>
+            </div>
+            <input type="hidden" id="canales_intake_actuales" name="canales_intake_actuales" required>
+            
+            <div class="conditional-field" id="canalOtroField">
+              <label for="canal_otro_texto">Especifica el canal</label>
+              <input 
+                type="text" 
+                id="canal_otro_texto" 
+                name="canal_otro_texto" 
+                placeholder="Ej: Slack, Teams, Jira"
+              >
+            </div>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 15: Cambios de scope -->
+        <div class="step" data-step="15">
+          <div class="step-header">
+            <h2 class="step-title">¿Qué tan frecuente cambian el requerimiento a mitad de camino?</h2>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="cambiosScopeOptions">
+              <div class="option-card" data-value="Bajo">
+                <span class="option-label">Bajo</span>
+              </div>
+              <div class="option-card" data-value="Medio">
+                <span class="option-label">Medio</span>
+              </div>
+              <div class="option-card" data-value="Alto">
+                <span class="option-label">Alto</span>
+              </div>
+            </div>
+            <input type="hidden" id="cambios_scope" name="cambios_scope" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 16: Trazabilidad -->
+        <div class="step" data-step="16">
+          <div class="step-header">
+            <h2 class="step-title">¿Necesitan trazabilidad despacho → recepción?</h2>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="trazabilidadOptions">
+              <div class="option-card" data-value="Sí">
+                <span class="option-label">Sí</span>
+              </div>
+              <div class="option-card" data-value="No">
+                <span class="option-label">No</span>
+              </div>
+              <div class="option-card" data-value="A veces">
+                <span class="option-label">A veces</span>
+              </div>
+            </div>
+            <input type="hidden" id="necesita_trazabilidad_entrega" name="necesita_trazabilidad_entrega" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 17: Lugar de entrega -->
+        <div class="step" data-step="17">
+          <div class="step-header">
+            <h2 class="step-title">¿El lugar de entrega es siempre el mismo?</h2>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="lugarEntregaOptions">
+              <div class="option-card" data-value="Sí">
+                <span class="option-label">Sí</span>
+              </div>
+              <div class="option-card" data-value="No (varía por obra/sede)">
+                <span class="option-label">No (varía por obra/sede)</span>
+              </div>
+              <div class="option-card" data-value="Mixto">
+                <span class="option-label">Mixto</span>
+              </div>
+            </div>
+            <input type="hidden" id="lugar_entrega" name="lugar_entrega" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 18: Categorías repetitivas -->
+        <div class="step" data-step="18">
+          <div class="step-header">
+            <h2 class="step-title">¿Hay 1–3 categorías repetitivas donde se compra todas las semanas?</h2>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="categoriasRepetitivasOptions">
+              <div class="option-card" data-value="Sí">
+                <span class="option-label">Sí</span>
+              </div>
+              <div class="option-card" data-value="No">
+                <span class="option-label">No</span>
+              </div>
+              <div class="option-card" data-value="No sé">
+                <span class="option-label">No sé</span>
+              </div>
+            </div>
+            <input type="hidden" id="categorias_repetitivas" name="categorias_repetitivas" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 19: Estandarizar criterio -->
+        <div class="step" data-step="19">
+          <div class="step-header">
+            <h2 class="step-title">¿Quieren estandarizar criterio/condiciones por categoría?</h2>
+            <p class="step-subtitle">Sin negociar cada vez desde cero</p>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="estandarizarCriterioOptions">
+              <div class="option-card" data-value="Sí">
+                <span class="option-label">Sí</span>
+              </div>
+              <div class="option-card" data-value="No">
+                <span class="option-label">No</span>
+              </div>
+            </div>
+            <input type="hidden" id="estandarizar_criterio" name="estandarizar_criterio" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 20: Disponibilidad -->
+        <div class="step" data-step="20">
+          <div class="step-header">
+            <h2 class="step-title">¿Cuándo podrían arrancar?</h2>
+            <p class="step-subtitle">Arranque acotado con 5 requerimientos reales</p>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="disponibilidadOptions">
+              <div class="option-card" data-value="Esta semana">
+                <span class="option-label">Esta semana</span>
+              </div>
+              <div class="option-card" data-value="Próxima semana">
+                <span class="option-label">Próxima semana</span>
+              </div>
+              <div class="option-card" data-value="Este mes">
+                <span class="option-label">Este mes</span>
+              </div>
+              <div class="option-card" data-value="Más adelante">
+                <span class="option-label">Más adelante</span>
+              </div>
+            </div>
+            <input type="hidden" id="disponibilidad_arranque" name="disponibilidad_arranque" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 21: Canal preferido -->
+        <div class="step" data-step="21">
+          <div class="step-header">
+            <h2 class="step-title">¿Qué canal prefieren para recibir requerimientos?</h2>
+          </div>
+          <div class="form-group">
+            <div class="options-grid" id="canalPreferidoOptions">
+              <div class="option-card" data-value="Email">
+                <span class="option-label">Email</span>
+              </div>
+              <div class="option-card" data-value="WhatsApp industrializado">
+                <span class="option-label">WhatsApp industrializado</span>
+              </div>
+              <div class="option-card" data-value="Ambos">
+                <span class="option-label">Ambos</span>
+              </div>
+            </div>
+            <input type="hidden" id="canal_preferido_intake" name="canal_preferido_intake" required>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- Step 22: Comentarios (final) -->
+        <div class="step" data-step="22">
+          <div class="step-header">
+            <h2 class="step-title">¿Algo más que debamos saber?</h2>
+            <p class="step-subtitle">Restricciones, rubros, urgencias típicas (opcional)</p>
+          </div>
+          <div class="form-group">
+            <textarea 
+              id="comentario" 
+              name="comentario" 
+              placeholder="Ej: Trabajamos en construcción, con múltiples obras activas..."
+            ></textarea>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Atrás</button>
+            <button type="button" class="btn btn-primary" id="submitBtn" onclick="submitForm()">
+              Enviar evaluación
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 0;
+    const totalSteps = 22;
+    
+    // Multi-select state
+    const multiSelectState = {
+      categorias: [],
+      canales: []
+    };
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      updateProgress();
+      initOptionCards();
+      initMultiSelect();
+    });
+
+    function updateProgress() {
+      const progress = (currentStep / totalSteps) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+      document.getElementById('stepIndicator').textContent = `Paso ${currentStep} de ${totalSteps}`;
+      
+      const labels = [
+        'Comenzar', 'Nombre', 'Cargo', 'Contacto', 'Empresa', 'Ubicación', 
+        'Privacidad', 'Volumen', 'Áreas', 'Categorías', 'Impacto', 'Presión',
+        'Críticas', 'Respaldo', 'Canales', 'Cambios', 'Trazabilidad', 'Entrega',
+        'Repetitivas', 'Estandarizar', 'Disponibilidad', 'Canal', 'Comentarios'
+      ];
+      document.getElementById('stepLabel').textContent = labels[currentStep] || '';
+    }
+
+    function nextStep() {
+      const current = document.querySelector('.step.active');
+      const currentStepNum = parseInt(current.dataset.step);
+      
+      // Validate current step
+      if (!validateStep(currentStepNum)) {
+        return;
+      }
+
+      if (currentStep < totalSteps) {
+        current.classList.add('exiting');
+        
+        setTimeout(() => {
+          current.classList.remove('active', 'exiting');
+          currentStep++;
+          const next = document.querySelector(`[data-step="${currentStep}"]`);
+          next.classList.add('active');
+          updateProgress();
+          window.scrollTo(0, 0);
+        }, 300);
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 0) {
+        const current = document.querySelector('.step.active');
+        current.classList.add('exiting');
+        
+        setTimeout(() => {
+          current.classList.remove('active', 'exiting');
+          currentStep--;
+          const prev = document.querySelector(`[data-step="${currentStep}"]`);
+          prev.classList.add('active');
+          updateProgress();
+          window.scrollTo(0, 0);
+        }, 300);
+      }
+    }
+
+    function validateStep(step) {
+      // Add specific validations per step
+      if (step === 1) {
+        const nombre = document.getElementById('nombre');
+        if (!nombre.value.trim()) {
+          showError('nombre');
+          return false;
+        }
+      }
+      if (step === 3) {
+        const email = document.getElementById('email');
+        if (!email.value.trim() || !email.validity.valid) {
+          showError('email');
+          return false;
+        }
+      }
+      // Add more validations as needed
+      return true;
+    }
+
+    function showError(fieldId) {
+      const field = document.getElementById(fieldId);
+      const error = document.getElementById(`error-${fieldId}`);
+      field.classList.add('error');
+      if (error) error.classList.add('show');
+      
+      setTimeout(() => {
+        field.classList.remove('error');
+        if (error) error.classList.remove('show');
+      }, 3000);
+    }
+
+    function toggleCheckbox(id) {
+      const checkbox = document.getElementById(id);
+      checkbox.checked = !checkbox.checked;
+    }
+
+    // Option cards (single select)
+    function initOptionCards() {
+      const optionGroups = {
+        cargoOptions: 'cargo',
+        reqSemanaOptions: 'req_semana',
+        areasSolicitantesOptions: 'areas_solicitantes',
+        impactoErrorOptions: 'impacto_error',
+        presionExternaOptions: 'presion_externa',
+        comprasCriticasOptions: 'compras_criticas_semana',
+        comparativoOptions: 'comparativo_con_respaldo',
+        cambiosScopeOptions: 'cambios_scope',
+        trazabilidadOptions: 'necesita_trazabilidad_entrega',
+        lugarEntregaOptions: 'lugar_entrega',
+        categoriasRepetitivasOptions: 'categorias_repetitivas',
+        estandarizarCriterioOptions: 'estandarizar_criterio',
+        disponibilidadOptions: 'disponibilidad_arranque',
+        canalPreferidoOptions: 'canal_preferido_intake'
+      };
+
+      Object.entries(optionGroups).forEach(([groupId, hiddenInputId]) => {
+        const group = document.getElementById(groupId);
+        if (!group) return;
+
+        const cards = group.querySelectorAll('.option-card');
+        const hiddenInput = document.getElementById(hiddenInputId);
+
+        cards.forEach(card => {
+          card.addEventListener('click', () => {
+            cards.forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            hiddenInput.value = card.dataset.value;
+          });
+        });
+      });
+    }
+
+    // Multi-select
+    function initMultiSelect() {
+      // Categorías (max 3)
+      const categoriasGrid = document.getElementById('categoriasGrid');
+      if (categoriasGrid) {
+        const options = categoriasGrid.querySelectorAll('.multi-option');
+        options.forEach(option => {
+          option.addEventListener('click', () => {
+            const value = option.dataset.value;
+            
+            if (option.classList.contains('selected')) {
+              option.classList.remove('selected');
+              multiSelectState.categorias = multiSelectState.categorias.filter(v => v !== value);
+            } else {
+              if (multiSelectState.categorias.length >= 3) {
+                alert('Solo puedes seleccionar hasta 3 categorías');
+                return;
+              }
+              option.classList.add('selected');
+              multiSelectState.categorias.push(value);
+            }
+
+            document.getElementById('categorias_top').value = multiSelectState.categorias.join(',');
+            
+            // Show/hide "Otro" field
+            const otroField = document.getElementById('categoriasOtroField');
+            if (multiSelectState.categorias.includes('Otros')) {
+              otroField.classList.add('show');
+            } else {
+              otroField.classList.remove('show');
+            }
+
+            updateCategoriasState();
+          });
+        });
+      }
+
+      // Canales (unlimited)
+      const canalesGrid = document.getElementById('canalesGrid');
+      if (canalesGrid) {
+        const options = canalesGrid.querySelectorAll('.multi-option');
+        options.forEach(option => {
+          option.addEventListener('click', () => {
+            const value = option.dataset.value;
+            
+            if (option.classList.contains('selected')) {
+              option.classList.remove('selected');
+              multiSelectState.canales = multiSelectState.canales.filter(v => v !== value);
+            } else {
+              option.classList.add('selected');
+              multiSelectState.canales.push(value);
+            }
+
+            document.getElementById('canales_intake_actuales').value = multiSelectState.canales.join(',');
+            
+            // Show/hide "Otro" field
+            const otroField = document.getElementById('canalOtroField');
+            if (multiSelectState.canales.includes('Otro')) {
+              otroField.classList.add('show');
+            } else {
+              otroField.classList.remove('show');
+            }
+          });
+        });
+      }
+    }
+
+    function updateCategoriasState() {
+      const options = document.querySelectorAll('#categoriasGrid .multi-option');
+      options.forEach(option => {
+        if (multiSelectState.categorias.length >= 3 && !option.classList.contains('selected')) {
+          option.classList.add('disabled');
+        } else {
+          option.classList.remove('disabled');
+        }
+      });
+    }
+
+    // Submit
+    async function submitForm() {
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.classList.add('loading');
+
+      const formData = new FormData(document.getElementById('fitForm'));
+      const data = {};
+      
+      for (let [key, value] of formData.entries()) {
+        data[key] = value;
+      }
+
+      // Calculate fit
+      const computed = calculateFit(data);
+      data.fit_status = computed.fit_status;
+      data.banda_sugerida = computed.banda_sugerida;
+      data.exposicion = computed.exposicion;
+      data.timestamp = new Date().toISOString();
+      data.source = window.location.hostname;
+
+      try {
+        const response = await fetch('/api/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Error al enviar');
+        }
+
+        window.location.href = '/gracias.html';
+
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Hubo un error al enviar el formulario. Por favor intenta nuevamente.');
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+      }
+    }
+
+    function calculateFit(data) {
+      let fit_status = 'REVISAR';
+      let banda_sugerida = 'BASE';
+      let exposicion = 'MEDIA';
+
+      // Exposición
+      if (data.impacto_error === 'Alto (operación se detiene / cliente / seguridad)') {
+        exposicion = 'ALTA';
+      } else if (data.impacto_error === 'Bajo (molestia)') {
+        exposicion = 'BAJA';
+      }
+
+      // Banda
+      if (data.necesita_trazabilidad_entrega === 'Sí' || data.necesita_trazabilidad_entrega === 'A veces') {
+        banda_sugerida = 'SEGUIMIENTO';
+      } else if (data.categorias_repetitivas === 'Sí') {
+        banda_sugerida = 'CATEGORIAS';
+      }
+
+      // Fit
+      if (['1–5'].includes(data.req_semana) && 
+          data.comparativo_con_respaldo === 'Casi siempre' && 
+          data.presion_externa === 'No') {
+        fit_status = 'NO_APTO';
+      } else if (['6–15', '16–30', '31–60', '60+'].includes(data.req_semana)) {
+        fit_status = 'APTO';
+      }
+
+      return { fit_status, banda_sugerida, exposicion };
+    }
+  </script>
+</body>
+</html>
