@@ -50,7 +50,9 @@ export async function onRequestPost(context) {
     });
 
     if (!mailResponse.ok) {
-      throw new Error('Error al enviar email');
+      const errorText = await mailResponse.text();
+      console.error('Mailgun error:', mailResponse.status, errorText);
+      throw new Error(`Mailgun error ${mailResponse.status}: ${errorText}`);
     }
 
     return new Response(JSON.stringify({ 
