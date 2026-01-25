@@ -9,11 +9,11 @@ export async function onRequestPost(context) {
     const requiredFields = ['nombre', 'email', 'empresa', 'cargo'];
     for (const field of requiredFields) {
       if (!data[field]) {
-        return new Response(JSON.stringify({ 
-          error: `Campo requerido faltante: ${field}` 
+        return new Response(JSON.stringify({
+          error: `Campo requerido faltante: ${field}`
         }), {
           status: 400,
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
           }
@@ -25,44 +25,63 @@ export async function onRequestPost(context) {
     const emailHTML = buildEmailHTML(data);
 
     // Enviar email usando Mailgun
-    const MAILGUN_API_KEY = context.env.MAILGUN_API_KEY;
+    let MAILGUN_API_KEY = context.env.MAILGUN_API_KEY;
     const MAILGUN_DOMAIN = context.env.MAILGUN_DOMAIN || 'pxi.sygnode.cl';
-    
+
+    if (MAILGUN_API_KEY) {
+      MAILGUN_API_KEY = MAILGUN_API_KEY.trim();
+      // Asegurar que NO tenga el prefijo 'key-' si el usuario lo incluyó por error, 
+      // o dejarlo si es necesario. En las pruebas de CURL funcionó SIN 'key-'.
+      if (MAILGUN_API_KEY.startsWith('key-')) {
+        MAILGUN_API_KEY = MAILGUN_API_KEY.replace('key-', '');
+      }
+      console.log('MAILGUN_API_KEY (sanitized) length:', MAILGUN_API_KEY.length);
+    } else {
+      console.log('MAILGUN_API_KEY: MISSING');
+    }
+
+    console.log('MAILGUN_DOMAIN:', MAILGUN_DOMAIN);
+
     if (!MAILGUN_API_KEY) {
       throw new Error('MAILGUN_API_KEY no configurada');
     }
 
     const mailgunUrl = `https://api.mailgun.net/v3/${MAILGUN_DOMAIN}/messages`;
-    
+    console.log('Mailgun URL:', mailgunUrl);
+
     const formData = new FormData();
     formData.append('from', `SYGNODE Fit Intake <fit@${MAILGUN_DOMAIN}>`);
     formData.append('to', 'cs@sygnode.cl');
     formData.append('subject', `${getFitEmoji(data.fit_status)} ${data.fit_status} - ${data.nombre} (${data.empresa})`);
     formData.append('html', emailHTML);
 
+    const authHeader = 'Basic ' + btoa('api:' + MAILGUN_API_KEY);
+
     const mailResponse = await fetch(mailgunUrl, {
       method: 'POST',
       headers: {
-        'Authorization': 'Basic ' + btoa('api:' + MAILGUN_API_KEY)
+        'Authorization': authHeader
       },
       body: formData
     });
 
+    console.log('Mailgun response status:', mailResponse.status);
+
     if (!mailResponse.ok) {
       const errorText = await mailResponse.text();
-      console.error('Mailgun error:', errorText);
-      throw new Error('Error al enviar email vía Mailgun');
+      console.error('Mailgun error body:', errorText);
+      throw new Error(`Error Mailgun (${mailResponse.status}): ${errorText}`);
     }
 
-    return new Response(JSON.stringify({ 
-      success: true, 
+    return new Response(JSON.stringify({
+      success: true,
       message: 'Formulario enviado correctamente',
       fit_status: data.fit_status,
       banda_sugerida: data.banda_sugerida,
       exposicion: data.exposicion
     }), {
       status: 200,
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       }
@@ -70,12 +89,12 @@ export async function onRequestPost(context) {
 
   } catch (error) {
     console.error('Error:', error);
-    return new Response(JSON.stringify({ 
+    return new Response(JSON.stringify({
       error: 'Error al procesar formulario',
       details: error.message
     }), {
       status: 500,
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       }
@@ -96,7 +115,7 @@ export async function onRequestOptions() {
 
 // Helper functions
 function getFitEmoji(status) {
-  switch(status) {
+  switch (status) {
     case 'APTO': return '✅';
     case 'NO_APTO': return '❌';
     case 'REVISAR': return '⚠️';
@@ -105,7 +124,7 @@ function getFitEmoji(status) {
 }
 
 function getFitColor(status) {
-  switch(status) {
+  switch (status) {
     case 'APTO': return '#10b981';
     case 'NO_APTO': return '#ef4444';
     case 'REVISAR': return '#f59e0b';
@@ -114,7 +133,7 @@ function getFitColor(status) {
 }
 
 function getBandaColor(banda) {
-  switch(banda) {
+  switch (banda) {
     case 'BASE': return '#06b6d4';
     case 'SEGUIMIENTO': return '#8b5cf6';
     case 'CATEGORIAS': return '#ec4899';
@@ -123,7 +142,7 @@ function getBandaColor(banda) {
 }
 
 function getExposicionColor(exposicion) {
-  switch(exposicion) {
+  switch (exposicion) {
     case 'ALTA': return '#ef4444';
     case 'MEDIA': return '#f59e0b';
     case 'BAJA': return '#10b981';
@@ -132,6 +151,8 @@ function getExposicionColor(exposicion) {
 }
 
 function buildEmailHTML(data) {
+  const safeSplit = (str) => str ? str.split(',') : [];
+
   return `
 <!DOCTYPE html>
 <html>
@@ -293,19 +314,19 @@ function buildEmailHTML(data) {
       <div class="metric">
         <div class="metric-label">Fit Status</div>
         <div class="metric-value" style="color: ${getFitColor(data.fit_status)}">
-          ${getFitEmoji(data.fit_status)} ${data.fit_status}
+          ${getFitEmoji(data.fit_status)} ${data.fit_status || 'N/A'}
         </div>
       </div>
       <div class="metric">
         <div class="metric-label">Banda</div>
         <div class="metric-value" style="color: ${getBandaColor(data.banda_sugerida)}">
-          ${data.banda_sugerida}
+          ${data.banda_sugerida || 'N/A'}
         </div>
       </div>
       <div class="metric">
         <div class="metric-label">Exposición</div>
         <div class="metric-value" style="color: ${getExposicionColor(data.exposicion)}">
-          ${data.exposicion}
+          ${data.exposicion || 'N/A'}
         </div>
       </div>
     </div>
@@ -315,36 +336,36 @@ function buildEmailHTML(data) {
       <div class="field-row">
         <div class="field">
           <div class="label">Nombre</div>
-          <div class="value">${data.nombre}</div>
+          <div class="value">${data.nombre || '-'}</div>
         </div>
         <div class="field">
           <div class="label">Cargo</div>
-          <div class="value">${data.cargo}</div>
+          <div class="value">${data.cargo || '-'}</div>
         </div>
       </div>
       <div class="field-row">
         <div class="field">
           <div class="label">Email</div>
-          <div class="value">${data.email}</div>
+          <div class="value">${data.email || '-'}</div>
         </div>
         <div class="field">
           <div class="label">Teléfono</div>
-          <div class="value">${data.telefono}</div>
+          <div class="value">${data.telefono || '-'}</div>
         </div>
       </div>
       <div class="field-row">
         <div class="field">
           <div class="label">Empresa</div>
-          <div class="value"><strong>${data.empresa}</strong></div>
+          <div class="value"><strong>${data.empresa || '-'}</strong></div>
         </div>
         <div class="field">
           <div class="label">País</div>
-          <div class="value">${data.pais}</div>
+          <div class="value">${data.pais || '-'}</div>
         </div>
       </div>
       <div class="field">
         <div class="label">Tamaño</div>
-        <div class="value">${data.tamano_equipo} empleados</div>
+        <div class="value">${data.tamano_equipo || '-'} empleados</div>
       </div>
     </div>
 
@@ -353,17 +374,17 @@ function buildEmailHTML(data) {
       <div class="field-row">
         <div class="field">
           <div class="label">Requerimientos/semana</div>
-          <div class="value"><strong>${data.req_semana}</strong></div>
+          <div class="value"><strong>${data.req_semana || '-'}</strong></div>
         </div>
         <div class="field">
           <div class="label">Áreas solicitantes</div>
-          <div class="value">${data.areas_solicitantes}</div>
+          <div class="value">${data.areas_solicitantes || '-'}</div>
         </div>
       </div>
       <div class="field">
         <div class="label">Categorías principales</div>
         <div class="tags">
-          ${data.categorias_top.split(',').map(cat => `<span class="tag">${cat.trim()}</span>`).join('')}
+          ${safeSplit(data.categorias_top).map(cat => `<span class="tag">${cat.trim()}</span>`).join('')}
         </div>
         ${data.categorias_otro_texto ? `<div class="value" style="margin-top: 8px;">Especificación: ${data.categorias_otro_texto}</div>` : ''}
       </div>
@@ -373,16 +394,16 @@ function buildEmailHTML(data) {
       <h3>⚠️ Exposición y Criticidad</h3>
       <div class="field">
         <div class="label">Impacto de error</div>
-        <div class="value"><strong>${data.impacto_error}</strong></div>
+        <div class="value"><strong>${data.impacto_error || '-'}</strong></div>
       </div>
       <div class="field-row">
         <div class="field">
           <div class="label">Presión externa</div>
-          <div class="value">${data.presion_externa}</div>
+          <div class="value">${data.presion_externa || '-'}</div>
         </div>
         <div class="field">
           <div class="label">Compras críticas/semana</div>
-          <div class="value">${data.compras_criticas_semana}</div>
+          <div class="value">${data.compras_criticas_semana || '-'}</div>
         </div>
       </div>
     </div>
@@ -391,18 +412,18 @@ function buildEmailHTML(data) {
       <h3>🔍 Estado Actual</h3>
       <div class="field">
         <div class="label">Comparativo con respaldo</div>
-        <div class="value">${data.comparativo_con_respaldo}</div>
+        <div class="value">${data.comparativo_con_respaldo || '-'}</div>
       </div>
       <div class="field">
         <div class="label">Canales de intake actuales</div>
         <div class="tags">
-          ${data.canales_intake_actuales.split(',').map(canal => `<span class="tag">${canal.trim()}</span>`).join('')}
+          ${safeSplit(data.canales_intake_actuales).map(canal => `<span class="tag">${canal.trim()}</span>`).join('')}
         </div>
         ${data.canal_otro_texto ? `<div class="value" style="margin-top: 8px;">Especificación: ${data.canal_otro_texto}</div>` : ''}
       </div>
       <div class="field">
         <div class="label">Cambios de scope</div>
-        <div class="value">${data.cambios_scope}</div>
+        <div class="value">${data.cambios_scope || '-'}</div>
       </div>
     </div>
 
@@ -411,11 +432,11 @@ function buildEmailHTML(data) {
       <div class="field-row">
         <div class="field">
           <div class="label">Trazabilidad entrega</div>
-          <div class="value">${data.necesita_trazabilidad_entrega}</div>
+          <div class="value">${data.necesita_trazabilidad_entrega || '-'}</div>
         </div>
         <div class="field">
           <div class="label">Lugar de entrega</div>
-          <div class="value">${data.lugar_entrega}</div>
+          <div class="value">${data.lugar_entrega || '-'}</div>
         </div>
       </div>
     </div>
@@ -425,11 +446,11 @@ function buildEmailHTML(data) {
       <div class="field-row">
         <div class="field">
           <div class="label">Categorías repetitivas</div>
-          <div class="value">${data.categorias_repetitivas}</div>
+          <div class="value">${data.categorias_repetitivas || '-'}</div>
         </div>
         <div class="field">
           <div class="label">Estandarizar criterio</div>
-          <div class="value">${data.estandarizar_criterio}</div>
+          <div class="value">${data.estandarizar_criterio || '-'}</div>
         </div>
       </div>
     </div>
@@ -439,11 +460,11 @@ function buildEmailHTML(data) {
       <div class="field-row">
         <div class="field">
           <div class="label">Disponibilidad</div>
-          <div class="value"><strong>${data.disponibilidad_arranque}</strong></div>
+          <div class="value"><strong>${data.disponibilidad_arranque || '-'}</strong></div>
         </div>
         <div class="field">
           <div class="label">Canal preferido</div>
-          <div class="value">${data.canal_preferido_intake}</div>
+          <div class="value">${data.canal_preferido_intake || '-'}</div>
         </div>
       </div>
       ${data.comentario ? `
@@ -457,8 +478,8 @@ function buildEmailHTML(data) {
     </div>
 
     <div class="footer">
-      <p><strong>Timestamp:</strong> ${new Date(data.timestamp).toLocaleString('es-CL')}</p>
-      <p><strong>Source:</strong> ${data.source}</p>
+      <p><strong>Timestamp:</strong> ${data.timestamp ? new Date(data.timestamp).toLocaleString('es-CL') : '-'}</p>
+      <p><strong>Source:</strong> ${data.source || '-'}</p>
       <p style="margin-top: 12px; font-size: 12px;">
         Este email fue generado automáticamente por el sistema SYGNODE Fit Intake
       </p>
