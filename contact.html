@@ -3,393 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Contáctanos - SYGNODE. Agenda una consulta gratuita o envíanos tu consulta. Respondemos en menos de 24 horas.">
+    <meta name="description" content="SYGNODE — Solicitar diagnóstico de exposición decisional. Sesión inicial de 10 minutos.">
     <meta name="robots" content="index, follow">
-    
-    <!-- Security Headers via Meta Tags -->
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-    
-    <title>Contacto - SYGNODE | Inteligencia de Compras</title>
-    
-    <!-- Zod for validation -->
+    <title>Contacto — SYGNODE</title>
+
     <script src="https://cdn.jsdelivr.net/npm/zod@3.22.4/lib/index.umd.min.js"></script>
-    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
     <style>
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         :root {
-            --primary-blue: #1e3a8a;
-            --secondary-cyan: #06b6d4;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --text-dark: #1e293b;
-            --text-gray: #64748b;
-            --bg-light: #f1f5f9;
-            --bg-white: #FFFFFF;
-            --border-light: #e2e8f0;
-            --warning-yellow: #fbbf24;
+            --ink: #0f0f0e;
+            --ink-secondary: #3a3936;
+            --ink-tertiary: #7a7870;
+            --rule: #d8d5cf;
+            --rule-light: #ece9e2;
+            --paper: #f5f2eb;
+            --paper-white: #faf9f6;
+            --signal: #1a2e44;
+            --signal-dim: #2d4a66;
+            --error: #8b2020;
+
+            --serif: 'Cormorant Garamond', Georgia, serif;
+            --sans: 'DM Sans', system-ui, sans-serif;
         }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background: var(--bg-white);
+            font-family: var(--sans);
+            font-weight: 300;
+            color: var(--ink);
+            background: var(--paper-white);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* HEADER */
+        /* ─── HEADER ─── */
         header {
             position: fixed;
             top: 0;
             width: 100%;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-cyan));
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            padding: 20px 0;
+            z-index: 100;
+            background: var(--paper-white);
+            border-bottom: 1px solid var(--rule);
+            padding: 0 60px;
         }
 
         nav {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 30px;
+            height: 68px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 24px;
-            font-weight: 700;
-            color: white;
+            font-family: var(--sans);
+            font-weight: 500;
+            font-size: 15px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--ink);
             text-decoration: none;
-        }
-
-        .logo-img {
-            height: 40px;         /* igual que el contenedor actual */
-            width: auto;          /* mantiene proporciones */
-            display: block;
-            object-fit: contain;  /* evita deformaciones */
         }
 
         .nav-links {
             display: flex;
-            gap: 40px;
             align-items: center;
+            gap: 48px;
         }
 
         .nav-links a {
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink-secondary);
             text-decoration: none;
-            color: white;
-            font-weight: 500;
-            transition: opacity 0.3s;
+            transition: color 0.2s;
         }
 
-        .nav-links a:hover {
-            opacity: 0.8;
+        .nav-links a:hover { color: var(--ink); }
+
+        .nav-cta {
+            font-size: 12px !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.1em !important;
+            color: var(--paper-white) !important;
+            background: var(--signal);
+            padding: 10px 22px;
+            transition: background 0.2s;
         }
+
+        .nav-cta:hover { background: var(--signal-dim) !important; color: var(--paper-white) !important; }
+
+        /* ─── LAYOUT ─── */
+        .page-header {
+            padding-top: 140px;
+            padding-bottom: 80px;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding-left: 60px;
+            padding-right: 60px;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--ink-tertiary);
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: var(--serif);
+            font-size: clamp(36px, 5vw, 64px);
+            font-weight: 400;
+            line-height: 1.1;
+            color: var(--ink);
+            margin-bottom: 24px;
+        }
+
+        h1 em {
+            font-style: italic;
+            color: var(--ink-secondary);
+        }
+
+        h2 {
+            font-family: var(--serif);
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 400;
+            color: var(--ink);
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-family: var(--sans);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--ink);
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 15px;
+            color: var(--ink-secondary);
+            line-height: 1.7;
+        }
+
+        /* ─── CONTACT CHANNELS ─── */
+        .channels {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 60px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-left: 1px solid var(--rule);
+            border-right: 1px solid var(--rule);
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .channel {
+            padding: 48px 44px;
+            border-right: 1px solid var(--rule);
+        }
+
+        .channel:last-child { border-right: none; }
+
+        .channel h3 { margin-bottom: 8px; }
+
+        .channel p {
+            font-size: 14px;
+            color: var(--ink-tertiary);
+            margin-bottom: 20px;
+            max-width: 100%;
+        }
+
+        .channel-link {
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 400;
+            color: var(--ink);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 16px;
+            transition: color 0.2s;
+        }
+
+        .channel-link:hover { color: var(--signal); }
 
         .btn-primary {
-            background: var(--accent-green);
-            color: white;
-            padding: 12px 28px;
-            border-radius: 8px;
+            display: inline-block;
+            font-family: var(--sans);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--paper-white);
+            background: var(--signal);
+            padding: 12px 24px;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
             border: none;
             cursor: pointer;
-            font-size: 16px;
-            display: inline-block;
+            transition: background 0.2s;
         }
 
-        .btn-primary:hover {
-            background: #0ea15b;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
-        }
+        .btn-primary:hover { background: var(--signal-dim); }
+        .btn-primary:disabled { background: var(--ink-tertiary); cursor: not-allowed; }
 
-        .btn-primary:disabled {
-            background: var(--text-gray);
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* HERO SECTION */
-        .hero-contact {
-            margin-top: 100px;
-            padding: 80px 30px 60px;
-            text-align: center;
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.03), rgba(6, 182, 212, 0.03));
-        }
-
-        .hero-contact h1 {
-            font-size: 48px;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            color: var(--text-dark);
-        }
-
-        .hero-contact .subheadline {
-            font-size: 20px;
-            color: var(--text-gray);
-            max-width: 700px;
-            margin: 0 auto 40px;
-        }
-
-        /* QUICK ACTIONS */
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            max-width: 1000px;
-            margin: 0 auto 80px;
-            padding: 0 30px;
-        }
-
-        .quick-action-card {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .quick-action-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-            border-color: var(--secondary-cyan);
-        }
-
-        .quick-action-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
-        .quick-action-card h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: var(--primary-blue);
-        }
-
-        .quick-action-card p {
-            font-size: 15px;
-            color: var(--text-gray);
-            margin-bottom: 20px;
-        }
-
-        .quick-action-card a {
-            display: inline-block;
-            padding: 10px 24px;
-            background: var(--accent-green);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .quick-action-card a:hover {
-            background: #0ea15b;
-            transform: scale(1.05);
-        }
-
-        /* MAIN CONTENT */
-        .contact-container {
-            max-width: 1200px;
+        /* ─── MAIN GRID ─── */
+        .contact-grid {
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 60px 30px;
+            padding: 0 60px;
             display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 60px;
+            grid-template-columns: 320px 1fr;
+            gap: 0;
+            border-left: 1px solid var(--rule);
+            border-right: 1px solid var(--rule);
+            border-bottom: 1px solid var(--rule);
         }
 
-        /* CONTACT INFO SIDEBAR */
-        .contact-info {
-            background: var(--bg-light);
-            padding: 40px;
-            border-radius: 16px;
-            height: fit-content;
+        /* ─── SIDEBAR ─── */
+        .contact-sidebar {
+            padding: 60px 44px;
+            border-right: 1px solid var(--rule);
         }
 
-        .contact-info h2 {
-            font-size: 28px;
-            margin-bottom: 30px;
-            color: var(--primary-blue);
-            text-align: left;
+        .sidebar-block {
+            padding: 32px 0;
+            border-bottom: 1px solid var(--rule);
         }
 
-        .info-item {
-            margin-bottom: 30px;
-            padding-bottom: 30px;
-            border-bottom: 1px solid var(--border-light);
-        }
+        .sidebar-block:first-child { padding-top: 0; }
+        .sidebar-block:last-child { border-bottom: none; padding-bottom: 0; }
 
-        .info-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .info-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-gray);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .info-value {
+        .sidebar-value {
+            font-family: var(--serif);
             font-size: 18px;
-            color: var(--text-dark);
-            font-weight: 500;
+            font-weight: 400;
+            color: var(--ink);
         }
 
-        .info-value a {
-            color: var(--secondary-cyan);
+        .sidebar-value a {
+            color: var(--ink);
             text-decoration: none;
-            transition: color 0.3s;
+            transition: color 0.2s;
         }
 
-        .info-value a:hover {
-            color: var(--primary-blue);
+        .sidebar-value a:hover { color: var(--signal); }
+
+        .sidebar-note {
+            font-size: 13px;
+            color: var(--ink-tertiary);
+            margin-top: 4px;
+            display: block;
         }
 
-        .business-hours {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 30px;
+        .hours-table {
+            margin-top: 12px;
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .business-hours h3 {
-            font-size: 16px;
-            color: var(--primary-blue);
-            margin-bottom: 15px;
+        .hours-table td {
+            font-size: 13px;
+            padding: 6px 0;
+            vertical-align: top;
         }
 
-        .hours-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 14px;
-        }
+        .hours-table td:first-child { color: var(--ink-tertiary); width: 60%; }
+        .hours-table td:last-child { color: var(--ink-secondary); text-align: right; }
 
-        .hours-day {
-            color: var(--text-gray);
-        }
-
-        .hours-time {
-            color: var(--text-dark);
-            font-weight: 500;
-        }
-
-        /* FORM SECTION */
+        /* ─── FORM SECTION ─── */
         .contact-form-section {
-            background: white;
-            padding: 50px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 60px 60px 60px 60px;
         }
 
-        .contact-form-section h2 {
-            font-size: 32px;
-            margin-bottom: 15px;
-            color: var(--primary-blue);
-            text-align: left;
+        .form-intro {
+            margin-bottom: 48px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid var(--rule);
         }
 
-        .form-description {
-            font-size: 16px;
-            color: var(--text-gray);
-            margin-bottom: 40px;
+        .form-intro p {
+            font-size: 14px;
+            color: var(--ink-tertiary);
+            margin-top: 8px;
+            max-width: 52ch;
         }
 
-        /* TYPE SELECTOR */
+        /* ─── INQUIRY TYPE ─── */
         .inquiry-type-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            display: flex;
+            gap: 0;
             margin-bottom: 40px;
+            border: 1px solid var(--rule);
         }
 
         .type-option {
             position: relative;
+            flex: 1;
         }
 
         .type-option input[type="radio"] {
             position: absolute;
             opacity: 0;
+            pointer-events: none;
         }
 
         .type-option label {
             display: block;
-            padding: 20px;
-            background: var(--bg-light);
-            border: 2px solid var(--border-light);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
+            padding: 14px 20px;
+            font-size: 12px;
             font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-tertiary);
+            background: var(--paper-white);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            border-right: 1px solid var(--rule);
         }
+
+        .type-option:last-child label { border-right: none; }
 
         .type-option input[type="radio"]:checked + label {
-            background: var(--secondary-cyan);
-            color: white;
-            border-color: var(--secondary-cyan);
+            background: var(--signal);
+            color: var(--paper);
+            border-color: var(--signal);
         }
 
-        .type-option label:hover {
-            border-color: var(--secondary-cyan);
+        .type-option label:hover { color: var(--ink); }
+
+        /* ─── FORM ELEMENTS ─── */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
         }
 
-        /* FORM ELEMENTS */
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 24px;
         }
+
+        .form-group:last-of-type { margin-bottom: 0; }
 
         .form-group label {
             display: block;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ink-tertiary);
             margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--text-dark);
-            font-size: 15px;
         }
 
         .required {
-            color: var(--accent-red);
-            margin-left: 2px;
+            color: var(--error);
+            margin-left: 3px;
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid var(--border-light);
-            border-radius: 8px;
-            font-size: 16px;
-            font-family: inherit;
-            transition: all 0.3s;
-            background: white;
+            padding: 12px 14px;
+            border: 1px solid var(--rule);
+            background: var(--paper-white);
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 300;
+            color: var(--ink);
+            transition: border-color 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: var(--secondary-cyan);
-            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+            border-color: var(--signal);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--ink-tertiary);
+            font-weight: 300;
         }
 
         .form-group textarea {
@@ -400,428 +419,412 @@
         .form-group.error input,
         .form-group.error select,
         .form-group.error textarea {
-            border-color: var(--accent-red);
+            border-color: var(--error);
         }
 
         .error-message {
-            color: var(--accent-red);
-            font-size: 14px;
+            font-size: 12px;
+            color: var(--error);
             margin-top: 6px;
             display: none;
+            letter-spacing: 0.02em;
         }
 
-        .form-group.error .error-message {
-            display: block;
+        .form-group.error .error-message { display: block; }
+
+        /* Select arrow */
+        .select-wrapper {
+            position: relative;
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        .select-wrapper::after {
+            content: "↓";
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: var(--ink-tertiary);
+            pointer-events: none;
         }
 
-        /* RUT INPUT */
-        .rut-info {
-            font-size: 13px;
-            color: var(--text-gray);
-            margin-top: 6px;
-        }
-
-        /* PRIVACY POLICY */
-        .privacy-checkbox {
+        /* ─── PRIVACY ─── */
+        .privacy-row {
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            margin: 30px 0;
+            margin: 32px 0;
+            padding: 24px;
+            background: var(--paper);
+            border: 1px solid var(--rule);
         }
 
-        .privacy-checkbox input[type="checkbox"] {
-            margin-top: 4px;
-            width: 20px;
-            height: 20px;
+        .privacy-row input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin-top: 3px;
+            flex-shrink: 0;
             cursor: pointer;
+            accent-color: var(--signal);
         }
 
-        .privacy-checkbox label {
-            font-size: 14px;
-            color: var(--text-gray);
+        .privacy-row label {
+            font-size: 13px;
+            color: var(--ink-tertiary);
             line-height: 1.6;
         }
 
-        .privacy-checkbox a {
-            color: var(--secondary-cyan);
-            text-decoration: none;
-        }
-
-        .privacy-checkbox a:hover {
+        .privacy-row a {
+            color: var(--ink-secondary);
             text-decoration: underline;
+            text-underline-offset: 2px;
         }
 
-        /* SUBMIT BUTTON */
+        /* ─── SUBMIT ─── */
         .submit-btn {
             width: 100%;
             padding: 16px;
-            background: var(--accent-green);
-            color: white;
+            background: var(--signal);
+            color: var(--paper-white);
             border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 600;
+            font-family: var(--sans);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
         }
 
-        .submit-btn:hover:not(:disabled) {
-            background: #0ea15b;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
-        }
+        .submit-btn:hover:not(:disabled) { background: var(--signal-dim); }
 
         .submit-btn:disabled {
-            background: var(--text-gray);
+            background: var(--ink-tertiary);
             cursor: not-allowed;
-            transform: none;
         }
 
-        .submit-btn .spinner {
+        .spinner {
             display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(245, 242, 235, 0.3);
+            border-top-color: var(--paper-white);
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto;
+            animation: spin 0.7s linear infinite;
         }
 
-        .submit-btn.loading .spinner {
-            display: block;
-        }
+        .submit-btn.loading .spinner { display: block; }
+        .submit-btn.loading .btn-text { opacity: 0.6; }
 
-        .submit-btn.loading .btn-text {
-            display: none;
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* SUCCESS/ERROR MESSAGES */
+        /* ─── MESSAGES ─── */
         .form-message {
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 25px;
             display: none;
-            animation: slideIn 0.3s ease-out;
+            padding: 20px 24px;
+            margin-top: 20px;
+            font-size: 14px;
+            border: 1px solid var(--rule);
         }
 
-        .form-message.show {
-            display: block;
-        }
+        .form-message.show { display: block; }
 
         .form-message.success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 2px solid var(--accent-green);
+            background: var(--paper);
+            color: var(--ink-secondary);
+            border-color: var(--rule);
         }
 
         .form-message.error {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 2px solid var(--accent-red);
+            background: #f9f0f0;
+            color: var(--error);
+            border-color: #d4b0b0;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        .form-message a { color: inherit; }
 
-        /* FAQ SECTION */
+        /* ─── FAQ ─── */
         .faq-section {
-            max-width: 900px;
-            margin: 80px auto 60px;
-            padding: 0 30px;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 80px 60px;
+            border-left: 1px solid var(--rule);
+            border-right: 1px solid var(--rule);
+            border-bottom: 1px solid var(--rule);
         }
 
-        .faq-section h2 {
-            font-size: 36px;
-            margin-bottom: 40px;
-            color: var(--primary-blue);
-            text-align: center;
+        .faq-list {
+            margin-top: 48px;
+            border-top: 1px solid var(--rule);
+            max-width: 760px;
         }
 
-        .faq-item {
-            background: white;
-            margin-bottom: 15px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-        }
+        .faq-item { border-bottom: 1px solid var(--rule); }
 
         .faq-question {
-            padding: 25px;
+            padding: 24px 0;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            color: var(--text-dark);
-            transition: all 0.3s;
-        }
-
-        .faq-question:hover {
-            background: var(--bg-light);
+            align-items: baseline;
+            gap: 24px;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--ink);
+            user-select: none;
         }
 
         .faq-icon {
-            font-size: 24px;
-            color: var(--secondary-cyan);
-            transition: transform 0.3s;
+            font-family: var(--serif);
+            font-size: 22px;
+            color: var(--ink-tertiary);
+            flex-shrink: 0;
+            transition: transform 0.25s;
+            line-height: 1;
         }
 
-        .faq-item.active .faq-icon {
-            transform: rotate(180deg);
-        }
+        .faq-item.active .faq-icon { transform: rotate(45deg); }
 
         .faq-answer {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            padding: 0 25px;
-            color: var(--text-gray);
+            transition: max-height 0.3s ease;
         }
 
-        .faq-item.active .faq-answer {
-            max-height: 500px;
-            padding: 0 25px 25px;
+        .faq-item.active .faq-answer { max-height: 300px; }
+
+        .faq-answer-content {
+            padding: 0 0 24px 0;
+            font-size: 14px;
+            color: var(--ink-secondary);
+            line-height: 1.8;
         }
 
-        /* FOOTER */
+        /* ─── FOOTER ─── */
         footer {
-            background: var(--text-dark);
-            color: white;
-            padding: 60px 30px 30px;
-            margin-top: 80px;
+            background: var(--paper);
+            border-top: 1px solid var(--rule);
+            padding: 60px;
         }
 
-        .footer-content {
-            max-width: 1200px;
+        .footer-inner {
+            max-width: 1280px;
             margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 40px;
         }
 
-        .footer-logo {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 30px;
+        .footer-brand {
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--ink);
+        }
+
+        .footer-brand small {
+            display: block;
+            font-size: 12px;
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            color: var(--ink-tertiary);
+            margin-top: 4px;
+            text-transform: none;
         }
 
         .footer-links {
             display: flex;
-            gap: 30px;
-            margin-bottom: 30px;
+            gap: 36px;
             flex-wrap: wrap;
         }
 
         .footer-links a {
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            color: var(--ink-tertiary);
             text-decoration: none;
-            transition: color 0.3s;
+            transition: color 0.2s;
         }
 
-        .footer-links a:hover {
-            color: white;
-        }
+        .footer-links a:hover { color: var(--ink); }
 
         .footer-contact {
             display: flex;
-            gap: 30px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 6px;
+            text-align: right;
         }
 
         .footer-contact a {
-            color: var(--accent-green);
+            font-size: 13px;
+            color: var(--ink-secondary);
             text-decoration: none;
-            font-weight: 500;
+            transition: color 0.2s;
         }
+
+        .footer-contact a:hover { color: var(--ink); }
 
         .footer-bottom {
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        /* WHATSAPP FLOAT */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #25d366;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            max-width: 1280px;
+            margin: 40px auto 0;
+            padding-top: 28px;
+            border-top: 1px solid var(--rule-light);
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-            z-index: 999;
-            transition: all 0.3s;
-            text-decoration: none;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+        .footer-bottom span {
+            font-size: 11px;
+            color: var(--ink-tertiary);
+            letter-spacing: 0.04em;
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 960px) {
+            header { padding: 0 30px; }
+            .nav-links { display: none; }
 
-            .hero-contact h1 {
-                font-size: 32px;
-            }
+            .page-header { padding: 120px 30px 60px; }
+            .channels { padding: 0 30px; grid-template-columns: 1fr; }
+            .channel { border-right: none; border-bottom: 1px solid var(--rule); }
+            .channel:last-child { border-bottom: none; }
 
-            .contact-container {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
+            .contact-grid { padding: 0 30px; grid-template-columns: 1fr; }
+            .contact-sidebar { border-right: none; border-bottom: 1px solid var(--rule); padding: 48px 0; }
+            .contact-form-section { padding: 48px 0; }
 
-            .contact-form-section {
-                padding: 30px 20px;
-            }
+            .form-row { grid-template-columns: 1fr; }
+            .inquiry-type-selector { flex-direction: column; }
+            .type-option label { border-right: none; border-bottom: 1px solid var(--rule); }
+            .type-option:last-child label { border-bottom: none; }
 
-            .form-row {
-                grid-template-columns: 1fr;
-            }
+            .faq-section { padding: 60px 30px; }
+            footer { padding: 60px 30px; }
+            .footer-inner { flex-direction: column; gap: 28px; }
+            .footer-contact { text-align: left; }
+            .footer-bottom { flex-direction: column; }
+        }
 
-            .quick-actions {
-                grid-template-columns: 1fr;
-            }
-
-            .inquiry-type-selector {
-                grid-template-columns: 1fr;
-            }
+        .sr-only {
+            position: absolute; width: 1px; height: 1px;
+            padding: 0; margin: -1px; overflow: hidden;
+            clip: rect(0,0,0,0); white-space: nowrap; border: 0;
         }
     </style>
 </head>
 <body>
+
     <!-- HEADER -->
     <header>
         <nav>
-            <a href="/" class="logo">
-                <img src="https://sygnode.cl/assets/img/Logo%20SYGNODE.png" alt="SYGNODE logo" class="logo-img">
-                SYGNODE
-            </a>
+            <a href="/" class="logo">SYGNODE.</a>
             <div class="nav-links">
+                <a href="https://sygnode.cl">Inicio</a>
                 <a href="https://sygnode.cl/servicios/showcase">Servicios</a>
-                <a href="https://sygnode.cl/contact">Contacto</a>
-                <a href="https://www.sygnode.cl/servicios/consulta-gratis/" class="btn-primary">Consulta sin Costo</a>
+                <a href="https://calendar.app.google/G8wuiywz8P1DXuDSA" class="nav-cta">Solicitar Diagnóstico</a>
             </div>
         </nav>
     </header>
 
-    <!-- HERO -->
-    <section class="hero-contact">
-        <h1>¿Cómo podemos ayudarte?</h1>
-    </section>
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <span class="label">Contacto</span>
+        <h1>Solicitar diagnóstico<br><em>de exposición decisional.</em></h1>
+    </div>
 
-    <!-- QUICK ACTIONS -->
-    <div class="quick-actions">
-        <div class="quick-action-card">
-            <div class="quick-action-icon">📞</div>
-            <h3>Llamar ahora</h3>
-            <p>Habla directamente con un especialista</p>
-            <a href="tel:+56985960018">+56 9 8596 0018</a>
+    <!-- CHANNELS -->
+    <div class="channels">
+        <div class="channel">
+            <h3>Diagnóstico inicial</h3>
+            <p>Sesión estructurada de 10 minutos. Establece fit antes de cualquier compromiso.</p>
+            <a href="https://calendar.app.google/G8wuiywz8P1DXuDSA" class="btn-primary" target="_blank">Agendar sesión</a>
         </div>
-
-        <div class="quick-action-card">
-            <div class="quick-action-icon">📅</div>
-            <h3>Agendar reunión</h3>
-            <p>Análisis gratuito de 10 minutos</p>
-            <a href="https://calendar.app.google/G8wuiywz8P1DXuDSA" target="_blank">Agendar ahora</a>
+        <div class="channel">
+            <h3>Correo electrónico</h3>
+            <p>Para consultas que requieren documentación o contexto previo.</p>
+            <a href="mailto:contacto@sygnode.cl" class="channel-link">contacto@sygnode.cl</a>
         </div>
-
-        <div class="quick-action-card">
-            <div class="quick-action-icon">💬</div>
+        <div class="channel">
             <h3>WhatsApp</h3>
-            <p>Respuesta inmediata por chat</p>
-            <a href="https://wa.me/56985960018" target="_blank">Iniciar chat</a>
+            <p>Para coordinación directa. Respuesta en horario hábil.</p>
+            <a href="https://wa.me/56985960018" class="channel-link" target="_blank">+56 9 8596 0018</a>
         </div>
     </div>
 
-    <!-- MAIN CONTACT SECTION -->
-    <div class="contact-container">
-        <!-- SIDEBAR INFO -->
-        <aside class="contact-info">
-            <h2>Información de contacto</h2>
-            
-            <div class="info-item">
-                <div class="info-label">Email</div>
-                <div class="info-value">
-                    <a href="mailto:cs@sygnode.cl"><span class="__cf_email__" data-cfemail="42213102313b252c2d26276c212e">cs@sygnode.cl</span></a>
+    <!-- MAIN GRID: SIDEBAR + FORM -->
+    <div class="contact-grid">
+
+        <!-- SIDEBAR -->
+        <aside class="contact-sidebar">
+            <div class="sidebar-block">
+                <h3>Correo</h3>
+                <div class="sidebar-value">
+                    <a href="mailto:contacto@sygnode.cl">contacto@sygnode.cl</a>
                 </div>
             </div>
-
-            <div class="info-item">
-                <div class="info-label">Teléfono/WhatsApp</div>
-                <div class="info-value">
+            <div class="sidebar-block">
+                <h3>Teléfono</h3>
+                <div class="sidebar-value">
                     <a href="https://wa.me/56985960018" target="_blank">+56 9 8596 0018</a>
                 </div>
+                <span class="sidebar-note">WhatsApp disponible</span>
             </div>
-
-            <div class="info-item">
-                <div class="info-label">Ubicación</div>
-                <div class="info-value">
-                    Santiago, Chile<br>
-                    <small style="color: var(--text-gray); font-size: 14px;">Atención internacional remota</small>
-                </div>
+            <div class="sidebar-block">
+                <h3>Ubicación</h3>
+                <div class="sidebar-value">Punta Arenas, Chile</div>
+                <span class="sidebar-note">Atención remota · América Latina</span>
             </div>
-
-            <div class="business-hours">
-                <h3>Horarios de atención</h3>
-                <div class="hours-item">
-                    <span class="hours-day">Lunes - Viernes</span>
-                    <span class="hours-time">9:00 - 18:00</span>
-                </div>
-                <div class="hours-item">
-                    <span class="hours-day">Sábado - Domingo</span>
-                    <span class="hours-time">Cerrado</span>
-                </div>
+            <div class="sidebar-block">
+                <h3>Horario</h3>
+                <table class="hours-table">
+                    <tr>
+                        <td>Lunes — Viernes</td>
+                        <td>09:00 – 18:00</td>
+                    </tr>
+                    <tr>
+                        <td>Sábado — Domingo</td>
+                        <td>Cerrado</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="sidebar-block">
+                <h3>Plazo de respuesta</h3>
+                <div class="sidebar-value">24 horas hábiles</div>
+                <span class="sidebar-note">Para formularios y correo</span>
             </div>
         </aside>
 
-        <!-- CONTACT FORM -->
+        <!-- FORM -->
         <div class="contact-form-section">
-            <h2>Envíanos tu consulta</h2>
-            <p class="form-description">
-                Completa el formulario y nos pondremos en contacto contigo a la brevedad.
-            </p>
+            <div class="form-intro">
+                <h2>Formulario de contacto</h2>
+                <p>Los campos marcados con * son obligatorios. La información se usa exclusivamente para gestionar la consulta.</p>
+            </div>
 
             <form id="contactForm" novalidate>
+
                 <!-- INQUIRY TYPE -->
-                <div class="inquiry-type-selector">
+                <div class="inquiry-type-selector" role="group" aria-label="Tipo de consulta">
                     <div class="type-option">
                         <input type="radio" id="type_sales" name="inquiry_type" value="sales" checked>
-                        <label for="type_sales">💼 Ventas</label>
+                        <label for="type_sales">Evaluación</label>
                     </div>
                     <div class="type-option">
                         <input type="radio" id="type_support" name="inquiry_type" value="support">
-                        <label for="type_support">🛠️ Soporte</label>
+                        <label for="type_support">Soporte</label>
                     </div>
                     <div class="type-option">
                         <input type="radio" id="type_other" name="inquiry_type" value="other">
-                        <label for="type_other">📧 Otro</label>
+                        <label for="type_other">Otro</label>
                     </div>
                 </div>
 
@@ -829,26 +832,25 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name">Nombre<span class="required">*</span></label>
-                        <input 
-                            type="text" 
-                            id="name" 
-                            name="name" 
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
                             required
                             autocomplete="name"
-                            placeholder="Juan Pérez"
+                            placeholder="Nombre completo"
                         >
                         <div class="error-message" id="error-name"></div>
                     </div>
-
                     <div class="form-group">
-                        <label for="company">Empresa <span class="required">*</span></label>
-                        <input 
-                            type="text" 
-                            id="company" 
-                            name="company" 
+                        <label for="company">Empresa<span class="required">*</span></label>
+                        <input
+                            type="text"
+                            id="company"
+                            name="company"
                             required
                             autocomplete="organization"
-                            placeholder="Mi Empresa S.A."
+                            placeholder="Razón social"
                         >
                         <div class="error-message" id="error-company"></div>
                     </div>
@@ -857,26 +859,25 @@
                 <!-- EMAIL & PHONE -->
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="email">Email <span class="required">*</span></label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
+                        <label for="email">Email<span class="required">*</span></label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
                             required
                             autocomplete="email"
-                            placeholder="tu@email.com"
+                            placeholder="correo@empresa.com"
                         >
                         <div class="error-message" id="error-email"></div>
                     </div>
-
                     <div class="form-group">
                         <label for="phone">Teléfono</label>
-                        <input 
-                            type="tel" 
-                            id="phone" 
-                            name="phone" 
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
                             autocomplete="tel"
-                            placeholder="+56 9 1234 5678"
+                            placeholder="+56 9 XXXX XXXX"
                         >
                         <div class="error-message" id="error-phone"></div>
                     </div>
@@ -884,164 +885,157 @@
 
                 <!-- COUNTRY -->
                 <div class="form-group">
-                    <label for="country">País <span class="required">*</span></label>
-                    <select id="country" name="country" required>
-                        <option value="">Seleccionar país</option>
-                        <option value="CL" selected>Chile</option>
-                        <option value="AR">Argentina</option>
-                        <option value="BO">Bolivia</option>
-                        <option value="BR">Brasil</option>
-                        <option value="CO">Colombia</option>
-                        <option value="CR">Costa Rica</option>
-                        <option value="EC">Ecuador</option>
-                        <option value="SV">El Salvador</option>
-                        <option value="GT">Guatemala</option>
-                        <option value="HN">Honduras</option>
-                        <option value="MX">México</option>
-                        <option value="NI">Nicaragua</option>
-                        <option value="PA">Panamá</option>
-                        <option value="PY">Paraguay</option>
-                        <option value="PE">Perú</option>
-                        <option value="DO">República Dominicana</option>
-                        <option value="UY">Uruguay</option>
-                        <option value="VE">Venezuela</option>
-                        <option value="ES">España</option>
-                        <option value="US">Estados Unidos</option>
-                        <option value="OTHER">Otro</option>
-                    </select>
+                    <label for="country">País<span class="required">*</span></label>
+                    <div class="select-wrapper">
+                        <select id="country" name="country" required>
+                            <option value="">— Seleccionar —</option>
+                            <option value="CL" selected>Chile</option>
+                            <option value="AR">Argentina</option>
+                            <option value="BO">Bolivia</option>
+                            <option value="BR">Brasil</option>
+                            <option value="CO">Colombia</option>
+                            <option value="CR">Costa Rica</option>
+                            <option value="EC">Ecuador</option>
+                            <option value="SV">El Salvador</option>
+                            <option value="GT">Guatemala</option>
+                            <option value="HN">Honduras</option>
+                            <option value="MX">México</option>
+                            <option value="NI">Nicaragua</option>
+                            <option value="PA">Panamá</option>
+                            <option value="PY">Paraguay</option>
+                            <option value="PE">Perú</option>
+                            <option value="DO">República Dominicana</option>
+                            <option value="UY">Uruguay</option>
+                            <option value="VE">Venezuela</option>
+                            <option value="ES">España</option>
+                            <option value="US">Estados Unidos</option>
+                            <option value="OTHER">Otro</option>
+                        </select>
+                    </div>
                     <div class="error-message" id="error-country"></div>
                 </div>
 
                 <!-- MESSAGE -->
                 <div class="form-group">
-                    <label for="message">Mensaje <span class="required">*</span></label>
-                    <textarea 
-                        id="message" 
-                        name="message" 
+                    <label for="message">Mensaje<span class="required">*</span></label>
+                    <textarea
+                        id="message"
+                        name="message"
                         required
-                        placeholder="Cuéntanos cómo podemos ayudarte..."
+                        placeholder="Describe brevemente la operación y el tipo de consulta."
                     ></textarea>
                     <div class="error-message" id="error-message"></div>
                 </div>
 
-                <!-- PRIVACY POLICY -->
-                <div class="privacy-checkbox">
+                <!-- PRIVACY -->
+                <div class="privacy-row">
                     <input type="checkbox" id="privacy" name="privacy" required>
                     <label for="privacy">
-                        Acepto la <a href="/privacy-policy.html" target="_blank">Política de Privacidad</a> 
-                        y autorizo el tratamiento de mis datos conforme a la 
-                        <a href="https://www.bcn.cl/leychile/navegar?idNorma=141599" target="_blank">Ley 19.628</a> 
-                        sobre protección de datos personales.
-                        <span class="required">*</span>
+                        Acepto la <a href="https://sygnode.cl/legal/politica-de-privacidad" target="_blank">Política de Privacidad</a>
+                        y autorizo el tratamiento de mis datos conforme a la
+                        <a href="https://www.bcn.cl/leychile/navegar?idNorma=141599" target="_blank">Ley 19.628</a>.<span class="required">*</span>
                     </label>
                 </div>
-                <div class="error-message" id="error-privacy"></div>
+                <div class="error-message" id="error-privacy" style="margin-top:-16px; margin-bottom:20px;"></div>
 
                 <!-- SUBMIT -->
                 <button type="submit" class="submit-btn" id="submitBtn">
-                    <span class="btn-text">Enviar consulta</span>
+                    <span class="btn-text">Enviar</span>
                     <div class="spinner"></div>
                 </button>
 
                 <!-- MESSAGES -->
                 <div class="form-message success" id="successMessage">
-                    ✓ ¡Gracias por contactarnos! Hemos recibido tu mensaje y nos pondremos en contacto contigo en breve.
+                    Consulta recibida. Respuesta en 24 horas hábiles.
                 </div>
                 <div class="form-message error" id="errorMessage">
-                    ✗ Hubo un error al enviar el formulario. Por favor, intenta nuevamente o contáctanos directamente por WhatsApp o a cs@sygnode.cl.
+                    Error al enviar. Intente nuevamente o contacte directamente a <a href="mailto:contacto@sygnode.cl">contacto@sygnode.cl</a>.
                 </div>
+
             </form>
         </div>
     </div>
 
-    <!-- FAQ SECTION -->
-    <section class="faq-section">
-        <h2>Preguntas frecuentes</h2>
-        
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>¿Cuánto tiempo toma recibir una respuesta?</span>
-                <span class="faq-icon">▼</span>
+    <!-- FAQ -->
+    <div class="faq-section">
+        <span class="label">Consultas frecuentes</span>
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>¿Cuál es el plazo de respuesta?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        24 horas hábiles para formularios y correo. Para coordinación directa, WhatsApp en horario hábil.
+                    </div>
+                </div>
             </div>
-            <div class="faq-answer">
-                Nos comprometemos a responder todas las consultas en menos de 24 horas hábiles. 
-                Para atención inmediata, puedes contactarnos por WhatsApp o teléfono.
-            </div>
-        </div>
 
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>¿El análisis inicial tiene algún costo?</span>
-                <span class="faq-icon">▼</span>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>¿La sesión inicial tiene costo?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        No. La sesión de 10 minutos establece si hay fit operacional. Si no lo hay, se comunica en esa instancia.
+                    </div>
+                </div>
             </div>
-            <div class="faq-answer">
-                No, el análisis inicial es completamente gratuito y sin compromiso. En 10 minutos 
-                evaluamos tu operación y te recomendamos el plan ideal.
-            </div>
-        </div>
 
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>¿Atienden empresas fuera de Chile?</span>
-                <span class="faq-icon">▼</span>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>¿Atienden fuera de Chile?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Sí. El servicio opera de forma remota. La ubicación geográfica no condiciona el alcance.
+                    </div>
+                </div>
             </div>
-            <div class="faq-answer">
-                Sí, trabajamos de forma remota con empresas de toda América Latina y otras regiones. 
-                Nuestra plataforma permite colaboración efectiva sin importar la ubicación geográfica.
-            </div>
-        </div>
 
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>¿Qué información debo preparar para la reunión?</span>
-                <span class="faq-icon">▼</span>
-            </div>
-            <div class="faq-answer">
-                Idealmente, tener una estimación de tu volumen anual de compras y el número de 
-                proveedores activos. No te preocupes si no tienes estas cifras exactas, 
-                podemos trabajar con estimaciones.
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>¿Qué información es útil para la sesión inicial?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Estimación del volumen anual de compras y número de proveedores activos. Las estimaciones son suficientes; no se requieren cifras exactas.
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- FOOTER -->
     <footer>
-        <div class="footer-content">
-            <div class="footer-logo">SYGNODE.</div>
-            
+        <div class="footer-inner">
+            <div class="footer-brand">
+                SYGNODE.
+                <small>Compro Chile SpA · Punta Arenas, Chile</small>
+            </div>
             <div class="footer-links">
-                <a href="https://sygnode.cl/legal/terminos-y-condiciones">Términos y Condiciones</a>
-                <a href="https://sygnode.cl/legal/politica-de-privacidad">Política de Privacidad</a>
-                <a href="https://sygnode.cl/legal/politica-cookies">Política de Cookies</a>
+                <a href="https://sygnode.cl/legal/terminos-y-condiciones">Términos</a>
+                <a href="https://sygnode.cl/legal/politica-de-privacidad">Privacidad</a>
+                <a href="https://sygnode.cl/legal/politica-cookies">Cookies</a>
                 <a href="https://sygnode.cl/legal/aviso-legal">Aviso Legal</a>
             </div>
-
             <div class="footer-contact">
-                <a href="mailto:cs@sygnode.cl"><span class="__cf_email__" data-cfemail="42213102313b252c2d26276c212e">cs@sygnode.cl</span></a>
-                <a href="https://wa.me/56985960018">WhatsApp · +56 9 8596 0018</a>
+                <a href="mailto:contacto@sygnode.cl">contacto@sygnode.cl</a>
+                <a href="https://www.linkedin.com/company/sygnode">LinkedIn</a>
             </div>
-
-            <div class="footer-bottom">
-                © 2025 SYGNODE · Todos los derechos reservados
-            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2025 SYGNODE · Todos los derechos reservados</span>
+            <span>Aseguramiento Decisional · Adquisiciones B2B</span>
         </div>
     </footer>
 
-    <!-- WHATSAPP FLOAT -->
-    <a href="https://wa.me/56985960018" class="whatsapp-float" target="_blank">
-        <span>💬</span>
-    </a>
-
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        // ========================================
-        // CONFIGURATION
-        // ========================================
-        
-        // IMPORTANT: Replace with your actual n8n webhook URL
-        // This should be stored as an environment variable in production
-        const WEBHOOK_URL = 'YOUR_N8N_WEBHOOK_URL_HERE';
-        
-        // Honeypot field for bot detection (not visible in UI)
+    <script>
+        // ── HONEYPOT ──
         const honeypot = document.createElement('input');
         honeypot.type = 'text';
         honeypot.name = 'website';
@@ -1050,117 +1044,69 @@
         honeypot.autocomplete = 'off';
         document.getElementById('contactForm').appendChild(honeypot);
 
-        // ========================================
-        // VALIDATION SCHEMAS WITH ZOD
-        // ========================================
-        
+        // ── ZOD VALIDATION ──
         const { z } = window.Zod;
-
-        // International phone validation (more flexible for multiple countries)
         const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/;
-        
-        // Email validation
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-        // Main validation schema
         const contactFormSchema = z.object({
             inquiry_type: z.enum(['sales', 'support', 'other']),
-            name: z.string()
-                .min(2, 'El nombre debe tener al menos 2 caracteres')
-                .max(100, 'El nombre es demasiado largo')
-                .regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/, 'El nombre solo puede contener letras'),
-            company: z.string()
-                .min(2, 'El nombre de la empresa debe tener al menos 2 caracteres')
-                .max(100, 'El nombre de la empresa es demasiado largo'),
-            email: z.string()
-                .email('Email inválido')
-                .regex(emailRegex, 'Por favor ingresa un email válido')
-                .toLowerCase(),
-            phone: z.string()
-                .regex(phoneRegex, 'Formato de teléfono inválido')
-                .optional()
-                .or(z.literal('')),
-            country: z.string()
-                .min(2, 'Por favor selecciona un país'),
-            message: z.string()
-                .min(10, 'El mensaje debe tener al menos 10 caracteres')
-                .max(1000, 'El mensaje es demasiado largo'),
-            privacy: z.literal(true, {
-                errorMap: () => ({ message: 'Debes aceptar la política de privacidad' })
-            }),
-            website: z.string().length(0).optional() // Honeypot
+            name: z.string().min(2, 'Mínimo 2 caracteres').max(100).regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/, 'Solo letras'),
+            company: z.string().min(2, 'Mínimo 2 caracteres').max(100),
+            email: z.string().email('Email inválido').toLowerCase(),
+            phone: z.string().regex(phoneRegex, 'Formato inválido').optional().or(z.literal('')),
+            country: z.string().min(2, 'Seleccione un país'),
+            message: z.string().min(10, 'Mínimo 10 caracteres').max(1000, 'Máximo 1000 caracteres'),
+            privacy: z.literal(true, { errorMap: () => ({ message: 'Requerido' }) }),
+            website: z.string().length(0).optional()
         });
 
-        // ========================================
-        // FORM BEHAVIOR
-        // ========================================
-        
-        // ========================================
-        // FORM VALIDATION & SUBMISSION
-        // ========================================
-        
+        // ── HELPERS ──
         function clearErrors() {
-            document.querySelectorAll('.form-group').forEach(group => {
-                group.classList.remove('error');
-            });
-            document.querySelectorAll('.error-message').forEach(msg => {
-                msg.textContent = '';
-            });
+            document.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
+            document.querySelectorAll('.error-message').forEach(m => m.textContent = '');
         }
 
         function showError(fieldName, message) {
             const field = document.getElementById(fieldName);
-            const formGroup = field ? field.closest('.form-group') : null;
-            const errorMsg = document.getElementById(`error-${fieldName}`);
-            
-            if (formGroup) formGroup.classList.add('error');
-            if (errorMsg) errorMsg.textContent = message;
-            
-            // Special case for privacy checkbox
+            const group = field ? field.closest('.form-group') : null;
+            const msg = document.getElementById(`error-${fieldName}`);
+            if (group) group.classList.add('error');
+            if (msg) msg.textContent = message;
             if (fieldName === 'privacy') {
-                const privacyError = document.getElementById('error-privacy');
-                if (privacyError) {
-                    privacyError.style.display = 'block';
-                    privacyError.textContent = message;
-                }
+                const pe = document.getElementById('error-privacy');
+                if (pe) { pe.style.display = 'block'; pe.textContent = message; }
             }
         }
 
-        function showMessage(type, customMessage = null) {
-            const successMsg = document.getElementById('successMessage');
-            const errorMsg = document.getElementById('errorMessage');
-            
-            successMsg.classList.remove('show');
-            errorMsg.classList.remove('show');
-            
+        function showMessage(type, custom = null) {
+            const s = document.getElementById('successMessage');
+            const e = document.getElementById('errorMessage');
+            s.classList.remove('show');
+            e.classList.remove('show');
             if (type === 'success') {
-                if (customMessage) successMsg.textContent = customMessage;
-                successMsg.classList.add('show');
-                successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                if (custom) s.textContent = custom;
+                s.classList.add('show');
+                s.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             } else {
-                if (customMessage) errorMsg.textContent = customMessage;
-                errorMsg.classList.add('show');
-                errorMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                if (custom) e.textContent = custom;
+                e.classList.add('show');
+                e.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         }
 
-        // Rate limiting
+        // ── SUBMISSION ──
         let lastSubmission = 0;
-        const RATE_LIMIT_MS = 5000; // 5 seconds between submissions
 
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            // Rate limiting check
-            const now = Date.now();
-            if (now - lastSubmission < RATE_LIMIT_MS) {
-                showMessage('error', 'Por favor espera unos segundos antes de enviar nuevamente.');
+
+            if (Date.now() - lastSubmission < 5000) {
+                showMessage('error', 'Espere unos segundos antes de enviar nuevamente.');
                 return;
             }
-            
+
             clearErrors();
-            
-            // Get form data
+
             const formData = {
                 inquiry_type: document.querySelector('input[name="inquiry_type"]:checked').value,
                 name: document.getElementById('name').value.trim(),
@@ -1170,199 +1116,107 @@
                 country: document.getElementById('country').value,
                 message: document.getElementById('message').value.trim(),
                 privacy: document.getElementById('privacy').checked,
-                website: honeypot.value // Honeypot check
+                website: honeypot.value
             };
-            
-            // Honeypot validation
-            if (formData.website) {
-                console.warn('Bot detected via honeypot');
-                showMessage('success'); // Show success to bot
-                return;
-            }
-            
-            // Validate with Zod
+
+            if (formData.website) { showMessage('success'); return; }
+
             try {
                 contactFormSchema.parse(formData);
             } catch (error) {
                 if (error instanceof z.ZodError) {
-                    error.errors.forEach(err => {
-                        const fieldName = err.path[0];
-                        showError(fieldName, err.message);
-                    });
-                    
-                    // Focus on first error
-                    const firstError = document.querySelector('.form-group.error input, .form-group.error select, .form-group.error textarea');
-                    if (firstError) firstError.focus();
+                    error.errors.forEach(err => showError(err.path[0], err.message));
+                    const first = document.querySelector('.form-group.error input, .form-group.error select, .form-group.error textarea');
+                    if (first) first.focus();
                 }
                 return;
             }
-            
-            // Prepare submission
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.classList.add('loading');
-            
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.classList.add('loading');
+
             try {
-                // Add metadata
-                const submissionData = {
+                const payload = {
                     ...formData,
                     timestamp: new Date().toISOString(),
                     userAgent: navigator.userAgent,
                     language: navigator.language,
-                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
+                    utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
+                    utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || ''
                 };
-                
-                // Send to webhook
-                const response = await fetch("/api/lead", {
+
+                const response = await fetch('/api/lead', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(submissionData)
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
 
-                // ALSO send to Cloudflare D1
                 await sendToCloudflare(formData);
-                
+
                 if (response.ok) {
                     showMessage('success');
                     document.getElementById('contactForm').reset();
                     lastSubmission = Date.now();
-                    
-                    // Analytics event (if you use Google Analytics)
                     if (typeof gtag !== 'undefined') {
-                        gtag('event', 'form_submit', {
-                            event_category: 'contact',
-                            event_label: formData.inquiry_type
-                        });
+                        gtag('event', 'form_submit', { event_category: 'contact', event_label: formData.inquiry_type });
                     }
                 } else {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Network error');
                 }
-                
-            } catch (error) {
-                console.error('Submission error:', error);
+            } catch (err) {
+                console.error(err);
                 showMessage('error');
-                
-                // Log error for monitoring (send to your error tracking service)
-                if (typeof Sentry !== 'undefined') {
-                    Sentry.captureException(error);
-                }
             } finally {
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('loading');
+                btn.disabled = false;
+                btn.classList.remove('loading');
             }
         });
 
-        // ========================================
-        // FAQ ACCORDION
-        // ========================================
-        
+        // ── REAL-TIME VALIDATION ──
+        ['name', 'company', 'email', 'phone', 'country', 'message'].forEach(id => {
+            const field = document.getElementById(id);
+            if (!field) return;
+            field.addEventListener('blur', function() {
+                if (id === 'phone' && !this.value.trim()) return;
+                try {
+                    contactFormSchema.shape[id].parse(this.value.trim());
+                    const g = this.closest('.form-group');
+                    if (g) g.classList.remove('error');
+                } catch (err) {
+                    if (err instanceof z.ZodError && this.value.trim()) showError(id, err.errors[0].message);
+                }
+            });
+        });
+
+        // ── FAQ ──
         document.querySelectorAll('.faq-item').forEach(item => {
             item.querySelector('.faq-question').addEventListener('click', () => {
-                const isActive = item.classList.contains('active');
-                
-                // Close all items
-                document.querySelectorAll('.faq-item').forEach(i => {
-                    i.classList.remove('active');
-                });
-                
-                // Open clicked item if it wasn't active
-                if (!isActive) {
-                    item.classList.add('active');
-                }
+                const active = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                if (!active) item.classList.add('active');
             });
         });
 
-        // ========================================
-        // REAL-TIME VALIDATION
-        // ========================================
-        
-        // Add blur validation for better UX
-        ['name', 'company', 'email', 'phone', 'country', 'message'].forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                field.addEventListener('blur', function() {
-                    // Skip validation for empty optional fields
-                    if ((fieldId === 'phone') && !this.value.trim()) {
-                        return;
-                    }
-                    
-                    try {
-                        const fieldSchema = contactFormSchema.shape[fieldId];
-                        fieldSchema.parse(this.value.trim());
-                        
-                        // Clear error if validation passes
-                        const formGroup = this.closest('.form-group');
-                        if (formGroup) formGroup.classList.remove('error');
-                    } catch (error) {
-                        if (error instanceof z.ZodError && this.value.trim()) {
-                            showError(fieldId, error.errors[0].message);
-                        }
-                    }
-                });
-            }
-        });
-
-        // ========================================
-        // SECURITY: CSP VIOLATION REPORTING
-        // ========================================
-        
-        if (typeof SecurityPolicyViolationEvent !== 'undefined') {
-            document.addEventListener('securitypolicyviolation', (e) => {
-                console.warn('CSP Violation:', e.violatedDirective, e.sourceFile);
-                // Send to your monitoring service
-            });
-        }
-
-        // ========================================
-        // ACCESSIBILITY IMPROVEMENTS
-        // ========================================
-        
-        // Announce validation errors to screen readers
-        function announceError(message) {
-            const announcement = document.createElement('div');
-            announcement.setAttribute('role', 'alert');
-            announcement.setAttribute('aria-live', 'assertive');
-            announcement.className = 'sr-only';
-            announcement.textContent = message;
-            document.body.appendChild(announcement);
-            
-            setTimeout(() => announcement.remove(), 3000);
-        }
-
-            // Add screen reader only class for announcements
-            const style = document.createElement('style');
-            style.textContent = `
-                .sr-only {
-                    position: absolute;
-                    width: 1px;
-                    height: 1px;
-                    padding: 0;
-                    margin: -1px;
-                    overflow: hidden;
-                    clip: rect(0, 0, 0, 0);
-                    white-space: nowrap;
-                    border: 0;
-                }
-            `;
-            document.head.appendChild(style);
-
-
-        // ========================================
-        // SMOOTH SCROLL FOR ANCHOR LINKS
-        // ========================================
-        
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+        // ── SMOOTH SCROLL ──
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                const t = document.querySelector(this.getAttribute('href'));
+                if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
+
+        // ── CSP MONITORING ──
+        if (typeof SecurityPolicyViolationEvent !== 'undefined') {
+            document.addEventListener('securitypolicyviolation', e => {
+                console.warn('CSP:', e.violatedDirective, e.sourceFile);
+            });
+        }
     </script>
+
     <script>
     async function sendToCloudflare(formData) {
         const payload = {
@@ -1370,39 +1224,30 @@
             email: formData.email,
             phone: formData.phone,
             company: formData.company,
-            message: `
-    Tipo: ${formData.inquiry_type}
-    País: ${formData.country}
-    
-    Mensaje:
-    ${formData.message}
-            `,
+            message: `Tipo: ${formData.inquiry_type}\nPaís: ${formData.country}\n\n${formData.message}`,
             inquiry_type: formData.inquiry_type,
             country: formData.country,
             timestamp: new Date().toISOString(),
             privacy: formData.privacy,
-            language: navigator.language || "",
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
-            user_agent: navigator.userAgent || "",
-            ip: "", // No disponible desde frontend, pero dejamos el campo
-            utm_source: new URLSearchParams(window.location.search).get("utm_source") || "",
-            utm_medium: new URLSearchParams(window.location.search).get("utm_medium") || "",
-            utm_campaign: new URLSearchParams(window.location.search).get("utm_campaign") || ""
+            language: navigator.language || '',
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+            user_agent: navigator.userAgent || '',
+            ip: '',
+            utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
+            utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
+            utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || ''
         };
-    
         try {
-            const res = await fetch("/api/contact", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
+            await fetch('/api/contacts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-    
-            return res.ok;
         } catch (err) {
-            console.error("Error enviando a Cloudflare:", err);
-            return false;
+            console.error('Cloudflare submission error:', err);
         }
     }
     </script>
+
 </body>
 </html>
