@@ -623,7 +623,89 @@
     display: none;
   }
 
-  /* PULSE ANIMATION for failed node */
+  /* ============================================================
+     TABLET RESPONSIVE  (≤ 1024px wide or ≤ 700px tall)
+     ============================================================ */
+
+  /* Toolbar that lives in the header on tablet */
+  #header-controls {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .header-map-btn {
+    padding: 6px 12px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 150ms;
+    line-height: 1;
+  }
+  .header-map-btn:hover { opacity: 0.85; }
+  .header-map-btn.active { background: var(--hidden-dep); }
+
+  #header-btn-reset {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  #header-btn-reset:hover { border-color: var(--text-muted); color: var(--text); opacity: 1; }
+
+  @media (max-width: 1024px), (max-height: 700px) {
+    /* Header shrinks, label hides, controls move up */
+    #header {
+      height: 48px;
+      padding: 0 16px 0 18px;
+    }
+    #logo { font-size: 19px; }
+    #header-label { display: none; }
+    #header-controls { display: flex; }
+
+    /* Bottom map-controls hidden — they're in the header now */
+    #map-controls { display: none; }
+
+    /* Menu strip narrower numbers, smaller gap */
+    #menu-strip {
+      padding: 16px 0;
+      gap: 12px;
+    }
+    #menu-strip.expanded {
+      width: 240px;
+    }
+
+    /* Node panel repositioned so it doesn't overflow */
+    #node-panel {
+      top: 10px;
+      right: 50px;
+      width: 260px;
+      padding: 18px;
+    }
+
+    /* Sim banner smaller */
+    #sim-banner { padding: 10px 16px; }
+    #sim-banner-text { font-size: 12px; }
+
+    /* Slide popup full-width on small screens */
+    #slide-popup {
+      width: min(720px, 96vw);
+      max-height: 90vh;
+    }
+    #popup-body { padding: 16px 28px 24px 28px; }
+    .slide-title { font-size: 30px; }
+    .slide-cols { grid-template-columns: 1fr; }
+  }
+
+  /* ============================================================
+     PULSE ANIMATION for failed node */
   @keyframes pulse-ring {
     0%   { r: 18; opacity: 0.7; }
     50%  { r: 24; opacity: 0.3; }
@@ -641,6 +723,10 @@
 <header id="header">
   <div id="logo">SYGNODE.</div>
   <div id="header-label">Transporte — Región de Magallanes</div>
+  <div id="header-controls">
+    <button class="header-map-btn" id="header-btn-deps">Dependencias ocultas</button>
+    <button class="header-map-btn" id="header-btn-reset">Restablecer</button>
+  </div>
 </header>
 
 <!-- MAIN -->
@@ -1301,10 +1387,17 @@ function resetAll() {
 function toggleHiddenDeps() {
   state.hiddenDepsVisible = !state.hiddenDepsVisible;
   const layer = document.getElementById('hidden-dep-layer');
-  const btn   = document.getElementById('btn-hidden-deps');
   layer.style.display = state.hiddenDepsVisible ? 'block' : 'none';
+
+  // Sync bottom button
+  const btn = document.getElementById('btn-hidden-deps');
   btn.textContent = state.hiddenDepsVisible ? 'Ocultar dependencias' : 'Mostrar dependencias ocultas';
   btn.classList.toggle('active', state.hiddenDepsVisible);
+
+  // Sync header button
+  const hBtn = document.getElementById('header-btn-deps');
+  hBtn.textContent = state.hiddenDepsVisible ? 'Ocultar dependencias' : 'Dependencias ocultas';
+  hBtn.classList.toggle('active', state.hiddenDepsVisible);
 }
 
 // ============================================================
@@ -1453,8 +1546,12 @@ function bindEvents() {
   // Reset simulation
   document.getElementById('btn-reset-sim').addEventListener('click', () => resetSimulation(true));
 
-  // Hidden deps toggle
+  // Hidden deps toggle (bottom + header)
   document.getElementById('btn-hidden-deps').addEventListener('click', toggleHiddenDeps);
+  document.getElementById('header-btn-deps').addEventListener('click', toggleHiddenDeps);
+
+  // Reset all (bottom + header)
+  document.getElementById('header-btn-reset').addEventListener('click', resetAll);
 
   // Reset all
   document.getElementById('btn-reset-all').addEventListener('click', resetAll);
