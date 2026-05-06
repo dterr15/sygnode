@@ -633,6 +633,25 @@
   .pulse-circle {
     animation: pulse-ring 2s ease-in-out infinite;
   }
+
+  @media (hover: none), (pointer: coarse), (max-width: 900px) {
+    html,
+    body {
+      height: auto;
+      min-height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
+    }
+
+    #main {
+      min-height: calc(100vh - 60px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
+    }
+  }
 </style>
 </head>
 <body>
