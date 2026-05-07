@@ -89,6 +89,13 @@
     width: 100%;
     height: 100%;
     display: block;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+  }
+
+  #svg-map.dragging {
+    cursor: grabbing;
   }
 
   /* MENU STRIP */
@@ -1076,6 +1083,16 @@ let state = {
   hoveredNode: null
 };
 
+const MAP_VIEWBOX = {
+  initial: { x: 0, y: 0, width: 1000, height: 800 },
+  minWidth: 260,
+  maxWidth: 1000
+};
+
+let mapCamera = { ...MAP_VIEWBOX.initial };
+let mapPointers = new Map();
+let mapDrag = null;
+
 // ============================================================
 // UTILS
 // ============================================================
@@ -1085,6 +1102,51 @@ function getNode(id) { return NODES.find(n => n.id === id); }
 function getNodeEl(id) { return document.getElementById('node-g-' + id); }
 
 function fmt(n) { return String(n).padStart(2, '0'); }
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function setMapViewBox(next) {
+  const initial = MAP_VIEWBOX.initial;
+  const width = clamp(next.width, MAP_VIEWBOX.minWidth, MAP_VIEWBOX.maxWidth);
+  const height = width * (initial.height / initial.width);
+  const x = clamp(next.x, initial.x, initial.x + initial.width - width);
+  const y = clamp(next.y, initial.y, initial.y + initial.height - height);
+
+  mapCamera = { x, y, width, height };
+  document
+    .getElementById('svg-map')
+    .setAttribute('viewBox', `${x} ${y} ${width} ${height}`);
+}
+
+function resetMapView() {
+  setMapViewBox(MAP_VIEWBOX.initial);
+}
+
+function clientToMapPoint(clientX, clientY) {
+  const svg = document.getElementById('svg-map');
+  const rect = svg.getBoundingClientRect();
+  return {
+    x: mapCamera.x + ((clientX - rect.left) / rect.width) * mapCamera.width,
+    y: mapCamera.y + ((clientY - rect.top) / rect.height) * mapCamera.height
+  };
+}
+
+function zoomMapAt(clientX, clientY, factor) {
+  const point = clientToMapPoint(clientX, clientY);
+  const nextWidth = clamp(mapCamera.width * factor, MAP_VIEWBOX.minWidth, MAP_VIEWBOX.maxWidth);
+  const nextHeight = nextWidth * (MAP_VIEWBOX.initial.height / MAP_VIEWBOX.initial.width);
+  const ratioX = (point.x - mapCamera.x) / mapCamera.width;
+  const ratioY = (point.y - mapCamera.y) / mapCamera.height;
+
+  setMapViewBox({
+    x: point.x - ratioX * nextWidth,
+    y: point.y - ratioY * nextHeight,
+    width: nextWidth,
+    height: nextHeight
+  });
+}
 
 // BFS to find affected nodes when a node is removed
 function getAffectedNodes(removedId) {
@@ -1445,6 +1507,7 @@ function resetSimulation(full = true) {
 function resetAll() {
   resetSimulation(true);
   if (state.hiddenDepsVisible) toggleHiddenDeps();
+  resetMapView();
   closeSlidePopup();
   collapseMenu();
 }
@@ -1456,6 +1519,117 @@ function toggleHiddenDeps() {
   layer.style.display = state.hiddenDepsVisible ? 'block' : 'none';
   btn.textContent = state.hiddenDepsVisible ? 'Ocultar dependencias' : 'Mostrar dependencias ocultas';
   btn.classList.toggle('active', state.hiddenDepsVisible);
+}
+
+// ============================================================
+// MAP ZOOM / PAN
+// ============================================================
+
+function getPointerDistance(a, b) {
+  return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+}
+
+function getPointerMidpoint(a, b) {
+  return {
+    clientX: (a.clientX + b.clientX) / 2,
+    clientY: (a.clientY + b.clientY) / 2
+  };
+}
+
+function isInteractiveMapTarget(target) {
+  return target.closest && (
+    target.closest('.node-group') ||
+    target.closest('#hidden-dep-layer')
+  );
+}
+
+function bindMapNavigation() {
+  const svg = document.getElementById('svg-map');
+
+  svg.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const factor = Math.sign(e.deltaY) > 0 ? 1.12 : 0.88;
+    zoomMapAt(e.clientX, e.clientY, factor);
+  }, { passive: false });
+
+  svg.addEventListener('dblclick', (e) => {
+    e.preventDefault();
+    zoomMapAt(e.clientX, e.clientY, e.shiftKey ? 1.25 : 0.72);
+  });
+
+  svg.addEventListener('pointerdown', (e) => {
+    if (mapPointers.size === 0 && isInteractiveMapTarget(e.target)) return;
+
+    mapPointers.set(e.pointerId, {
+      clientX: e.clientX,
+      clientY: e.clientY
+    });
+
+    if (mapPointers.size === 1) {
+      mapDrag = {
+        pointerId: e.pointerId,
+        clientX: e.clientX,
+        clientY: e.clientY,
+        camera: { ...mapCamera }
+      };
+      svg.classList.add('dragging');
+    }
+
+    if (mapPointers.size === 2) {
+      const pointers = Array.from(mapPointers.values());
+      mapDrag = {
+        pinch: true,
+        distance: getPointerDistance(pointers[0], pointers[1]),
+        camera: { ...mapCamera }
+      };
+      svg.classList.add('dragging');
+    }
+
+    svg.setPointerCapture(e.pointerId);
+  });
+
+  svg.addEventListener('pointermove', (e) => {
+    if (!mapPointers.has(e.pointerId)) return;
+    mapPointers.set(e.pointerId, {
+      clientX: e.clientX,
+      clientY: e.clientY
+    });
+
+    if (mapPointers.size >= 2 && mapDrag?.pinch) {
+      const pointers = Array.from(mapPointers.values());
+      const distance = getPointerDistance(pointers[0], pointers[1]);
+      const midpoint = getPointerMidpoint(pointers[0], pointers[1]);
+      const factor = mapDrag.distance / Math.max(distance, 1);
+
+      mapCamera = { ...mapDrag.camera };
+      zoomMapAt(midpoint.clientX, midpoint.clientY, factor);
+      return;
+    }
+
+    if (mapDrag && mapDrag.pointerId === e.pointerId && !mapDrag.pinch) {
+      const rect = svg.getBoundingClientRect();
+      const dx = ((e.clientX - mapDrag.clientX) / rect.width) * mapDrag.camera.width;
+      const dy = ((e.clientY - mapDrag.clientY) / rect.height) * mapDrag.camera.height;
+
+      setMapViewBox({
+        x: mapDrag.camera.x - dx,
+        y: mapDrag.camera.y - dy,
+        width: mapDrag.camera.width,
+        height: mapDrag.camera.height
+      });
+    }
+  });
+
+  function endPointer(e) {
+    mapPointers.delete(e.pointerId);
+    if (mapPointers.size < 2 && mapDrag?.pinch) mapDrag = null;
+    if (mapDrag?.pointerId === e.pointerId) mapDrag = null;
+    if (!mapDrag) svg.classList.remove('dragging');
+    if (svg.hasPointerCapture(e.pointerId)) svg.releasePointerCapture(e.pointerId);
+  }
+
+  svg.addEventListener('pointerup', endPointer);
+  svg.addEventListener('pointercancel', endPointer);
 }
 
 // ============================================================
@@ -1641,8 +1815,10 @@ function bindEvents() {
 // ============================================================
 
 (function init() {
+  resetMapView();
   renderGraph();
   buildMenu();
+  bindMapNavigation();
   bindEvents();
 })();
 </script>
