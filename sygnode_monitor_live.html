@@ -127,6 +127,19 @@ body{
 .panel-body::-webkit-scrollbar-track{background:transparent}
 .panel-body::-webkit-scrollbar-thumb{background:var(--border2)}
 
+/* RCF explainer */
+.rcf-note{
+  padding:10px 14px 11px;
+  border-bottom:1px solid var(--border);
+  background:rgba(200,146,26,0.045);
+}
+.rcf-note-k{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--amber-l);margin-bottom:4px;
+}
+.rcf-note-b{font-size:11px;line-height:1.45;color:var(--text-m)}
+.rcf-note-b strong{color:var(--cream-d);font-weight:600}
 /* ══ LEFT — OBRAS ══ */
 .obra-card{
   padding:12px 14px;
@@ -425,29 +438,27 @@ body{
 #notif-stack{
   position:fixed;top:50%;left:50%;
   width:min(620px,calc(100vw - 32px));
-  max-height:calc(100vh - 96px);
-  overflow-y:auto;overflow-x:hidden;
-  display:flex;flex-direction:column;gap:10px;
+  height:min(620px,calc(100vh - 96px));
+  overflow:visible;
+  display:block;
   z-index:300;
   pointer-events:none;
   transform:translate(-50%,-50%);
-  scrollbar-width:thin;
-  scrollbar-color:rgba(255,255,255,0.15) transparent;
 }
-#notif-stack::-webkit-scrollbar{width:4px}
-#notif-stack::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:2px}
 .aha-overlay{
+  position:absolute;inset:0;
   pointer-events:none;
   opacity:0;
   transform:translateY(16px) scale(0.98);
-  transition:opacity .35s ease, transform .35s ease;
-  /* no longer full-screen — just a card slot */
+  transition:opacity .35s ease, transform .35s ease, filter .35s ease;
+  filter:brightness(0.82);
+  /* fixed center stage — active alerts overlap at the same height */
 }
 .aha-overlay.on{
   opacity:1;pointer-events:all;
   transform:translateY(0) scale(1);
-}
-.aha-card{
+  filter:brightness(1);
+}.aha-card{
   background:var(--panel2);
   border:1px solid var(--red-border);
   width:100%;
@@ -605,6 +616,19 @@ canvas#node-map{position:absolute;inset:0;width:100%;height:100%}
 }
 .mr-tab.active{color:var(--amber-l);border-bottom-color:var(--amber)}
 .mr-tab:hover:not(.active){color:var(--text-m)}
+.mr-panel-toggle{
+  width:42px;flex:0 0 42px;background:rgba(255,255,255,0.03);
+  border:0;border-left:1px solid var(--border);color:var(--text-s);
+  font-size:14px;cursor:pointer;transition:all .2s;
+}
+.mr-panel-toggle:hover{color:var(--amber-l);background:var(--amber-p)}
+.map-overlay.map-panel-hidden .map-body{grid-template-columns:1fr 48px}
+.map-overlay.map-panel-hidden .map-right{width:48px}
+.map-overlay.map-panel-hidden .mr-content{display:none!important}
+.map-overlay.map-panel-hidden .mr-tabs{height:100%;flex-direction:column;border-bottom:0;border-left:1px solid var(--border2)}
+.map-overlay.map-panel-hidden .mr-tab{writing-mode:vertical-rl;transform:rotate(180deg);flex:0 0 auto;padding:12px 4px;border-bottom:0;border-left:2px solid transparent}
+.map-overlay.map-panel-hidden .mr-tab.active{border-left-color:var(--amber)}
+.map-overlay.map-panel-hidden .mr-panel-toggle{width:100%;height:44px;flex:0 0 44px;margin-top:auto;border-left:0;border-top:1px solid var(--border)}
 
 .mr-content{flex:1;overflow-y:auto;overflow-x:hidden}
 .mr-content::-webkit-scrollbar{width:2px}
@@ -865,6 +889,138 @@ textarea#sim-input::placeholder{color:var(--text-s)}
 .chart-area{flex:1;padding:8px 20px 10px;position:relative}
 #chart{display:block;cursor:grab;touch-action:none;user-select:none}
 #chart.dragging{cursor:grabbing}
+
+/* ══ RESPONSIVE NAV + SINGLE-VIEW MODE ══ */
+.hamb-btn,.status-bar,.mobile-drawer,.drawer-overlay,.tab-bar{display:none}
+.view{min-width:0}
+.view-feed{display:flex;flex-direction:column;flex:1;min-height:0}
+
+@media (max-width:1199px){
+  body{overflow:hidden}
+  .topbar{height:48px;padding:0 14px;gap:12px}
+  .tb-logo{margin-right:auto}
+  .tb-map-btn{display:none}
+  .main{
+    display:flex;flex-direction:column;
+    min-height:0;height:calc(100vh - 88px);
+    overflow:hidden;background:var(--panel);
+  }
+  .view{display:none!important;opacity:0;transition:opacity .15s ease}
+  .view.active{display:flex!important;opacity:1;animation:view-fade .15s ease}
+  @keyframes view-fade{from{opacity:0}to{opacity:1}}
+  .panel.view.active,.bottom-panel.view.active,.view-feed.active{flex:1;min-height:0;overflow:hidden;flex-direction:column}
+  .center-panel{display:contents;background:var(--panel)}
+  .obra-map.view.active{flex:1;min-height:0;overflow-y:auto;padding:14px 16px;background:var(--panel);border-bottom:none}
+  .map-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+  .panel-header,.feed-header,.bp-header{position:sticky;top:0;z-index:5;background:var(--panel)}
+  .panel-body,.feed-body{flex:1;min-height:0;overflow-y:auto}
+  .bottom-panel{grid-column:auto;grid-row:auto;border-top:none}
+  .bottom-panel.chart-expanded{position:relative;inset:auto;height:auto;box-shadow:none;border-top:none;z-index:auto}
+  .bp-header{flex-wrap:wrap;gap:10px;padding:10px 14px}
+  .bp-title{width:100%;margin-right:0}
+  .bp-legend{order:3;width:100%;overflow-x:auto;gap:12px;padding-bottom:2px}
+  .bp-timerange{order:4;width:100%;overflow-x:auto;padding-bottom:2px}
+  .trbtn{padding:5px 10px;white-space:nowrap}
+  .bp-expand-btn{display:none}
+  .chart-area{flex:1;min-height:320px;padding:0 8px 8px!important}
+  .chart-nav{bottom:8px;right:12px}
+  #notif-stack{z-index:650;width:calc(100vw - 32px);height:calc(100vh - 96px)}
+  .aha-card{padding:22px 22px}
+  .action-modal{z-index:680}
+}
+
+@media (max-width:767px){
+  .tb-client,.tb-sources,.tb-motor,.tb-clock,.tb-freq{display:none}
+  .tb-logo{font-size:12px;letter-spacing:0.12em}
+  .hamb-btn{
+    display:flex;align-items:center;justify-content:center;
+    width:34px;height:34px;background:var(--panel2);border:1px solid var(--border2);
+    color:var(--cream-d);font-size:18px;cursor:pointer;
+  }
+  .status-bar{
+    height:24px;display:flex;align-items:center;justify-content:space-between;
+    background:var(--navy);border-bottom:1px solid var(--border);
+    color:var(--text-m);font-family:'IBM Plex Mono',monospace;font-size:10px;
+    padding:0 12px;flex-shrink:0;
+  }
+  .status-bar .motor-dot{display:inline-block;margin-right:5px;vertical-align:-1px}
+  .status-bar .src-dot{display:inline-block;background:var(--grn);margin-right:2px;vertical-align:1px}
+  .main{height:calc(100vh - 72px)}
+  .drawer-overlay{
+    position:fixed;inset:0;background:rgba(8,11,20,0.68);
+    z-index:610;opacity:0;pointer-events:none;transition:opacity .2s ease;display:block;
+  }
+  .mobile-drawer{
+    position:fixed;top:0;bottom:0;left:0;width:240px;
+    background:var(--panel);border-right:1px solid var(--border2);
+    z-index:620;display:flex;flex-direction:column;padding:58px 0 12px;
+    transform:translateX(-100%);transition:transform .22s ease;
+    box-shadow:18px 0 48px rgba(0,0,0,0.45);
+  }
+  body.drawer-open .drawer-overlay{opacity:1;pointer-events:all}
+  body.drawer-open .mobile-drawer{transform:translateX(0)}
+  .drawer-item{
+    display:flex;align-items:center;gap:10px;padding:12px 18px;
+    color:var(--text-m);font-size:12px;font-weight:600;cursor:pointer;
+    border-left:2px solid transparent;background:transparent;
+  }
+  .drawer-item.active{color:var(--amber-l);background:var(--amber-p);border-left-color:var(--amber)}
+  .drawer-badge{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--red-l)}
+  .map-body{grid-template-columns:1fr;grid-template-rows:1fr auto}
+  .map-right{width:100%;height:52px;min-height:52px;border-left:none;border-top:1px solid var(--border2);display:flex;flex-direction:column-reverse}
+  .mr-tabs{height:52px;border-bottom:none;border-top:1px solid var(--border2);background:var(--navy)}
+  .mr-tab{display:flex;align-items:center;justify-content:center;padding:0 6px;font-size:9px}
+  .mr-content{position:absolute;right:0;bottom:52px;width:min(340px,100vw);max-height:calc(100vh - 100px);background:var(--panel);border-left:1px solid var(--border);border-top:1px solid var(--border);display:none}
+  .mr-content:has(.mr-pane.active){display:block}
+  .mr-panel-toggle{height:52px;width:44px;flex:0 0 44px;font-size:15px}
+  .map-overlay.map-panel-hidden .map-body{grid-template-columns:1fr;grid-template-rows:1fr auto}
+  .map-overlay.map-panel-hidden .map-right{width:100%;height:52px;min-height:52px}
+  .map-overlay.map-panel-hidden .mr-tabs{height:52px;flex-direction:row;border-left:0;border-top:1px solid var(--border2)}
+  .map-overlay.map-panel-hidden .mr-tab{writing-mode:horizontal-tb;transform:none;flex:1;padding:0 6px;border-left:0;border-bottom:2px solid transparent}
+  .map-overlay.map-panel-hidden .mr-tab.active{border-bottom-color:var(--amber)}
+  .map-overlay.map-panel-hidden .mr-panel-toggle{width:44px;height:52px;flex:0 0 44px;margin-top:0;border-top:0;border-left:1px solid var(--border)}
+  .aha-actions{flex-direction:row}
+}
+
+@media (max-width:399px){
+  .aha-actions{flex-direction:column}
+  .aha-btn-primary,.aha-btn-ghost{width:100%}
+}
+
+@media (min-width:768px) and (max-width:1199px){
+  .tb-client{max-width:180px}
+  .tb-sources{gap:6px;margin-right:12px}
+  .src{width:20px;height:20px;padding:0;justify-content:center;font-size:0}
+  .src-dot{width:6px;height:6px}
+  .tb-motor{font-size:10px;margin-right:12px;padding-left:12px}
+  .tb-freq,.tb-map-btn{display:none}
+  .tab-bar{
+    height:40px;display:flex;align-items:stretch;background:var(--navy);
+    border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;
+  }
+  .tab-item{
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    min-width:118px;padding:0 12px;color:var(--text-m);
+    font-size:11px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;
+  }
+  .tab-item.active{color:var(--amber-l);border-bottom-color:var(--amber-l);background:rgba(200,146,26,0.06)}
+  .main{height:calc(100vh - 88px)}
+  .map-body{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .map-right{grid-row:1;width:100%;height:auto;min-height:0;border-left:none;border-bottom:1px solid var(--border2)}
+  .mr-tabs{height:40px;background:var(--navy)}
+  .mr-panel-toggle{height:40px;width:42px;flex:0 0 42px}
+  .mr-content{display:none}
+  .map-overlay.map-panel-hidden .map-body{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .map-overlay.map-panel-hidden .map-right{grid-row:1;width:100%;height:auto;min-height:0}
+  .map-overlay.map-panel-hidden .mr-tabs{height:40px;flex-direction:row;border-left:0}
+  .map-overlay.map-panel-hidden .mr-tab{writing-mode:horizontal-tb;transform:none;flex:1;padding:10px 6px;border-left:0;border-bottom:2px solid transparent}
+  .map-overlay.map-panel-hidden .mr-tab.active{border-bottom-color:var(--amber)}
+  .map-overlay.map-panel-hidden .mr-panel-toggle{height:40px;width:42px;flex:0 0 42px;margin-top:0;border-top:0;border-left:1px solid var(--border)}
+}
+
+@media (min-width:1200px){
+  .tab-bar,.status-bar,.mobile-drawer,.drawer-overlay,.hamb-btn{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -904,19 +1060,44 @@ textarea#sim-input::placeholder{color:var(--text-s)}
   <div class="tb-clock" id="tb-clock">--:--:--</div>
   <div class="tb-freq">Tiempo real</div>
   <button class="tb-map-btn" onclick="openMap()">◈ Mapa de Red</button>
+  <button class="hamb-btn" id="hamb-btn" onclick="openDrawer()" title="Abrir menú">☰</button>
 </div>
+
+<div class="status-bar">
+  <div><span class="motor-dot"></span> Motor activo · <span id="status-cycles">0</span> ciclos · <span id="status-clock">--:--:--</span></div>
+  <div><span class="src-dot"></span><span class="src-dot"></span> LIVE</div>
+</div>
+<div class="drawer-overlay" onclick="closeDrawer()"></div>
+<nav class="mobile-drawer" id="mobile-drawer" aria-label="Vistas del monitor">
+  <div class="drawer-item active" data-nav-view="obras" onclick="setMainView('obras')"><span>◫</span><span>Estado obras</span></div>
+  <div class="drawer-item" data-nav-view="mapa" onclick="setMainView('mapa')"><span>◈</span><span>Mapa de red</span></div>
+  <div class="drawer-item" data-nav-view="alertas" onclick="setMainView('alertas')"><span>⚠</span><span>Alertas</span><span class="drawer-badge" id="drawer-alert-badge"></span></div>
+  <div class="drawer-item" data-nav-view="feed" onclick="setMainView('feed')"><span>≡</span><span>Feed</span></div>
+  <div class="drawer-item" data-nav-view="grafico" onclick="setMainView('grafico')"><span>⌇</span><span>Gráfico</span></div>
+</nav>
+<nav class="tab-bar" id="main-tab-bar" aria-label="Vistas del monitor">
+  <div class="tab-item active" data-nav-view="obras" onclick="setMainView('obras')"><span>◫</span><span>Estado obras</span></div>
+  <div class="tab-item" data-nav-view="mapa" onclick="setMainView('mapa')"><span>◈</span><span>Mapa de red</span></div>
+  <div class="tab-item" data-nav-view="alertas" onclick="setMainView('alertas')"><span>⚠</span><span>Alertas</span></div>
+  <div class="tab-item" data-nav-view="feed" onclick="setMainView('feed')"><span>≡</span><span>Feed</span></div>
+  <div class="tab-item" data-nav-view="grafico" onclick="setMainView('grafico')"><span>⌇</span><span>Gráfico</span></div>
+</nav>
 
 <!-- ══ MAIN ══ -->
 <div class="main">
 
   <!-- LEFT: OBRAS -->
-  <div class="panel" style="grid-row:1">
+  <div class="panel view view-obras active" data-view="obras" data-label="Estado obras" data-icon="◫" style="grid-row:1">
     <div class="panel-header">
       <div class="ph-left">
         <div class="ph-eye">Red de obras</div>
         <div class="ph-title">5 obras · Estado en vivo</div>
       </div>
       <div class="ph-badge badge-alert" id="critical-count">2 críticas</div>
+    </div>
+    <div class="rcf-note">
+      <div class="rcf-note-k">RCF · Risk Compliance Factor</div>
+      <div class="rcf-note-b"><strong>RCF</strong> estima riesgo de incumplimiento y costo operativo antes de que se materialice.</div>
     </div>
     <div class="panel-body" id="obras-list"></div>
   </div>
@@ -925,21 +1106,23 @@ textarea#sim-input::placeholder{color:var(--text-s)}
   <div class="center-panel">
 
     <!-- Map -->
-    <div class="obra-map">
+    <div class="obra-map view view-mapa" data-view="mapa" data-label="Mapa de red" data-icon="◈">
       <div class="map-title">Mapa de red · RCF por obra · actualización en tiempo real</div>
       <div class="map-grid" id="map-grid"></div>
     </div>
 
     <!-- Feed -->
-    <div class="feed-header">
-      <div class="feed-title">Feed de eventos detectados</div>
-      <div class="feed-count" id="feed-count">0 eventos</div>
+    <div class="view view-feed" data-view="feed" data-label="Feed" data-icon="≡">
+      <div class="feed-header">
+        <div class="feed-title">Feed de eventos detectados</div>
+        <div class="feed-count" id="feed-count">0 eventos</div>
+      </div>
+      <div class="feed-body" id="feed-body"></div>
     </div>
-    <div class="feed-body" id="feed-body"></div>
   </div>
 
   <!-- RIGHT: ALERTS -->
-  <div class="panel" style="grid-row:1">
+  <div class="panel view view-alertas" data-view="alertas" data-label="Alertas" data-icon="⚠" style="grid-row:1">
     <div class="panel-header">
       <div class="ph-left">
         <div class="ph-eye">Alertas activas</div>
@@ -951,7 +1134,7 @@ textarea#sim-input::placeholder{color:var(--text-s)}
   </div>
 
   <!-- BOTTOM: CHART -->
-  <div class="bottom-panel">
+  <div class="bottom-panel view view-grafico" data-view="grafico" data-label="Gráfico" data-icon="⌇">
     <div class="bp-header">
       <div class="bp-title">Evolución RCF · Últimas 72 horas</div>
       <div class="bp-legend">
@@ -1240,6 +1423,7 @@ textarea#sim-input::placeholder{color:var(--text-s)}
         <div class="mr-tab active" onclick="switchTab('sims')">Simulaciones</div>
         <div class="mr-tab" onclick="switchTab('decisions')">Decisiones</div>
         <div class="mr-tab" onclick="switchTab('test')">Testear</div>
+        <button class="mr-panel-toggle" id="mr-panel-toggle" onclick="toggleMapPanel(event)" title="Ocultar panel">◨</button>
       </div>
       <div class="mr-content">
 
@@ -1289,21 +1473,117 @@ document.addEventListener('keydown', e=>{
   if(e.key==='Escape') closeWelcome();
 });
 
+let activeMainView = 'obras';
+function mainViews(){
+  const order=['obras','mapa','alertas','feed','grafico'];
+  return Array.from(document.querySelectorAll('.main .view[data-view]')).sort((a,b)=>order.indexOf(a.dataset.view)-order.indexOf(b.dataset.view));
+}
+function isResponsiveLayout(){ return window.matchMedia('(max-width:1199px)').matches; }
+function openDrawer(){ document.body.classList.add('drawer-open'); }
+function closeDrawer(){ document.body.classList.remove('drawer-open'); }
+function setMainView(name){
+  if(name==='mapa'){
+    openMap();
+    closeDrawer();
+    return;
+  }
+  activeMainView = name;
+  mainViews().forEach(v=>v.classList.toggle('active', v.dataset.view===name));
+  document.querySelectorAll('[data-nav-view]').forEach(item=>{
+    item.classList.toggle('active', item.dataset.navView===name);
+  });
+  closeDrawer();
+  if(name==='grafico'){
+    if(isResponsiveLayout() && chartWindow===72) setChartWindow(24);
+    requestAnimationFrame(drawChart);
+  }
+}
+function responsiveAlertCount(){
+  try{
+    return ALERTS_DATA.filter(a=>!a.resolved).length;
+  }catch(_){
+    return 0;
+  }
+}
+function navLabel(view){
+  if(view.dataset.view==='alertas'){
+    const count = responsiveAlertCount();
+    return view.dataset.label + (count ? ' ▲'+count : '');
+  }
+  return view.dataset.label || view.dataset.view;
+}
+function buildMainNav(){
+  const drawer = document.getElementById('mobile-drawer');
+  const tabs = document.getElementById('main-tab-bar');
+  if(!drawer||!tabs) return;
+  const views = mainViews();
+  if(!views.length){
+    updateResponsiveNavBadges();
+    return;
+  }
+  drawer.innerHTML = views.map(v=>`<div class="drawer-item ${v.dataset.view===activeMainView?'active':''}" data-nav-view="${v.dataset.view}" onclick="setMainView('${v.dataset.view}')"><span>${v.dataset.icon||''}</span><span>${v.dataset.label||v.dataset.view}</span>${v.dataset.view==='alertas'?'<span class="drawer-badge" id="drawer-alert-badge"></span>':''}</div>`).join('');
+  tabs.innerHTML = views.map(v=>`<div class="tab-item ${v.dataset.view===activeMainView?'active':''}" data-nav-view="${v.dataset.view}" onclick="setMainView('${v.dataset.view}')"><span>${v.dataset.icon||''}</span><span>${navLabel(v)}</span></div>`).join('');
+  updateResponsiveNavBadges();
+}
+function updateResponsiveNavBadges(){
+  const active = responsiveAlertCount();
+  const badge = document.getElementById('drawer-alert-badge');
+  if(badge) badge.textContent = active ? active : '';
+  document.querySelectorAll('[data-nav-view="alertas"]').forEach(item=>{
+    const label = item.querySelector('span:nth-child(2)');
+    if(label) label.textContent = 'Alertas' + (active && item.classList.contains('tab-item') ? ' ▲'+active : '');
+  });
+}
+
+let drawerTouchStartX = null;
+document.addEventListener('touchstart', e=>{
+  if(!isResponsiveLayout()) return;
+  drawerTouchStartX = e.touches[0].clientX;
+}, {passive:true});
+document.addEventListener('touchend', e=>{
+  if(drawerTouchStartX===null || !isResponsiveLayout()) return;
+  const dx = e.changedTouches[0].clientX - drawerTouchStartX;
+  if(drawerTouchStartX < 30 && dx > 60) openDrawer();
+  if(document.body.classList.contains('drawer-open') && dx < -60) closeDrawer();
+  drawerTouchStartX = null;
+}, {passive:true});
+
 function openMap(){
   document.getElementById('map-overlay').classList.add('on');
+  updateMapPanelToggle();
   setTimeout(()=>{ initNodeMap(); startMapEvents(); }, 80);
 }
 function closeMap(){
   document.getElementById('map-overlay').classList.remove('on');
   if(window._mapEvTimer) clearInterval(window._mapEvTimer);
 }
+function updateMapPanelToggle(){
+  const overlay = document.getElementById('map-overlay');
+  const btn = document.getElementById('mr-panel-toggle');
+  if(!overlay||!btn) return;
+  const hidden = overlay.classList.contains('map-panel-hidden');
+  btn.textContent = hidden ? '◧' : '◨';
+  btn.title = hidden ? 'Mostrar panel' : 'Ocultar panel';
+}
+function toggleMapPanel(event){
+  if(event) event.stopPropagation();
+  const overlay = document.getElementById('map-overlay');
+  if(!overlay) return;
+  overlay.classList.toggle('map-panel-hidden');
+  updateMapPanelToggle();
+  requestAnimationFrame(drawNodeMap);
+}
 function switchTab(name){
+  const overlay = document.getElementById('map-overlay');
+  if(overlay) overlay.classList.remove('map-panel-hidden');
+  updateMapPanelToggle();
   document.querySelectorAll('.mr-tab').forEach((t,i)=>{
     const names=['sims','decisions','test'];
     t.classList.toggle('active', names[i]===name);
   });
   document.querySelectorAll('.mr-pane').forEach(p=>p.classList.remove('active'));
   document.getElementById('pane-'+name).classList.add('active');
+  requestAnimationFrame(drawNodeMap);
 }
 
 /* ══════════════════════════════════════════ NODE DATA */
@@ -2202,6 +2482,7 @@ function renderAlerts(){
   const active = ALERTS_DATA.filter(a=>!a.resolved).length;
   document.getElementById('alert-badge').textContent = active+' activas';
   document.getElementById('alert-badge').className = 'ph-badge '+(active>1?'badge-alert':'badge-live');
+  updateResponsiveNavBadges();
 }
 
 function resolveAlert(id){
@@ -2534,6 +2815,11 @@ function updateClock(){
     n.getSeconds().toString().padStart(2,'0');
   document.getElementById('tb-clock').textContent=ts;
   document.getElementById('last-sync').textContent=ts;
+  const statusClock = document.getElementById('status-clock');
+  const statusCycles = document.getElementById('status-cycles');
+  const cycles = document.getElementById('motor-cycles');
+  if(statusClock) statusClock.textContent=ts;
+  if(statusCycles && cycles) statusCycles.textContent=cycles.textContent;
 }
 
 function selectObra(id){ /* future: filter by obra */ }
@@ -2555,9 +2841,17 @@ function showAha(){
   });
   renderAlerts();
   // show overlay
-  document.getElementById('aha-overlay').classList.add('on');
+  showOverlay('aha-overlay');
 }
 
+let overlayDepth = 0;
+function showOverlay(id){
+  const overlay = document.getElementById(id);
+  if(!overlay) return;
+  overlayDepth--;
+  overlay.style.zIndex = 300 + overlayDepth;
+  overlay.classList.add('on');
+}
 function dismissAha(withAction){
   document.getElementById('aha-overlay').classList.remove('on');
   if(withAction) openActionPlan();
@@ -2595,7 +2889,7 @@ function showProveedorAlert(){
     desc:'Si Cementos ABC falla: parada en 48h, multa $225K/5 días. Motor tiene plan de contingencia listo ($18K vs $225K).',
     action:'Ver plan de contingencia →',modalId:'proveedor-modal',resolved:false});
   renderAlerts();
-  document.getElementById('proveedor-overlay').classList.add('on');
+  showOverlay('proveedor-overlay');
 }
 
 function showLeadtimeAlert(){
@@ -2609,7 +2903,7 @@ function showLeadtimeAlert(){
     desc:'PO generada con fecha nominal. P(a tiempo) = 97% si abre hoy; 61% si espera 7 días.',
     action:'Ver plan de acción →',modalId:'leadtime-modal',resolved:false});
   renderAlerts();
-  document.getElementById('leadtime-overlay').classList.add('on');
+  showOverlay('leadtime-overlay');
 }
 
 function showEspecifAlert(){
@@ -2623,7 +2917,7 @@ function showEspecifAlert(){
     desc:'2 cotizaciones acero A500 pre-cargadas. Si confirma mañana: PO en 4 horas, sin crisis.',
     action:'Ver cotizaciones →',modalId:'especif-modal',resolved:false});
   renderAlerts();
-  document.getElementById('especif-overlay').classList.add('on');
+  showOverlay('especif-overlay');
 }
 
 /* ════════════════════════════════════════════════ SYNC ANIMATION */
@@ -2639,6 +2933,8 @@ function animateSync(){
     syncStart = Date.now();
     motorCycles++;
     document.getElementById('motor-cycles').textContent = motorCycles;
+    const statusCycles=document.getElementById('status-cycles');
+    if(statusCycles) statusCycles.textContent = motorCycles;
   }
   requestAnimationFrame(animateSync);
 }
@@ -2692,6 +2988,8 @@ function init(){
   renderObras();
   renderMap();
   renderAlerts();
+  buildMainNav();
+  if(isResponsiveLayout()) setMainView(activeMainView);
   updateClock();
   setInterval(updateClock, 1000);
   scheduleEvents();
@@ -2712,3 +3010,10 @@ document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
