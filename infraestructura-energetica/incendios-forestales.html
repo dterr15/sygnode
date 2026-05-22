@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -8,31 +8,112 @@
     <link rel="canonical" href="https://sygnode.cl/infraestructura-energetica/incendios-forestales">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/shared.css">
 
     <style>
-        .page-header { padding-top: 160px; padding-bottom: 80px; padding-left: 60px; padding-right: 60px; max-width: 1280px; margin: 0 auto; border-bottom: 1px solid var(--rule); }
-        .page-header h1 { margin-top: 20px; margin-bottom: 32px; max-width: 720px; }
-        .breadcrumb { font-family: var(--sans); font-size: 11px; font-weight: 400; letter-spacing: 0.1em; color: var(--ink-tertiary); text-decoration: none; display: block; margin-bottom: 8px; }
-        .breadcrumb:hover { color: var(--ink-secondary); }
-        .problem-block { padding: 80px 60px; max-width: 1280px; margin: 0 auto; border-bottom: 1px solid var(--rule); }
-        .problem-block h2 { max-width: 640px; margin-bottom: 48px; }
-        .problem-paragraphs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1px solid var(--rule); }
-        .problem-para { padding: 44px 40px; border-right: 1px solid var(--rule); }
+        /* ─── PAGE HEADER ─── */
+        .page-header {
+            padding-top: calc(64px + var(--space-2xl));
+            padding-bottom: var(--space-xl);
+            padding-inline: clamp(24px, 5vw, 96px);
+            max-width: 1280px;
+            margin: 0 auto;
+            border-bottom: 1px solid rgba(31, 27, 23, 0.15);
+        }
+
+        .page-header h1 {
+            margin-top: var(--space-sm);
+            margin-bottom: var(--space-md);
+            max-width: 14ch;
+        }
+
+        .breadcrumb {
+            font-family: var(--sans);
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--color-fg-muted);
+            text-decoration: none;
+            display: block;
+            margin-bottom: var(--space-sm);
+            transition: opacity 150ms;
+        }
+        .breadcrumb:hover { opacity: 0.6; }
+
+        /* ─── PROBLEM BLOCKS ─── */
+        .problem-block {
+            padding: var(--space-2xl) clamp(24px, 5vw, 96px);
+            max-width: 1280px;
+            margin: 0 auto;
+            border-bottom: 1px solid rgba(31, 27, 23, 0.15);
+        }
+
+        .problem-block h2 {
+            max-width: 640px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .problem-paragraphs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border: 1px solid rgba(31, 27, 23, 0.15);
+        }
+
+        .problem-para {
+            padding: var(--space-lg) var(--space-md);
+            border-right: 1px solid rgba(31, 27, 23, 0.15);
+        }
+
         .problem-para:last-child { border-right: none; }
-        .problem-para p { font-size: 15px; line-height: 1.75; color: var(--ink-secondary); max-width: 100%; }
-        .para-label { font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-tertiary); display: block; margin-bottom: 16px; }
-        .content-section { padding: 80px 60px; max-width: 1280px; margin: 0 auto; }
-        .lead-magnet-section { background: var(--paper); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 80px 60px; }
-        @media (max-width: 960px) {
-            .page-header { padding: 120px 30px 60px; }
-            .problem-block { padding: 60px 30px; }
+
+        .problem-para p {
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--color-fg);
+            max-width: 100%;
+        }
+
+        .para-label {
+            font-family: var(--sans);
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--color-fg-muted);
+            display: block;
+            margin-bottom: var(--space-md);
+        }
+
+        /* ─── CONTENT SECTION ─── */
+        .content-section {
+            padding: var(--space-2xl) clamp(24px, 5vw, 96px);
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .content-section p {
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--color-fg);
+            max-width: 68ch;
+        }
+
+        .content-section p + p { margin-top: var(--space-md); }
+
+        /* ─── LEAD MAGNET ─── */
+        .lead-magnet-section {
+            background: var(--color-bg-alt);
+            border-top: 1px solid rgba(31, 27, 23, 0.15);
+            border-bottom: 1px solid rgba(31, 27, 23, 0.15);
+            padding: var(--space-2xl) clamp(24px, 5vw, 96px);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 767px) {
             .problem-paragraphs { grid-template-columns: 1fr; }
-            .problem-para { border-right: none; border-bottom: 1px solid var(--rule); }
+            .problem-para {
+                border-right: none;
+                border-bottom: 1px solid rgba(31, 27, 23, 0.15);
+            }
             .problem-para:last-child { border-bottom: none; }
-            .content-section { padding: 60px 30px; }
-            .lead-magnet-section { padding: 60px 30px; }
         }
     </style>
 </head>
@@ -120,7 +201,7 @@
 
     <div class="content-section">
         <span class="label">Forma de salida</span>
-        <p style="margin-top: 20px; font-size: 15px; color: var(--ink-secondary); max-width: 64ch;">Tres entregas para el equipo de prevención: mapa diario de zonas en ventana de alta probabilidad anticipada, recomendación semanal de redistribución de patrullaje, y plan semanal de pre-posicionamiento de brigadas.</p>
+        <p style="margin-top: 20px; font-size: 15px; color: var(--color-fg-muted); max-width: 64ch;">Tres entregas para el equipo de prevención: mapa diario de zonas en ventana de alta probabilidad anticipada, recomendación semanal de redistribución de patrullaje, y plan semanal de pre-posicionamiento de brigadas.</p>
     </div>
 
     <div class="full-bleed">

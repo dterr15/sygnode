@@ -8,44 +8,61 @@
     <link rel="canonical" href="https://sygnode.cl/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/shared.css">
 
     <style>
-        /* ─── HOME HERO ─── */
-        .hero {
-            padding-top: 180px;
-            padding-bottom: 120px;
+        /* ─── HOME SCROLL SNAP ─── */
+        .home-snap {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100svh;
+        }
+
+        .snap-section {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            min-height: 100svh;
+        }
+
+        @media (max-width: 767px) {
+            .home-snap {
+                scroll-snap-type: none;
+                overflow-y: auto;
+                height: auto;
+            }
+            .snap-section {
+                min-height: auto;
+            }
+        }
+
+        /* ─── HERO ─── */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-2xl) clamp(24px, 5vw, 96px);
             max-width: 1280px;
             margin: 0 auto;
-            padding-left: 60px;
-            padding-right: 60px;
         }
 
-        .hero-category {
-            font-family: var(--sans);
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--ink-tertiary);
-            display: block;
-            margin-bottom: 32px;
+        .hero-section h1 {
+            font-size: clamp(36px, 5vw, 72px);
+            max-width: 14 ch;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
         }
 
-        .hero h1 {
-            max-width: 820px;
-            margin-bottom: 36px;
+        .hero-section .lead {
+            margin-top: var(--space-lg);
         }
 
-        .hero p.lead {
-            max-width: 52ch;
-            color: var(--ink-secondary);
-        }
-
-        /* ─── DOMAIN GRID ─── */
+        /* ─── DOMAINS ─── */
         .domains-section {
-            padding: 0 60px 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-2xl) clamp(24px, 5vw, 96px);
             max-width: 1280px;
             margin: 0 auto;
         }
@@ -53,138 +70,90 @@
         .domains-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            border: 1px solid var(--rule);
-            margin-top: 0;
+            border-top: 1px solid rgba(31, 27, 23, 0.15);
+            border-left: 1px solid rgba(31, 27, 23, 0.15);
         }
 
         .domain-tile {
-            padding: 48px 44px;
-            border-right: 1px solid var(--rule);
-            border-bottom: 1px solid var(--rule);
+            padding: var(--space-lg) var(--space-md);
+            border-right: 1px solid rgba(31, 27, 23, 0.15);
+            border-bottom: 1px solid rgba(31, 27, 23, 0.15);
             text-decoration: none;
             display: block;
-            transition: background 0.2s;
-            cursor: pointer;
+            transition: opacity 150ms;
         }
 
         .domain-tile:hover {
-            background: var(--paper);
+            opacity: 0.6;
         }
 
-        /* remove right border on 3rd, 6th tile */
-        .domain-tile:nth-child(3n) {
-            border-right: none;
-        }
-
-        /* remove bottom border on last row */
-        .domain-tile:nth-child(4),
-        .domain-tile:nth-child(5),
-        .domain-tile:nth-child(6) {
-            border-bottom: none;
+        .domain-tile:hover .tile-arrow {
+            transform: translateX(4px);
         }
 
         .domain-tile h3 {
             font-family: var(--serif);
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 400;
-            letter-spacing: 0;
-            text-transform: none;
-            color: var(--ink);
-            margin-bottom: 14px;
-            line-height: 1.25;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            color: var(--color-fg);
+            margin-bottom: var(--space-xs);
         }
 
         .domain-tile p {
-            font-size: 14px;
-            color: var(--ink-tertiary);
-            max-width: 100%;
+            font-size: 15px;
             line-height: 1.6;
+            color: var(--color-fg-muted);
+            max-width: 100%;
         }
 
-        .domain-tile .tile-arrow {
-            display: block;
-            margin-top: 28px;
-            font-size: 12px;
-            font-weight: 400;
-            letter-spacing: 0.08em;
-            color: var(--ink-tertiary);
-            transition: color 0.2s;
+        .tile-arrow {
+            display: inline-block;
+            margin-top: var(--space-md);
+            font-size: 15px;
+            color: var(--color-fg-muted);
+            transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .domain-tile:hover .tile-arrow {
-            color: var(--ink);
-        }
-
-        /* ─── CREDIBILITY STRIP ─── */
-        .credibility {
-            background: var(--paper);
-            border-top: 1px solid var(--rule);
-            padding: 60px;
-        }
-
-        .credibility p {
-            max-width: 1280px;
-            margin: 0 auto;
-            font-size: 14px;
-            color: var(--ink-tertiary);
-            line-height: 1.8;
-        }
-
-        .credibility a {
-            color: var(--ink-secondary);
-            text-decoration: none;
-            border-bottom: 1px solid var(--rule);
-            transition: border-color 0.2s, color 0.2s;
-        }
-
-        .credibility a:hover {
-            color: var(--ink);
-            border-color: var(--ink-secondary);
-        }
-
-        /* ─── RESPONSIVE ─── */
-        @media (max-width: 960px) {
-            .hero {
-                padding-top: 120px;
-                padding-bottom: 80px;
-                padding-left: 30px;
-                padding-right: 30px;
-            }
-
-            .domains-section {
-                padding: 0 30px 80px;
-            }
-
+        @media (max-width: 767px) {
             .domains-grid {
                 grid-template-columns: 1fr;
             }
-
-            .domain-tile {
-                border-right: none;
-                border-bottom: 1px solid var(--rule);
-            }
-
-            .domain-tile:last-child {
-                border-bottom: none;
-            }
-
-            /* reset nth-child overrides for single column */
-            .domain-tile:nth-child(3n) {
-                border-right: none;
-            }
-
-            .domain-tile:nth-child(4),
-            .domain-tile:nth-child(5),
-            .domain-tile:nth-child(6) {
-                border-bottom: 1px solid var(--rule);
-            }
-
-            .domain-tile:last-child {
-                border-bottom: none;
-            }
-
-            .credibility { padding: 48px 30px; }
         }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .domains-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* ─── CREDIBILITY ─── */
+        .credibility-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-2xl) clamp(24px, 5vw, 96px);
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .credibility-section p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--color-fg-muted);
+            max-width: 68ch;
+        }
+
+        .credibility-section a {
+            color: var(--color-fg);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            text-decoration-color: var(--color-fg-muted);
+            transition: opacity 150ms;
+        }
+
+        .credibility-section a:hover { opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -195,76 +164,103 @@
             <div class="nav-links">
                 <a href="/sobre">Sobre</a>
                 <a href="/contacto">Contacto</a>
-                <a href="/contacto" class="nav-cta">Conversar</a>
+                <a href="/contacto" class="nav-cta">Conversar →</a>
             </div>
         </nav>
     </header>
 
-    <!-- HERO -->
-    <div class="hero">
-        <span class="hero-category">Anticipación operacional</span>
-        <h1>SYGNODE construye sistemas de anticipación operacional para problemas donde la primera señal de falla casi nunca aparece donde se la busca.</h1>
-        <p class="lead">El problema casi nunca es la falla en sí. Es no haberla visto cuando todavía se podía hacer algo distinto.</p>
-    </div>
+    <main class="home-snap">
 
-    <!-- DOMAIN GRID -->
-    <div class="domains-section">
-        <div class="domains-grid">
-
-            <a href="/decision-assurance" class="domain-tile">
-                <h3>Decision Assurance</h3>
-                <p>Soporte a decisiones operacionales donde el costo del error es asimétrico.</p>
-                <span class="tile-arrow">→</span>
-            </a>
-
-            <a href="/litigios" class="domain-tile">
-                <h3>Litigios</h3>
-                <p>Estudios con cartera viva: demanda impredecible, plazos duros, capacidad limitada.</p>
-                <span class="tile-arrow">→</span>
-            </a>
-
-            <a href="/operaciones-industriales" class="domain-tile">
-                <h3>Operaciones industriales</h3>
-                <p>Activos críticos cuya parada cuesta más que su mantenimiento.</p>
-                <span class="tile-arrow">→</span>
-            </a>
-
-            <a href="/salud-operacional" class="domain-tile">
-                <h3>Salud operacional</h3>
-                <p>Centros con demanda estocástica, derivaciones que se traban, readmisiones evitables.</p>
-                <span class="tile-arrow">→</span>
-            </a>
-
-            <a href="/inversiones" class="domain-tile">
-                <h3>Inversiones</h3>
-                <p>Carteras donde un evento desconocido cambia la trayectoria de varios activos a la vez.</p>
-                <span class="tile-arrow">→</span>
-            </a>
-
-            <a href="/infraestructura-energetica" class="domain-tile">
-                <h3>Infraestructura energética</h3>
-                <p>Redes, hidrógeno verde y prevención de incendios forestales. Sistemas donde la falla se propaga.</p>
-                <span class="tile-arrow">→</span>
-            </a>
-
-        </div>
-    </div>
-
-    <!-- CREDIBILITY STRIP -->
-    <div class="credibility">
-        <p>SYGNODE opera desde [ciudad], Chile. Trabajamos con clientes en [sectores actuales] desde [año]. Para conversaciones de scoping, escribir a <a href="mailto:[email]">[email]</a>.</p>
-    </div>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-inner">
-            <span class="footer-brand">SYGNODE · [razón social] · [RUT] · [año]</span>
-            <div class="footer-links">
-                <a href="/contacto">Contacto</a>
-                <a href="/legal/politica-de-privacidad">Privacidad</a>
+        <!-- SECTION 1: HERO -->
+        <section class="snap-section" style="display:flex; align-items:center;">
+            <div class="hero-section" style="width:100%; max-width:1280px; margin:0 auto; box-sizing:border-box;">
+                <h1 class="fade-up">SYGNODE construye sistemas de anticipación operacional para problemas donde la primera señal de falla casi nunca aparece donde se la busca.</h1>
+                <p class="lead fade-up" style="transition-delay:120ms;">El problema casi nunca es la falla en sí. Es no haberla visto cuando todavía se podía hacer algo distinto.</p>
             </div>
-        </div>
-    </footer>
+        </section>
+
+        <!-- SECTION 2: DOMAINS -->
+        <section class="snap-section" style="display:flex; align-items:center;">
+            <div class="domains-section" style="width:100%; max-width:1280px; margin:0 auto; box-sizing:border-box;">
+                <div class="domains-grid">
+
+                    <a href="/decision-assurance" class="domain-tile fade-up">
+                        <h3>Decision Assurance</h3>
+                        <p>Soporte a decisiones operacionales donde el costo del error es asimétrico.</p>
+                        <span class="tile-arrow">→</span>
+                    </a>
+
+                    <a href="/litigios" class="domain-tile fade-up">
+                        <h3>Litigios</h3>
+                        <p>Estudios con cartera viva: demanda impredecible, plazos duros, capacidad limitada.</p>
+                        <span class="tile-arrow">→</span>
+                    </a>
+
+                    <a href="/operaciones-industriales" class="domain-tile fade-up">
+                        <h3>Operaciones industriales</h3>
+                        <p>Activos críticos cuya parada cuesta más que su mantenimiento.</p>
+                        <span class="tile-arrow">→</span>
+                    </a>
+
+                    <a href="/salud-operacional" class="domain-tile fade-up">
+                        <h3>Salud operacional</h3>
+                        <p>Centros con demanda estocástica, derivaciones que se traban, readmisiones evitables.</p>
+                        <span class="tile-arrow">→</span>
+                    </a>
+
+                    <a href="/inversiones" class="domain-tile fade-up">
+                        <h3>Inversiones</h3>
+                        <p>Carteras donde un evento desconocido cambia la trayectoria de varios activos a la vez.</p>
+                        <span class="tile-arrow">→</span>
+                    </a>
+
+                    <a href="/infraestructura-energetica" class="domain-tile fade-up">
+                        <h3>Infraestructura energética</h3>
+                        <p>Redes, hidrógeno verde y prevención de incendios forestales. Sistemas donde la falla se propaga.</p>
+                        <span class="tile-arrow">→</span>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: CREDIBILITY + FOOTER -->
+        <section class="snap-section" style="display:flex; flex-direction:column; justify-content:space-between;">
+            <div class="credibility-section fade-up" style="flex:1; display:flex; align-items:center; width:100%;">
+                <p>SYGNODE opera desde [ciudad], Chile. Trabajamos con clientes en [sectores actuales] desde [año]. Para conversaciones de scoping, escribir a <a href="mailto:cs@sygnode.cl">cs@sygnode.cl</a>.</p>
+            </div>
+            <footer>
+                <div class="footer-inner">
+                    <span class="footer-brand">SYGNODE · [razón social] · [RUT] · [año]</span>
+                    <div class="footer-links">
+                        <a href="/contacto">Contacto</a>
+                        <a href="/legal/politica-de-privacidad">Privacidad</a>
+                    </div>
+                </div>
+            </footer>
+        </section>
+
+    </main>
+
+    <script>
+        // Fade-up IntersectionObserver — one-shot, not re-triggered
+        (function() {
+            var els = document.querySelectorAll('.fade-up');
+            if (!window.IntersectionObserver) {
+                els.forEach(function(el) { el.classList.add('visible'); });
+                return;
+            }
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            els.forEach(function(el) { observer.observe(el); });
+        })();
+    </script>
 
 </body>
 </html>
