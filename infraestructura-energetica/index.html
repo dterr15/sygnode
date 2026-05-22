@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Infraestructura energética — Redes, hidrógeno verde y prevención de incendios forestales. SYGNODE.">
+    <title>Infraestructura energética — SYGNODE</title>
+    <link rel="canonical" href="https://sygnode.cl/infraestructura-energetica">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/shared.css">
+
+    <style>
+        .page-header { padding-top: 160px; padding-bottom: 80px; padding-left: 60px; padding-right: 60px; max-width: 1280px; margin: 0 auto; border-bottom: 1px solid var(--rule); }
+        .page-header h1 { margin-top: 20px; margin-bottom: 32px; max-width: 720px; }
+
+        .body-section { padding: 80px 60px; max-width: 1280px; margin: 0 auto; border-bottom: 1px solid var(--rule); }
+        .body-section p { font-size: 16px; line-height: 1.8; color: var(--ink-secondary); max-width: 64ch; }
+        .body-section p + p { margin-top: 24px; }
+
+        .subdomains-section { padding: 80px 60px; max-width: 1280px; margin: 0 auto; }
+
+        .subdomains-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border: 1px solid var(--rule);
+            margin-top: 40px;
+        }
+
+        .subdomain-tile {
+            padding: 48px 44px;
+            border-right: 1px solid var(--rule);
+            text-decoration: none;
+            display: block;
+            transition: background 0.2s;
+        }
+
+        .subdomain-tile:last-child { border-right: none; }
+
+        .subdomain-tile:hover { background: var(--paper); }
+
+        .subdomain-tile h3 {
+            font-family: var(--serif);
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 0;
+            text-transform: none;
+            color: var(--ink);
+            margin-bottom: 14px;
+            line-height: 1.25;
+        }
+
+        .subdomain-tile p { font-size: 14px; color: var(--ink-tertiary); max-width: 100%; line-height: 1.6; }
+
+        .subdomain-tile .tile-arrow { display: block; margin-top: 28px; font-size: 12px; font-weight: 400; letter-spacing: 0.08em; color: var(--ink-tertiary); transition: color 0.2s; }
+        .subdomain-tile:hover .tile-arrow { color: var(--ink); }
+
+        @media (max-width: 960px) {
+            .page-header { padding: 120px 30px 60px; }
+            .body-section { padding: 60px 30px; }
+            .subdomains-section { padding: 60px 30px; }
+            .subdomains-grid { grid-template-columns: 1fr; }
+            .subdomain-tile { border-right: none; border-bottom: 1px solid var(--rule); }
+            .subdomain-tile:last-child { border-bottom: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="/" class="logo">SYGNODE.</a>
+            <div class="nav-links">
+                <a href="/sobre">Sobre</a>
+                <a href="/contacto">Contacto</a>
+                <a href="/contacto?dominio=infraestructura-energetica" class="nav-cta">Conversar</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <span class="label">Infraestructura energética</span>
+        <h1>Tres sub-dominios donde la falla rara vez es local: redes eléctricas, hidrógeno verde y prevención de incendios forestales en interfaz humana.</h1>
+    </div>
+
+    <div class="body-section">
+        <p>Los tres dominios comparten una propiedad operacional: la falla, cuando aparece, se propaga rápido y por rutas que no siempre coinciden con la topología visible del sistema. La intervención efectiva depende de identificar el nodo correcto antes de que el evento ocurra, no de responder bien una vez que ya está en curso.</p>
+        <p>SYGNODE trabaja sobre los tres dominios con la misma orientación: anticipar dónde se va a romper primero, en qué orden conviene intervenir, y con qué margen de tiempo. Las soluciones específicas y los operadores objetivo cambian entre los tres.</p>
+    </div>
+
+    <div class="subdomains-section">
+        <span class="label">Sub-dominios</span>
+        <div class="subdomains-grid">
+
+            <a href="/infraestructura-energetica/redes" class="subdomain-tile">
+                <h3>Redes eléctricas</h3>
+                <p>Operadores de transmisión y distribución. Anticipación de fallas en cascada, mantenimiento preventivo priorizado, gestión de despacho bajo restricción.</p>
+                <span class="tile-arrow">→</span>
+            </a>
+
+            <a href="/infraestructura-energetica/hidrogeno" class="subdomain-tile">
+                <h3>Hidrógeno verde</h3>
+                <p>Productores en operación, dueños de megaproyectos, y EPCs que los construyen. Tres operadores con problemas distintos en un mismo dominio.</p>
+                <span class="tile-arrow">→</span>
+            </a>
+
+            <a href="/infraestructura-energetica/incendios-forestales" class="subdomain-tile">
+                <h3>Prevención de incendios forestales</h3>
+                <p>Para zonas de interfaz humana. Anticipación en función de condiciones acumuladas, priorización de patrullaje, y reducción del tiempo entre detección e intervención.</p>
+                <span class="tile-arrow">→</span>
+            </a>
+
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-inner">
+            <span class="footer-brand">SYGNODE · [razón social] · [RUT] · [año]</span>
+            <div class="footer-links">
+                <a href="/contacto">Contacto</a>
+                <a href="/legal/politica-de-privacidad">Privacidad</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

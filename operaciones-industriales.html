@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Operaciones industriales — Activos críticos cuya parada cuesta más que su mantenimiento. SYGNODE.">
+    <title>Operaciones industriales — SYGNODE</title>
+    <link rel="canonical" href="https://sygnode.cl/operaciones-industriales">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/shared.css">
+
+    <style>
+        .page-header {
+            padding-top: 160px;
+            padding-bottom: 80px;
+            padding-left: 60px;
+            padding-right: 60px;
+            max-width: 1280px;
+            margin: 0 auto;
+            border-bottom: 1px solid var(--rule);
+        }
+        .page-header h1 { margin-top: 20px; margin-bottom: 32px; max-width: 720px; }
+        .problem-block {
+            padding: 80px 60px;
+            max-width: 1280px;
+            margin: 0 auto;
+            border-bottom: 1px solid var(--rule);
+        }
+        .problem-block h2 { max-width: 640px; margin-bottom: 48px; }
+        .problem-paragraphs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0;
+            border: 1px solid var(--rule);
+        }
+        .problem-para { padding: 44px 40px; border-right: 1px solid var(--rule); }
+        .problem-para:last-child { border-right: none; }
+        .problem-para p { font-size: 15px; line-height: 1.75; color: var(--ink-secondary); max-width: 100%; }
+        .para-label {
+            font-family: var(--sans);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--ink-tertiary);
+            display: block;
+            margin-bottom: 16px;
+        }
+        .content-section { padding: 80px 60px; max-width: 1280px; margin: 0 auto; }
+        .output-list { margin-top: 40px; border-top: 1px solid var(--rule); }
+        .output-item {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 48px;
+            padding: 32px 0;
+            border-bottom: 1px solid var(--rule);
+            align-items: baseline;
+        }
+        .output-item h3 { font-size: 11px; color: var(--ink-tertiary); margin-bottom: 0; }
+        .output-item p { font-size: 15px; color: var(--ink-secondary); max-width: 100%; margin: 0; }
+        .lead-magnet-section {
+            background: var(--paper);
+            border-top: 1px solid var(--rule);
+            border-bottom: 1px solid var(--rule);
+            padding: 80px 60px;
+        }
+        @media (max-width: 960px) {
+            .page-header { padding: 120px 30px 60px; }
+            .problem-block { padding: 60px 30px; }
+            .problem-paragraphs { grid-template-columns: 1fr; }
+            .problem-para { border-right: none; border-bottom: 1px solid var(--rule); }
+            .problem-para:last-child { border-bottom: none; }
+            .content-section { padding: 60px 30px; }
+            .output-item { grid-template-columns: 1fr; gap: 8px; }
+            .lead-magnet-section { padding: 60px 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="/" class="logo">SYGNODE.</a>
+            <div class="nav-links">
+                <a href="/sobre">Sobre</a>
+                <a href="/contacto">Contacto</a>
+                <a href="/contacto?dominio=operaciones-industriales" class="nav-cta">Conversar</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <span class="label">Operaciones industriales</span>
+        <h1>Para flotas y plantas de manufactura: activos críticos cuya parada cuesta más que su mantenimiento, y fallas que se propagan antes de aparecer en el reporte.</h1>
+    </div>
+
+    <div class="problem-block">
+        <h2>Una parada no planificada empieza con una señal que estaba ahí.</h2>
+        <div class="problem-paragraphs">
+            <div class="problem-para">
+                <span class="para-label">La escena</span>
+                <p>Un activo crítico se detiene un martes a las 15:00. La planta o la flota pierde horas-equivalente, que se traducen en penalizaciones contractuales o en costos directos. En la revisión post-evento se detecta que el activo había mostrado una desviación de comportamiento en las dos semanas previas, pero estaba dentro de los rangos de operación nominales.</p>
+            </div>
+            <div class="problem-para">
+                <span class="para-label">Cuando nadie lo ve venir</span>
+                <p>El costo de la parada no se atribuye al programa de mantenimiento, sino a "mala suerte" o "fatiga del componente". La misma falla puede repetirse en otro activo del mismo tipo seis meses después.</p>
+            </div>
+            <div class="problem-para">
+                <span class="para-label">Lo que entrega SYGNODE</span>
+                <p>Identificación temprana de activos cuyo comportamiento se está desacoplando del patrón histórico del resto de la flota, antes de que la desviación cruce el umbral nominal. La salida operativa es una lista priorizada de activos para inspección, con la ventana de tiempo donde la intervención es todavía barata.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <h2>El programa de mantenimiento se ejecuta por calendario, no por estado.</h2>
+        <div class="problem-paragraphs">
+            <div class="problem-para">
+                <span class="para-label">La escena</span>
+                <p>El mantenimiento preventivo está programado por horas de uso, kilómetros o ciclos. Algunos activos llegan al ciclo en estado perfecto; el costo del mantenimiento es el mismo. Otros activos llegan al ciclo ya degradados; el mantenimiento programado no cubre lo que necesitan, y la falla ocurre antes del siguiente ciclo.</p>
+            </div>
+            <div class="problem-para">
+                <span class="para-label">Cuando nadie lo ve venir</span>
+                <p>El presupuesto de mantenimiento crece o se mantiene estable, pero la disponibilidad real no mejora. La conclusión interna termina siendo "hay que invertir más en mantenimiento".</p>
+            </div>
+            <div class="problem-para">
+                <span class="para-label">Lo que entrega SYGNODE</span>
+                <p>Una clasificación dinámica de cada activo según su trayectoria reciente, con recomendación de qué activos pueden estirar su ciclo y cuáles necesitan intervención adelantada. La salida operativa es un programa de mantenimiento ajustado semana a semana, con justificación dato por activo.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <h2>Una falla en un activo arrastra a otros y nadie modeló esa dependencia.</h2>
+        <div class="problem-paragraphs">
+            <div class="problem-para">
+                <span class="para-label">La escena</span>
+                <p>El activo A falla. Como consecuencia, el activo B asume parte de su carga. Tres semanas después, B falla por sobrecarga. Las dos fallas se registran como independientes en el sistema, pero la segunda fue consecuencia de la primera.</p>
+            </div>
+            <div class="problem-para">
+                <span class="para-label">Cuando nadie lo ve venir</span>
+                <p>La cascada se atribuye a "un mal mes". El refuerzo se hace activo por activo, sin entender que la fragilidad estaba en la topología de cómo se distribuía la carga.</p>
+            </div>
+            <div class="problem-para">
+                <span class="para-label">Lo que entrega SYGNODE</span>
+                <p>Un mapeo de qué activos absorben carga de qué otros activos cuando hay fallas, y qué activos están en posiciones donde una falla se propaga. La salida operativa es una lista de activos que conviene reforzar o redundar, ordenada por cuánto desestresa al sistema completo, no por cuánto vale el activo individual.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="full-bleed">
+        <div class="container">
+            <span class="label">Lo que no hacemos</span>
+            <div class="exclusion-note" style="margin-top: 32px;">
+                <p>No reemplazamos el sistema CMMS ni el ERP de la planta. Trabajamos sobre los datos que esos sistemas ya generan. No prescribimos qué pieza cambiar — entregamos la priorización y el equipo de mantenimiento aplica su criterio técnico. No operamos sin al menos seis meses de histórico de eventos por activo; sin ese histórico, la calibración no es posible.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <span class="label">Forma de salida</span>
+        <p style="margin-top: 20px; font-size: 15px; color: var(--ink-secondary); max-width: 64ch;">Un panel operacional para el gerente de mantenimiento, con tres vistas: activos en zona de inspección anticipada, ajuste semanal del programa de mantenimiento, y mapa de propagación de fallas en la flota o la planta.</p>
+    </div>
+
+    <div class="full-bleed">
+        <div class="container">
+            <span class="label">Cómo se empieza</span>
+            <div class="scope-list" style="margin-top: 32px;">
+                <div class="scope-item">
+                    <span class="scope-num">1</span>
+                    <h3>Conversación de scoping</h3>
+                    <p>Con el gerente de operaciones o de mantenimiento. Una o dos horas.</p>
+                </div>
+                <div class="scope-item">
+                    <span class="scope-num">2</span>
+                    <h3>Piloto sobre un subconjunto acotado</h3>
+                    <p>Una línea, una flota regional, un grupo de equipos. Cuatro a ocho semanas.</p>
+                </div>
+                <div class="scope-item">
+                    <span class="scope-num">3</span>
+                    <h3>Revisión conjunta</h3>
+                    <p>Y decisión sobre alcance ampliado.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lead-magnet-section">
+        <span class="label">Material de referencia</span>
+        <div class="lead-magnet-block" style="margin-top: 32px;">
+            <h3>Próximamente</h3>
+            <p>Material sobre mantenimiento basado en estado de activo para gerentes de operaciones. Dejá tu correo para acceso anticipado.</p>
+            <form class="lead-magnet-form" onsubmit="return false;">
+                <input type="text" placeholder="Nombre" autocomplete="off">
+                <input type="text" placeholder="Empresa" autocomplete="off">
+                <input type="email" placeholder="Email" autocomplete="off">
+                <button type="submit" class="btn-primary" style="margin-top: 4px; width: 100%; text-align: center;">Notificarme</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="final-cta-section">
+        <h2>Conversemos sobre tu planta o tu flota.</h2>
+        <div class="cta-group" style="justify-content: center;">
+            <a href="/contacto?dominio=operaciones-industriales" class="btn-primary">Iniciar conversación</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-inner">
+            <span class="footer-brand">SYGNODE · [razón social] · [RUT] · [año]</span>
+            <div class="footer-links">
+                <a href="/contacto">Contacto</a>
+                <a href="/legal/politica-de-privacidad">Privacidad</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
