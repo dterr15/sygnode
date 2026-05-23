@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -130,11 +130,21 @@
         </nav>
     </header>
 
-    <div class="page-header">
-        <a href="/infraestructura-energetica" class="breadcrumb">← Infraestructura energética</a>
-        <span class="label">Redes eléctricas</span>
-        <h1>Para operadores de transmisión y distribución: anticipación de fallas que se propagan, decisión de despacho bajo restricciones físicas, y mantenimiento preventivo priorizado donde la red es más frágil.</h1>
-    </div>
+    <!-- VERTICAL HERO -->
+    <section class="vertical-hero" id="hero">
+        <div class="parallax-wrapper" id="parallaxWrapper">
+            <div class="ken-burns-wrapper">
+                <div class="hero-placeholder hero-image-kb"></div>
+            </div>
+        </div>
+        <div class="vertical-hero-overlay"></div>
+        <div class="vertical-hero-text">
+            <a href="/infraestructura-energetica" class="breadcrumb" style="color:rgba(239,231,217,0.6);">← Infraestructura energética</a>
+            <span class="label" style="color:rgba(239,231,217,0.6);">Redes eléctricas</span>
+            <h1>Para operadores de transmisión y distribución: anticipación de fallas que se propagan, decisión de despacho bajo restricciones físicas, y mantenimiento preventivo priorizado donde la red es más frágil.</h1>
+            <p class="lead">La cascada empieza en un nodo. El sistema ya lo sabía.</p>
+        </div>
+    </section>
 
     <div class="problem-block">
         <h2>Una falla local se vuelve sistémica antes de que el operador entienda qué está pasando.</h2>
@@ -258,5 +268,64 @@
         </div>
     </footer>
 
+
+    <script>
+        // Parallax + fade-up — Primitivas 1 y 3
+        (function() {
+            // ─── FADE-UP (Primitiva 1) ───
+            var fadeEls = document.querySelectorAll('.fade-up');
+            if (window.IntersectionObserver) {
+                var fadeObs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(e) {
+                        if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
+                    });
+                }, { threshold: 0.1 });
+                fadeEls.forEach(function(el) { fadeObs.observe(el); });
+            } else {
+                fadeEls.forEach(function(el) { el.classList.add('visible'); });
+            }
+
+            // ─── PARALLAX (Primitiva 3) ───
+            var hero = document.getElementById('hero');
+            var wrapper = document.getElementById('parallaxWrapper');
+            if (!hero || !wrapper) return;
+
+            // Respect prefers-reduced-motion
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            var ticking = false;
+            var active = false;
+
+            function applyParallax() {
+                if (!active) return;
+                var y = -(window.scrollY * 0.3);
+                wrapper.style.transform = 'translate3d(0,' + y + 'px,0)';
+                ticking = false;
+            }
+
+            function onScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(applyParallax);
+                    ticking = true;
+                }
+            }
+
+            // Only run the scroll listener while hero is visible
+            var heroObs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (e.isIntersecting) {
+                        active = true;
+                        wrapper.style.willChange = 'transform';
+                        window.addEventListener('scroll', onScroll, { passive: true });
+                    } else {
+                        active = false;
+                        wrapper.style.willChange = 'auto';
+                        window.removeEventListener('scroll', onScroll);
+                    }
+                });
+            }, { threshold: 0 });
+            heroObs.observe(hero);
+        })();
+    </script>
 </body>
 </html>

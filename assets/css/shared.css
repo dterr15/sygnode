@@ -518,6 +518,8 @@ footer {
 }
 
 /* ─── VERTICAL HERO (subpages with image) ─── */
+
+/* Outer container: clips the parallax movement */
 .vertical-hero {
     position: relative;
     width: 100%;
@@ -527,19 +529,36 @@ footer {
     align-items: flex-end;
 }
 
-.vertical-hero picture,
-.vertical-hero img {
+/* Parallax wrapper: taller than viewport, moves on scroll */
+.parallax-wrapper {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 130svh;
+    /* will-change added/removed by JS when listener is active */
+}
+
+/* Ken Burns wrapper: nested inside parallax-wrapper */
+.ken-burns-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.ken-burns-wrapper img,
+.ken-burns-wrapper picture {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
 }
 
+/* Overlay: fixed to .vertical-hero, not to parallax wrapper */
 .vertical-hero-overlay {
     position: absolute;
     inset: 0;
+    z-index: 1;
     background: linear-gradient(
         180deg,
         rgba(31, 27, 23, 0.0) 0%,
@@ -548,6 +567,7 @@ footer {
     );
 }
 
+/* Hero text: fixed to .vertical-hero, not to parallax wrapper */
 .vertical-hero-text {
     position: relative;
     z-index: 2;
@@ -567,11 +587,18 @@ footer {
     margin-top: var(--space-sm);
 }
 
-/* Hero image placeholder (before real photos) */
+/* Hero image placeholder (solid color until real photos are added) */
 .hero-placeholder {
     background: var(--color-fg-muted);
-    position: absolute;
-    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /* Parallax disabled: wrapper is static, same height as hero */
+    .parallax-wrapper {
+        height: 100svh;
+    }
 }
 
 /* ─── FULL-BLEED SECTIONS ─── */
