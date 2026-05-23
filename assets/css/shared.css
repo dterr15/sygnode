@@ -656,11 +656,27 @@ footer {
     color: var(--color-fg);
 }
 
+.callout-light p,
+.callout-light li {
+    color: var(--color-fg);
+    font-size: 17px;
+    line-height: 1.65;
+}
+
 .callout-dark {
     background: var(--color-fg);
     color: var(--color-bg);
     padding: 32px 36px;
     margin: var(--space-lg) 0;
+    font-size: 18px;
+    line-height: 1.65;
+}
+
+.callout-dark p,
+.callout-dark li,
+.callout-dark p *,
+.callout-dark li * {
+    color: var(--color-bg) !important;
     font-size: 18px;
     line-height: 1.65;
 }
@@ -679,6 +695,13 @@ footer {
     font-size: 17px;
     line-height: 1.65;
     color: var(--color-fg);
+}
+
+.callout-alert p,
+.callout-alert li {
+    color: var(--color-fg);
+    font-size: 17px;
+    line-height: 1.65;
 }
 
 .callout-alert strong {
