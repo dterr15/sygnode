@@ -12,6 +12,7 @@
     --color-bg-alt:   #E5DCC9;
     --color-fg:       #1F1B17;
     --color-fg-muted: #6E665B;
+    --color-accent:   #C84A3F;
 
     --space-2xs:  4px;
     --space-xs:   8px;
@@ -620,6 +621,133 @@ footer {
     padding-inline: clamp(24px, 5vw, 96px);
     max-width: 1280px;
     margin: 0 auto;
+}
+
+/* ─── EYEBROW ─── */
+.eyebrow {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-fg-muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.eyebrow .dash {
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--color-fg-muted);
+    flex-shrink: 0;
+}
+
+/* ─── CALLOUTS ─── */
+.callout-light {
+    background: var(--color-bg-alt);
+    border: 1px solid color-mix(in srgb, var(--color-fg) 10%, transparent);
+    padding: 24px 28px;
+    margin: var(--space-md) 0;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--color-fg);
+}
+
+.callout-dark {
+    background: var(--color-fg);
+    color: var(--color-bg);
+    padding: 32px 36px;
+    margin: var(--space-lg) 0;
+    font-size: 18px;
+    line-height: 1.65;
+}
+
+.callout-dark em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.15em;
+}
+
+.callout-alert {
+    border-left: 3px solid var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg));
+    padding: 20px 24px 20px 28px;
+    margin: var(--space-md) 0;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--color-fg);
+}
+
+.callout-alert strong {
+    color: var(--color-accent);
+}
+
+/* ─── BADGES ─── */
+.badge {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+}
+
+.badge-primary {
+    background: var(--color-fg);
+    color: var(--color-bg);
+}
+
+.badge-secondary {
+    background: var(--color-bg-alt);
+    color: var(--color-fg);
+    border: 1px solid color-mix(in srgb, var(--color-fg) 20%, transparent);
+}
+
+.badge-accent {
+    background: color-mix(in srgb, var(--color-accent) 10%, var(--color-bg));
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+}
+
+/* ─── ACCENT CTA (final CTAs on verticals only) ─── */
+.btn-accent {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color-fg);
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--color-accent);
+    cursor: pointer;
+    transition: opacity 150ms;
+}
+
+.btn-accent:hover { opacity: 0.6; }
+
+/* ─── ACCENT on "Lo que no hacemos" border ─── */
+.exclusion-note {
+    border-left: 3px solid var(--color-accent);
+}
+
+/* ─── DOT — logo accent in footer/nav ─── */
+.accent-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    vertical-align: middle;
+    margin-right: 6px;
 }
 
 /* ─── RESPONSIVE ─── */
