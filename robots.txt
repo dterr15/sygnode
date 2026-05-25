@@ -1,12 +1,36 @@
 User-agent: *
 Sitemap: https://sygnode.cl/sitemap.xml
 
-# Evitar que Googlebot rastree contenido de baja calidad o repetitivo
+# Bloquear rutas irrelevantes
 Disallow: /consulta-gratis
 Disallow: /config/
 Disallow: /wp-content/
 Disallow: /wp-admin/
 Disallow: /*?s=
 
-# Permitir el rastreo de todo lo demás (Home, Servicios, etc.)
+Allow: /
+
+# Permitir explícitamente crawlers de IA generativa
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: cohere-ai
 Allow: /

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://sygnode.cl/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
-  <url><loc>https://sygnode.cl/decision-assurance</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://sygnode.cl/litigios</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://sygnode.cl/operaciones-industriales</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://sygnode.cl/salud-operacional</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://sygnode.cl/inversiones</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://sygnode.cl/infraestructura-energetica</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://sygnode.cl/infraestructura-energetica/redes</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://sygnode.cl/infraestructura-energetica/hidrogeno</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://sygnode.cl/infraestructura-energetica/incendios-forestales</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://sygnode.cl/sobre</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://sygnode.cl/contacto</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://sygnode.cl/</loc><lastmod>2026-05-25</lastmod><priority>1.0</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://sygnode.cl/decision-assurance</loc><lastmod>2026-05-25</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://sygnode.cl/litigios</loc><lastmod>2026-05-25</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://sygnode.cl/operaciones-industriales</loc><lastmod>2026-05-25</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://sygnode.cl/salud-operacional</loc><lastmod>2026-05-25</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://sygnode.cl/inversiones</loc><lastmod>2026-05-25</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://sygnode.cl/infraestructura-energetica</loc><lastmod>2026-05-25</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://sygnode.cl/infraestructura-energetica/redes</loc><lastmod>2026-05-25</lastmod><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://sygnode.cl/infraestructura-energetica/hidrogeno</loc><lastmod>2026-05-25</lastmod><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://sygnode.cl/infraestructura-energetica/incendios-forestales</loc><lastmod>2026-05-25</lastmod><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://sygnode.cl/sobre</loc><lastmod>2026-05-25</lastmod><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://sygnode.cl/contacto</loc><lastmod>2026-05-25</lastmod><priority>0.9</priority><changefreq>monthly</changefreq></url>
 </urlset>
