@@ -351,12 +351,13 @@
                 <div><span class="badge badge-secondary">Próximamente</span></div>
                 <h3>Decisiones de alta exposición</h3>
                 <p>Material sobre decisiones de alta exposición, registro de criterio y detección temprana de supuestos que pueden romper una decisión.</p>
-                <form class="lead-magnet-form" onsubmit="return false;">
-                    <input type="text" placeholder="Nombre" autocomplete="off">
-                    <input type="text" placeholder="Empresa" autocomplete="off">
-                    <input type="email" placeholder="Email" autocomplete="off">
-                    <button type="submit" class="btn-primary" style="margin-top: 4px; width: 100%; text-align: center;">Notificarme</button>
+                <form class="lead-magnet-form" id="notifyForm">
+                    <input type="text" id="notifyNombre" placeholder="Nombre" autocomplete="off" required>
+                    <input type="text" id="notifyEmpresa" placeholder="Empresa" autocomplete="off">
+                    <input type="email" id="notifyEmail" placeholder="Email" autocomplete="off" required>
+                    <button type="submit" class="btn-primary" id="notifyBtn" style="margin-top: 4px; width: 100%; text-align: center;">Notificarme</button>
                 </form>
+                <p id="notifyConfirmation" style="display:none; font-size:16px; color:var(--color-fg-muted); margin-top:12px;">Listo. Te avisamos cuando esté disponible.</p>
             </div>
         </div>
     </div>
@@ -441,6 +442,38 @@
             }, { threshold: 0 });
             heroObs.observe(hero);
         })();
+
+        // ─── NOTIFY FORM ───
+        document.getElementById('notifyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var btn = document.getElementById('notifyBtn');
+            btn.textContent = 'Enviando...';
+            btn.disabled = true;
+            try {
+                var res = await fetch('/api/notify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: document.getElementById('notifyNombre').value,
+                        company: document.getElementById('notifyEmpresa').value,
+                        email: document.getElementById('notifyEmail').value,
+                        source: 'decision-assurance'
+                    })
+                });
+                if (res.ok) {
+                    document.getElementById('notifyForm').style.display = 'none';
+                    document.getElementById('notifyConfirmation').style.display = 'block';
+                } else {
+                    btn.textContent = 'Notificarme';
+                    btn.disabled = false;
+                    alert('Hubo un error. Escríbenos a cs@sygnode.cl');
+                }
+            } catch(err) {
+                btn.textContent = 'Notificarme';
+                btn.disabled = false;
+                alert('Hubo un error. Escríbenos a cs@sygnode.cl');
+            }
+        });
     </script>
 </body>
 </html>
