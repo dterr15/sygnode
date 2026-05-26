@@ -307,7 +307,7 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Una lectura de qué activos en cartera se mueven juntos bajo qué tipo de evento, distinta de la correlación histórica calculada sobre todo el período. La salida operativa es un mapa de exposición real de la cartera, con identificación de qué reorganización marginal reduce la exposición sin sacrificar retorno esperado.</p>
+                <p>Una lectura de qué activos en cartera se mueven juntos bajo qué tipo de evento, distinta de la correlación histórica calculada sobre todo el período. La salida operativa es un mapa de exposición real de la cartera bajo distintos escenarios de evento, con identificación de los activos cuya concentración de riesgo no es visible en el reporte estándar. La decisión de reasignación queda en el asesor; Sygnode entrega la lectura que el asesor lleva a la mesa.</p>
             </div>
         </div>
     </div>
@@ -325,7 +325,7 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Identificación temprana de clientes cuyo patrón de interacción se está desacoplando del patrón de los clientes que sí permanecen. La salida operativa es una lista mensual de clientes en zona de riesgo, con el patrón específico y la recomendación operativa: llamada, revisión gratuita, propuesta de ajuste de cartera.</p>
+                <p>Identificación temprana de clientes cuyo patrón de contacto, tiempo de respuesta y tipo de consulta se está desacoplando del patrón histórico de los clientes que sí permanecen. Sygnode trabaja con metadata de interacción que el asesor ya tiene en su CRM o agenda; no accede al contenido de las conversaciones ni a la cartera del cliente para este análisis. La salida operativa es una lista mensual de clientes en zona de riesgo, con el patrón específico que activó la señal y la recomendación operativa: llamada, revisión gratuita, propuesta de ajuste de cartera.</p>
             </div>
         </div>
     </div>
@@ -343,8 +343,16 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Una priorización mensual de qué carteras necesitan revisión profunda en función de su estado actual, no del calendario rotativo. La salida operativa es una lista ordenada para la semana, con el motivo específico que activó la prioridad de cada cartera.</p>
+                <p>Una priorización mensual de qué carteras necesitan revisión profunda según su estado actual, no según el calendario rotativo. La salida operativa es una lista ordenada para la semana, con el motivo específico que activó la prioridad de cada cartera — concentración de exposición, evento exógeno que afecta posiciones específicas, cambio en patrón de interacción del cliente, o combinación de los anteriores.</p>
             </div>
+        </div>
+    </div>
+
+    <!-- CTA CONVERSAR (antes de límites) -->
+    <div class="final-cta-section">
+        <p style="font-size:18px; line-height:1.7; color:var(--color-bg); max-width:68ch; margin: 0 auto var(--space-md);">Si tu última revisión mensual dejó alguna de estas tres situaciones sin detectar a tiempo, una sesión de 45 minutos con tu cartera de clientes y una muestra anonimizada de carteras en pantalla basta para mostrar qué señales había antes del evento.</p>
+        <div class="cta-group" style="justify-content: center;">
+            <a href="/contacto?dominio=inversiones" class="btn-accent">Agendar →</a>
         </div>
     </div>
 
@@ -409,6 +417,30 @@
             <a href="/contacto?dominio=inversiones" class="btn-accent">Iniciar conversación →</a>
         </div>
     </div>
+
+    <!-- FAQ -->
+    <section class="faq-section" aria-label="Preguntas frecuentes sobre inversiones y correlación de riesgo">
+        <div class="eyebrow"><span class="dash"></span>Preguntas frecuentes</div>
+        <div class="faq-list">
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Qué es la correlación oculta en una cartera de inversiones?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>La correlación oculta ocurre cuando activos que parecen independientes bajo condiciones normales se mueven juntos ante un evento específico. Este evento no aparece en los modelos históricos de correlación porque es nuevo o poco frecuente. Los modelos convencionales de riesgo asumen una matriz de correlación estacionaria — lo que funcionó en los últimos cinco años funciona en los próximos cinco. Esa asunción es la que falla cuando más se necesita.</p>
+                    <p>Trabajamos sobre la identificación anticipada de estos vínculos antes de que el evento los active, integrando señales operacionales, de flujo de información, y de estructura de deuda entre activos del mismo sector. La correlación real en un evento extremo se detecta antes del evento — no después.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Cuándo necesita una cartera soporte de anticipación operacional?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>Cuando la cartera tiene exposición a sectores con alta interdependencia operacional (energía, minería, infraestructura), cuando los modelos de riesgo existentes se construyeron sobre datos históricos que no contemplan el contexto actual, o cuando un evento reciente cambió la estructura de correlación sin que los modelos lo hayan incorporado.</p>
+                    <p>Los contextos específicos donde el soporte tiene mayor retorno: carteras con más de un activo en la misma cadena de suministro energético, carteras con activos cuyo perfil de riesgo cambió por modificación normativa o climática, y carteras con activos en regiones donde los eventos extremos tienen correlación geográfica (cuencas hidrológicas, corredores de transmisión, zonas de riesgo de incendio).</p>
+                </div>
+            </details>
+
+        </div>
+    </section>
 
     <footer>
         <div class="footer-inner">
@@ -514,5 +546,6 @@
             }
         });
     </script>
+    <script src="/assets/js/faq.js" defer></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Hidrógeno verde — SYGNODE anticipa riesgos operacionales en megaproyectos de hidrógeno verde: productores, dueños de proyecto y EPCs con exposición a fallas de propagación compleja.">
+    <meta name="description" content="Hidrógeno verde — SYGNODE anticipa riesgos operacionales en megaproyectos de hidrógeno verde: productores, desarrolladores de proyecto y EPCs con exposición a fallas de propagación compleja.">
     <title>Hidrógeno verde — SYGNODE</title>
     <link rel="canonical" href="https://sygnode.cl/infraestructura-energetica/hidrogeno">
 
@@ -11,7 +11,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://sygnode.cl/infraestructura-energetica/hidrogeno">
     <meta property="og:title" content="Hidrógeno verde — SYGNODE">
-    <meta property="og:description" content="Anticipación de riesgos operacionales en megaproyectos de hidrógeno verde para productores, dueños de proyecto y EPCs.">
+    <meta property="og:description" content="Anticipación de riesgos operacionales en megaproyectos de hidrógeno verde para productores, desarrolladores de proyecto y EPCs.">
     <meta property="og:image" content="https://sygnode.cl/assets/img/Logo SYGNODE 500p.webp">
     <meta property="og:locale" content="es_CL">
     <meta property="og:site_name" content="SYGNODE">
@@ -29,7 +29,7 @@
           "@type": "Service",
           "@id": "https://sygnode.cl/infraestructura-energetica/hidrogeno#service",
           "name": "Hidrógeno verde — Anticipación operacional en megaproyectos",
-          "description": "SYGNODE anticipa riesgos operacionales en megaproyectos de hidrógeno verde, integrando señales distribuidas entre productores, dueños de proyecto y EPCs para identificar fallas antes de que se propaguen.",
+          "description": "SYGNODE anticipa riesgos operacionales en megaproyectos de hidrógeno verde, integrando señales distribuidas entre productores, desarrolladores de proyecto y EPCs para identificar fallas antes de que se propaguen.",
           "provider": {"@id": "https://sygnode.cl/#organization"},
           "serviceType": "Anticipación operacional en proyectos de hidrógeno verde",
           "areaServed": {"@type": "Country", "name": "Chile"},
@@ -50,7 +50,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/shared.css">
 
     <style>
         .page-header {
@@ -230,6 +230,53 @@
             }
             .problem-para:last-child { border-bottom: none; }
         }
+
+        /* ─── ACTOR SELECTOR ─── */
+        .actor-selector {
+            padding: var(--space-xl) clamp(24px, 5vw, 96px);
+            max-width: 1280px;
+            margin: 0 auto;
+            border-bottom: 1px solid rgba(31, 27, 23, 0.15);
+        }
+
+        .actor-tabs {
+            display: flex;
+            gap: 0;
+            margin-top: var(--space-md);
+            border: 1px solid rgba(31, 27, 23, 0.15);
+            width: fit-content;
+        }
+
+        .actor-tab {
+            font-family: var(--sans);
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--color-fg-muted);
+            background: transparent;
+            border: none;
+            border-right: 1px solid rgba(31, 27, 23, 0.15);
+            padding: 12px 28px;
+            cursor: pointer;
+            transition: background 150ms, color 150ms;
+            letter-spacing: 0.01em;
+        }
+
+        .actor-tab:last-child { border-right: none; }
+
+        .actor-tab:hover {
+            color: var(--color-fg);
+            background: rgba(31, 27, 23, 0.04);
+        }
+
+        .actor-tab.active {
+            background: var(--color-fg);
+            color: var(--color-bg);
+        }
+
+        @media (max-width: 767px) {
+            .actor-tabs { width: 100%; }
+            .actor-tab { flex: 1; padding: 12px 16px; text-align: center; }
+        }
     </style>
 </head>
 <body>
@@ -261,7 +308,18 @@
         </div>
     </section>
 
+    <!-- SELECTOR DE ACTOR -->
+    <div class="actor-selector" id="actorSelector">
+        <div class="eyebrow"><span class="dash"></span>¿Cuál es tu rol?</div>
+        <div class="actor-tabs">
+            <button class="actor-tab active" data-actor="productor">Productor</button>
+            <button class="actor-tab" data-actor="desarrollador">Desarrollador</button>
+            <button class="actor-tab" data-actor="epc">EPC</button>
+        </div>
+    </div>
+
     <!-- OPERADOR 1: PRODUCTORES -->
+    <div class="actor-block" data-actor="productor">
     <div class="operator-header">
         <div class="eyebrow"><span class="dash"></span>Operador · Productor</div>
         <h2>Plantas que ya producen hidrógeno y operan dentro de un mercado y un marco regulatorio en formación. <span class="badge badge-primary" style="vertical-align: middle; margin-left: 8px;">OPERACIÓN</span></h2>
@@ -280,7 +338,7 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Identificación de desviaciones tempranas que históricamente preceden eventos mayores, con la ventana de tiempo y la ruta probable. La salida operativa es una alerta priorizada para el equipo de operación, con el dato y el patrón histórico que la activó.</p>
+                <p>Identificación de desviaciones que se desacoplan de la trayectoria operacional propia de la planta y del patrón conocido de eventos de la industria, con la ventana de tiempo y la ruta probable. La salida operativa es una alerta priorizada para el equipo de operación, con el dato, el patrón histórico cuando existe, y la analogía con eventos en plantas comparables cuando el histórico propio es corto.</p>
             </div>
         </div>
     </div>
@@ -298,16 +356,26 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Un modelo de decisión semanal que integra precio de energía, demanda esperada, estado de los activos y restricciones regulatorias. La salida operativa es una recomendación de patrón operativo para la semana entrante, con los supuestos explícitos y los puntos de revisión.</p>
+                <p>Un modelo de decisión semanal que integra precio de energía, demanda esperada, estado de los activos y restricciones regulatorias. La salida operativa es una lectura del patrón operativo óptimo para la semana entrante bajo escenarios alternativos, con los supuestos explícitos y los puntos de revisión. El equipo de operación toma la decisión; Sygnode entrega la lectura comparada.</p>
             </div>
         </div>
     </div>
 
-    <!-- OPERADOR 2: DUEÑOS DE MEGAPROYECTO -->
+    <!-- CTA PRODUCTOR -->
+    <div class="final-cta-section">
+        <p style="font-size:18px; line-height:1.7; color:var(--color-bg); max-width:68ch; margin: 0 auto var(--space-md);">Si en los últimos seis meses tuviste una parada cuya señal antecedente apareció en post-mortem, una sesión de 45 minutos sobre tu historial operacional y eventos basta para mostrar qué patrones aparecen recurrentemente en tu planta.</p>
+        <div class="cta-group" style="justify-content: center;">
+            <a href="/contacto?dominio=hidrogeno" class="btn-accent">Agendar →</a>
+        </div>
+    </div>
+    </div><!-- /actor-block productor -->
+
+    <!-- OPERADOR 2: DESARROLLADORES DE MEGAPROYECTO -->
+    <div class="actor-block" data-actor="desarrollador">
     <div class="operator-divider"></div>
 
     <div class="operator-header">
-        <div class="eyebrow"><span class="dash"></span>Operador · Dueño</div>
+        <div class="eyebrow"><span class="dash"></span>Operador · Desarrollador</div>
         <h2>Inversores y desarrolladores de proyectos de gran escala en fase de construcción, con horizontes de tres a siete años antes de operación. <span class="badge badge-primary" style="vertical-align: middle; margin-left: 8px;">DESARROLLO</span></h2>
     </div>
 
@@ -330,11 +398,11 @@
     </div>
 
     <div class="problem-block">
-        <h2>La decisión de pasar a la siguiente fase ocurre con información asimétrica entre el dueño y el EPC.</h2>
+        <h2>La decisión de pasar a la siguiente fase ocurre con información asimétrica entre el desarrollador y el EPC.</h2>
         <div class="problem-paragraphs">
             <div class="problem-para">
                 <span class="para-label">La escena</span>
-                <p>Al cierre de cada fase del proyecto, el dueño revisa entregables y autoriza la siguiente fase. La información que tiene el dueño proviene principalmente del EPC. La información que tiene el EPC sobre el estado real del proyecto es más detallada y más actualizada. La asimetría se reduce con auditorías y supervisión, pero no se elimina.</p>
+                <p>Al cierre de cada fase del proyecto, el desarrollador revisa entregables y autoriza la siguiente fase. La información que tiene el desarrollador proviene principalmente del EPC. La información que tiene el EPC sobre el estado real del proyecto es más detallada y más actualizada. La asimetría se reduce con auditorías y supervisión, pero no se elimina.</p>
             </div>
             <div class="problem-para">
                 <span class="para-label">Cuando nadie lo ve venir</span>
@@ -342,17 +410,27 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Una lectura del estado del proyecto construida a partir de señales operativas independientes del reporte del EPC — ritmo de entregas, patrones de subcontratación, indicadores de supply chain. La salida operativa es un panel del dueño con los indicadores cruzados, sus tendencias, y los puntos de divergencia con el reporte del EPC cuando los hay.</p>
+                <p>Una lectura del estado del proyecto construida a partir de señales operativas que el dueño ya tiene acceso pero raramente cruza: cronograma de entregas vs. plan, patrones de subcontratación y rotación de equipos, indicadores públicos de supply chain de proveedores críticos, y comparación con la trayectoria de proyectos similares en la misma etapa. La salida operativa es un panel del dueño con los indicadores cruzados, sus tendencias, y los puntos de divergencia con el reporte del EPC cuando los hay.</p>
             </div>
         </div>
     </div>
 
+    <!-- CTA DESARROLLADOR -->
+    <div class="final-cta-section">
+        <p style="font-size:18px; line-height:1.7; color:var(--color-bg); max-width:68ch; margin: 0 auto var(--space-md);">Si estás antes de un gate decision importante y el reporte del EPC es tu fuente principal, una sesión de 45 minutos cruzando ese reporte con señales operativas independientes basta para identificar dónde está la divergencia, si existe.</p>
+        <div class="cta-group" style="justify-content: center;">
+            <a href="/contacto?dominio=hidrogeno" class="btn-accent">Agendar →</a>
+        </div>
+    </div>
+    </div><!-- /actor-block desarrollador -->
+
     <!-- OPERADOR 3: EPCs -->
+    <div class="actor-block" data-actor="epc">
     <div class="operator-divider"></div>
 
     <div class="operator-header">
         <div class="eyebrow"><span class="dash"></span>Operador · EPC</div>
-        <h2>Empresas que ejecutan la construcción de plantas de hidrógeno, enfrentando un tipo de proyecto con tecnología no estandarizada y supply chain en formación. <span class="badge badge-primary" style="vertical-align: middle; margin-left: 8px;">EJECUCIÓN</span></h2>
+        <h2>Empresas que ejecutan la construcción de plantas de hidrógeno, con un tipo de proyecto donde la tecnología, el supply chain y las prácticas de ingeniería están consolidándose en paralelo a su propia ejecución. <span class="badge badge-primary" style="vertical-align: middle; margin-left: 8px;">EJECUCIÓN</span></h2>
     </div>
 
     <div class="problem-block">
@@ -364,7 +442,7 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Cuando nadie lo ve venir</span>
-                <p>El atraso se atribuye al proveedor. La penalización se discute con el dueño. La rentabilidad del proyecto cae.</p>
+                <p>El atraso se atribuye al proveedor. La penalización se discute con el dueño. La rentabilidad del proyecto cae. El EPC absorbe el costo de un riesgo cuya raíz era estructural del supply chain, no operacional de la ejecución.</p>
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
@@ -378,24 +456,33 @@
         <div class="problem-paragraphs">
             <div class="problem-para">
                 <span class="para-label">La escena</span>
-                <p>El dueño del proyecto va a operar la planta cuando esté terminada, pero todavía no la opera. Los equipos técnicos del dueño se forman durante la construcción. Las decisiones que requieren input operacional del cliente — diseño de detalle, especificaciones, validación de pruebas — encuentran a un cliente que está aprendiendo en paralelo.</p>
+                <p>El desarrollador del proyecto va a operar la planta cuando esté terminada, pero todavía no la opera. Los equipos técnicos del desarrollador se forman durante la construcción. Las decisiones que requieren input operacional del cliente — diseño de detalle, especificaciones, validación de pruebas — encuentran a un cliente que está aprendiendo en paralelo.</p>
             </div>
             <div class="problem-para">
                 <span class="para-label">Cuando nadie lo ve venir</span>
-                <p>Las decisiones se demoran, las especificaciones se ajustan tarde, los rework se acumulan. La responsabilidad queda difusa entre dueño y EPC.</p>
+                <p>Las decisiones se demoran, las especificaciones se ajustan tarde, los rework se acumulan. La responsabilidad queda difusa entre desarrollador y EPC.</p>
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Identificación temprana de las decisiones del proyecto que requieren input del cliente y todavía no lo tienen, antes de que se vuelvan ruta crítica. La salida operativa es una lista mensual de decisiones pendientes con su ventana de tiempo y el responsable nominal.</p>
+                <p>Identificación temprana de las decisiones del proyecto que requieren input del cliente y todavía no lo tienen, antes de que se vuelvan ruta crítica. Una lista mensual de decisiones pendientes con su ventana de tiempo, el responsable nominal en el contrato, y el impacto proyectado sobre ruta crítica si la decisión no se resuelve a tiempo.</p>
             </div>
         </div>
     </div>
+
+    <!-- CTA EPC -->
+    <div class="final-cta-section">
+        <p style="font-size:18px; line-height:1.7; color:var(--color-bg); max-width:68ch; margin: 0 auto var(--space-md);">Si tu proyecto actual tiene componentes críticos en zona de riesgo de supply chain o decisiones del cliente atrasadas, una sesión de 45 minutos sobre el cronograma y la matriz de decisiones pendientes basta para identificar dónde la exposición es mayor.</p>
+        <div class="cta-group" style="justify-content: center;">
+            <a href="/contacto?dominio=hidrogeno" class="btn-accent">Agendar →</a>
+        </div>
+    </div>
+    </div><!-- /actor-block epc -->
 
     <div class="full-bleed">
         <div class="container">
             <div class="eyebrow"><span class="dash"></span>Límites · Alcance</div>
             <div class="callout-alert">
-                <p>No reemplazamos los sistemas de control de proyecto del dueño ni los del EPC. Trabajamos como capa analítica sobre los datos que esos sistemas ya generan. No emitimos opiniones técnicas sobre el diseño de planta de hidrógeno — el alcance es operacional, no de ingeniería de proceso. No operamos sin acceso a los datos del proyecto; si la confidencialidad bloquea ese acceso, trabajamos in situ o no trabajamos.</p>
+                <p>No reemplazamos los sistemas de control de proyecto del desarrollador ni los del EPC. Trabajamos como capa analítica sobre los datos que esos sistemas ya generan. No emitimos opiniones técnicas sobre el diseño de planta de hidrógeno — el alcance es operacional, no de ingeniería de proceso. No operamos sin acceso a los datos del proyecto; si la confidencialidad bloquea ese acceso, trabajamos in situ o no trabajamos.</p>
             </div>
         </div>
     </div>
@@ -403,7 +490,7 @@
     <div class="content-section">
         <div class="eyebrow"><span class="dash"></span>Entrega · Qué recibe el cliente</div>
         <div class="callout-light" style="margin-top: 0;">
-            <p>Entregas distintas según operador. Para productores: alertas operacionales y recomendación de patrón operativo semanal. Para dueños: panel de intersecciones de riesgo y panel de estado cruzado del proyecto. Para EPCs: panel de salud del supply chain y lista mensual de decisiones pendientes del cliente.</p>
+            <p>Entregas distintas según operador. Para productores: alertas operacionales y recomendación de patrón operativo semanal. Para desarrolladores: panel de intersecciones de riesgo y panel de estado cruzado del proyecto. Para EPCs: panel de salud del supply chain y lista mensual de decisiones pendientes del cliente.</p>
         </div>
     </div>
 
@@ -439,7 +526,7 @@
             <form class="lead-magnet-form" id="notifyForm">
                 <input type="text" id="notifyNombre" placeholder="Nombre" autocomplete="off" required>
                 <input type="text" id="notifyEmpresa" placeholder="Empresa" autocomplete="off">
-                <input type="text" id="notifyRol" placeholder="Rol (productor / dueño / EPC)" autocomplete="off">
+                <input type="text" id="notifyRol" placeholder="Rol (productor / desarrollador / EPC)" autocomplete="off">
                 <input type="email" id="notifyEmail" placeholder="Email" autocomplete="off" required>
                 <button type="submit" class="btn-primary" id="notifyBtn" style="margin-top: 4px; width: 100%; text-align: center;">Notificarme</button>
             </form>
@@ -453,6 +540,50 @@
             <a href="/contacto?dominio=hidrogeno" class="btn-accent">Iniciar conversación →</a>
         </div>
     </div>
+
+    <!-- FAQ -->
+    <section class="faq-section" aria-label="Preguntas frecuentes sobre hidrógeno verde">
+        <div class="eyebrow"><span class="dash"></span>Preguntas frecuentes</div>
+        <div class="faq-list">
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Cuáles son los riesgos operativos y de seguridad más críticos en plantas de hidrógeno verde?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>La respuesta intuitiva apunta a lo visible: fugas, deflagración, fragilización por hidrógeno en aceros. Esos riesgos son reales, están bien cubiertos por NFPA 2, ISO 19880 y ATEX/IECEx, y no son donde se rompen los proyectos.</p>
+                    <p>Los proyectos de H₂V se rompen en el acoplamiento entre subsistemas que cada disciplina monitorea por separado. El enfriamiento del electrolizador degrada la membrana cuando se acerca al límite operativo, la membrana degradada eleva consumo eléctrico, el consumo eleva estrés sobre la interconexión a red intermitente, y la intermitencia aguas arriba acelera ciclos térmicos del stack. Ninguna de esas variables, mirada sola, dispara alarma. El evento crítico aparece cuando cuatro deslizamientos suaves coinciden en el tiempo.</p>
+                    <p>Sygnode modela la planta como sistema acoplado, no como suma de equipos. Identificamos las configuraciones donde el sistema queda a un disparo de cascada antes de que la cascada exista — anticipación operacional sobre el CAPEX comprometido, no sobre el daño ya consumado.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Cómo evaluar la factibilidad técnica y los cuellos de botella en proyectos de interconexión al SEN?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>La revisión clásica cubre capacidad en el punto de conexión, estudios eléctricos exigidos por el Coordinador, y costos de obras. Necesario, no suficiente.</p>
+                    <p>El cuello de botella más subestimado no es técnico, es de fila. La cartera de solicitudes al SEN tiene proyectos por más de tres veces la capacidad instalada actual. Un proyecto eléctricamente factible puede tener tiempos reales de conexión de 3 a 5 años solo por estar atrás de otros proyectos compitiendo por la misma capacidad de transmisión. La decisión de inversión depende menos de "¿es factible?" y más de "¿en qué posición de la fila estoy, cuándo despacha la cartera adelante, y cómo cambia la congestión zonal en ese horizonte?". Esa es información que no entrega el estudio de conexión estándar.</p>
+                    <p>Modelamos la red y la cartera de proyectos como grafo dinámico que evoluciona: qué refuerzos están comprometidos, qué proyectos en construcción cambian la congestión zonal, dónde se mueve el costo marginal esperado. La anticipación operacional aquí es proyectar la red dentro de cinco años, no decidir sobre la foto actual.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Cuáles son las mejores estrategias de ingeniería para la integración masiva de energías renovables intermitentes?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>La industria tiene cuatro herramientas conocidas — almacenamiento, flexibilidad de demanda, refuerzos de transmisión, servicios complementarios desde inversores. La pregunta real no es cuáles son; es cuál de las cuatro ataca el cuello de botella efectivo de cada zona del sistema.</p>
+                    <p>Donde el problema dominante es vertimiento (Atacama), almacenamiento + transmisión dominan. Donde el problema es inercia y estabilidad de frecuencia bajo alta penetración inversor-based, grid-forming y servicios sintéticos dominan. Donde el problema es cobertura de rampa al atardecer, flexibilidad de demanda y respuesta rápida dominan. Aplicar la misma receta a problemas distintos es el error estructural más caro del sector — y es donde se desperdicia el CAPEX más grande.</p>
+                    <p>La pregunta de fondo es: ¿dónde está el cuello de botella efectivo del sistema, y va a estar ahí en cinco años? La red es un grafo dinámico cuya topología efectiva cambia con cada proyecto que entra. Entregamos ese análisis dinámico como soporte de decisión de inversión: no qué tecnología es "mejor", sino cuál resuelve el cuello de botella específico de tu nodo en el horizonte que importa.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Qué normativas técnicas de la CNE y SEC aplican a nuevas infraestructuras de almacenamiento energético?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>El marco normativo central en Chile incluye Ley 21.505 (almacenamiento), NTSyCS del Coordinador Eléctrico, Reglamento de Servicios Complementarios, RIEI cuando aplica, y referencias internacionales como NFPA 855 para sistemas con celdas de litio. La trampa no está en listar las normas — están disponibles públicamente. La trampa está en suponer que cumplir la norma vigente al momento del diseño asegura el modelo operativo durante la vida útil del activo.</p>
+                    <p>El marco regulatorio del almacenamiento standalone en Chile se reescribió tres veces entre 2023 y 2025. Un BESS diseñado bajo el régimen de 2023 puede estar técnicamente fuera de fase con la lógica de despacho actual — no porque incumpla, sino porque el modelo de remuneración cambió. Esa es la exposición real: no la multa, es el activo de 20 años de vida útil sobre supuestos regulatorios de 18 meses de vigencia.</p>
+                    <p>El servicio que entregamos no es revisión documental de normas; es modelado de riesgo sistémico sobre la trayectoria probable del marco regulatorio y la sensibilidad del CAPEX a esos cambios.</p>
+                </div>
+            </details>
+
+        </div>
+    </section>
 
     <footer>
         <div class="footer-inner">
@@ -526,6 +657,28 @@
             heroObs.observe(hero);
         })();
 
+        // ─── ACTOR SELECTOR ───
+        (function() {
+            var tabs = document.querySelectorAll('.actor-tab');
+            var blocks = document.querySelectorAll('.actor-block');
+
+            function setActor(actor) {
+                tabs.forEach(function(t) {
+                    t.classList.toggle('active', t.dataset.actor === actor);
+                });
+                blocks.forEach(function(b) {
+                    b.style.display = b.dataset.actor === actor ? '' : 'none';
+                });
+            }
+
+            tabs.forEach(function(t) {
+                t.addEventListener('click', function() { setActor(t.dataset.actor); });
+            });
+
+            // Estado inicial: Productor activo
+            setActor('productor');
+        })();
+
         // ─── NOTIFY FORM ───
         document.getElementById('notifyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -558,5 +711,6 @@
             }
         });
     </script>
+    <script src="../assets/js/faq.js" defer></script>
 </body>
 </html>

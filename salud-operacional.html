@@ -289,7 +289,7 @@
         <div class="vertical-hero-text">
             <span class="label" style="color:rgba(239,231,217,0.6);">Salud operacional</span>
             <h1>Para centros y consultorios con demanda no controlada: triage que depende del estado del enfermero del turno, derivaciones que se traban entre especialidades, y pacientes que vuelven cuando ya se habían dado por resueltos.</h1>
-            <p class="lead">La congestión visible es el síntoma. El problema es anterior.</p>
+            <p class="lead">La congestión visible es el síntoma. La señal ya estaba en la consulta anterior.</p>
         </div>
     </section>
 
@@ -307,7 +307,7 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Una clasificación cuantificada que combina los síntomas reportados, el historial cuando está disponible, y la evaluación del enfermero del turno. La evaluación humana sigue siendo el input principal; la salida ajusta por consistencia. La salida operativa es una recomendación de prioridad con su grado de certeza, que el equipo médico incorpora a su criterio.</p>
+                <p>Una herramienta de apoyo al criterio del enfermero del turno: combina los síntomas reportados, el historial cuando está disponible, y la evaluación clínica del personal en una recomendación de prioridad con su grado de certeza. La decisión final sigue siendo del equipo de salud; Sygnode reduce el ruido entre turnos, no reemplaza el juicio clínico.</p>
             </div>
         </div>
     </div>
@@ -321,7 +321,7 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Cuando nadie lo ve venir</span>
-                <p>La métrica de "tiempo a derivación" se mantiene estable, pero la carga generada por pacientes en limbo crece mes a mes y se atribuye a "más demanda".</p>
+                <p>El KPI de "tiempo hasta derivación" se mantiene estable mientras la carga generada por pacientes en limbo crece mes a mes — consultas de seguimiento, llamadas por ansiedad, reingresos a urgencias. La conclusión interna termina siendo "hay más demanda", no "hay pacientes atrapados en derivaciones que ya no se mueven".</p>
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
@@ -343,8 +343,16 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Identificación, al cierre de la primera consulta, de pacientes cuyo patrón de presentación coincide con pacientes históricos que reingresaron. La salida operativa es una lista diaria de pacientes recomendados para seguimiento telefónico activo dentro de los primeros siete días.</p>
+                <p>Identificación, al cierre de la primera consulta, de pacientes cuyo patrón de presentación coincide con pacientes históricos que reingresaron. La salida operativa es una lista diaria de pacientes recomendados para seguimiento telefónico activo dentro de los primeros siete días, con guión sugerido por patrón de presentación y registro del resultado en historia clínica. La carga del seguimiento se concentra en menos del 15% de los pacientes — los que el patrón histórico señala como de mayor riesgo de reingreso.</p>
             </div>
+        </div>
+    </div>
+
+    <!-- CTA CONVERSAR (antes de límites) -->
+    <div class="final-cta-section">
+        <p style="font-size:18px; line-height:1.7; color:var(--color-bg); max-width:68ch; margin: 0 auto var(--space-md);">Si una de estas tres situaciones ocurre con frecuencia en tu centro o consultorio, una sesión de 45 minutos sobre tu historial reciente de triage, derivaciones y reingresos basta para mostrar dónde están las señales que el equipo no está alcanzando a leer.</p>
+        <div class="cta-group" style="justify-content: center;">
+            <a href="/contacto?dominio=salud-operacional" class="btn-accent">Agendar →</a>
         </div>
     </div>
 
@@ -409,6 +417,38 @@
             <a href="/contacto?dominio=salud-operacional" class="btn-accent">Iniciar conversación →</a>
         </div>
     </div>
+
+    <!-- FAQ -->
+    <section class="faq-section" aria-label="Preguntas frecuentes sobre salud operacional">
+        <div class="eyebrow"><span class="dash"></span>Preguntas frecuentes</div>
+        <div class="faq-list">
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Qué problemas operacionales enfrenta un centro de salud con demanda estocástica?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>Los centros de salud con demanda variable enfrentan tres problemas recurrentes: derivaciones que se traban por falta de cama o especialista disponible, readmisiones evitables por alta prematura o seguimiento insuficiente, y capacidad instalada mal distribuida respecto a la demanda real por período.</p>
+                    <p>El denominador común es que ninguno de estos problemas se hace visible en los reportes convencionales hasta que ya se materializó. La derivación que se trabó aparece en la estadística de espera; la readmisión aparece en el próximo ingreso; la capacidad mal distribuida aparece como colapso de urgencias en la peak hour. Sygnode anticipa cuándo y dónde se van a materializar estos problemas, no solo los contabiliza después.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Cómo reducir las readmisiones evitables en centros de alta complejidad?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>La señal de readmisión no está en un solo indicador; está distribuida entre variables de proceso clínico, frecuencia de interacciones con el centro, y condiciones del contexto de egreso. Los sistemas convencionales no cruzan esas fuentes porque operan en silos — clínico, administrativo, logístico — y la señal compuesta desaparece en el agregado.</p>
+                    <p>El output es una lista de pacientes en zona de riesgo de readmisión en los próximos 7 y 30 días, con el patrón específico que activó la señal. Esto permite intervenciones de seguimiento dirigidas en el momento correcto — no como protocolo universal que consume recursos en todos los egresos, sino concentrado donde el riesgo es real.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Cómo anticipar cuellos de botella en derivaciones dentro del sistema de salud?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>Los cuellos de botella en derivaciones tienen una estructura predecible: ciertas combinaciones de especialidad, día de semana, carga simultánea del receptor, y perfil del paciente producen trabamiento sistemático. Esa estructura no es aleatoria aunque parezca impredecible.</p>
+                    <p>Construimos un modelo del flujo de derivaciones como red con capacidades dinámicas: cada nodo es un servicio o especialidad, las aristas son los flujos de derivación con sus tasas reales, y la capacidad de cada nodo varía con la carga simultánea. Esto permite identificar cuáles nodos van a saturarse con anticipación suficiente para activar medidas correctivas antes del colapso del flujo.</p>
+                </div>
+            </details>
+
+        </div>
+    </section>
 
     <footer>
         <div class="footer-inner">
@@ -514,5 +554,6 @@
             }
         });
     </script>
+    <script src="/assets/js/faq.js" defer></script>
 </body>
 </html>

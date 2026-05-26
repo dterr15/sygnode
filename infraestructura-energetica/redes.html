@@ -50,7 +50,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/shared.css">
 
     <style>
         /* ─── PAGE HEADER ─── */
@@ -249,7 +249,7 @@
         <div class="vertical-hero-text">
             <a href="/infraestructura-energetica" class="breadcrumb" style="color:rgba(239,231,217,0.6);">← Infraestructura energética</a>
             <span class="label" style="color:rgba(239,231,217,0.6);">Redes eléctricas</span>
-            <h1>Para operadores de transmisión y distribución: anticipación de fallas que se propagan, decisión de despacho bajo restricciones físicas, y mantenimiento preventivo priorizado donde la red es más frágil.</h1>
+            <h1>Para operadores de transmisión y distribución: anticipación de fallas que se propagan, predespacho y redespacho con conciencia de fragilidad sistémica, y mantenimiento preventivo priorizado donde la red es más frágil.</h1>
             <p class="lead">La cascada empieza en un nodo. El sistema ya lo sabía.</p>
         </div>
     </section>
@@ -268,7 +268,7 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Identificación anticipada de configuraciones de red donde una falla en un nodo específico desencadena cascada, antes de que la falla ocurra. La salida operativa es una lista priorizada de configuraciones que requieren redundancia o reconfiguración, con la ventana de tiempo donde la intervención es viable.</p>
+                <p>Identificación anticipada de configuraciones de red donde una falla en un nodo específico desencadenaría cascada — antes de que el evento iniciador ocurra, y con independencia de cuál sea el evento iniciador específico. La salida operativa es una lista priorizada de configuraciones que requieren redundancia o reconfiguración, con la ventana de tiempo donde la intervención es viable y el costo evitado estimado.</p>
             </div>
         </div>
     </div>
@@ -286,7 +286,7 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Una lectura complementaria al despacho económico, que indica cuánto deja a la red expuesta cada decisión de despacho, y qué ajustes marginales reducen la exposición con bajo costo económico. La salida operativa es una recomendación de ajustes al despacho con su impacto cuantificado en fragilidad sistémica.</p>
+                <p>Una lectura complementaria al despacho económico, que indica cuánto deja a la red expuesta cada decisión de despacho, y qué ajustes marginales reducen la exposición con bajo costo económico. La salida operativa es una lectura de fragilidad bajo el despacho vigente y proyectado, identificando los puntos de la red donde la holgura ante contingencia es menor de lo que el operador asume. El operador la usa para gestionar sus activos, anticipar contingencias y, cuando corresponde, sustentar técnicamente requerimientos al Coordinador.</p>
             </div>
         </div>
     </div>
@@ -304,8 +304,16 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Una priorización del programa de mantenimiento según la posición estructural de cada activo en la red: qué tan crítico es para evitar propagación de fallas, no qué tan crítico es nominalmente. La salida operativa es un programa ajustado, con justificación cuantitativa por activo.</p>
+                <p>Una priorización del programa de mantenimiento según la posición estructural de cada activo en la red: qué tan crítico es para evitar propagación de fallas, no qué tan crítico es nominalmente. La salida operativa es un programa ajustado, con justificación cuantitativa por activo. La redistribución típica funciona con el presupuesto existente — desplaza intervenciones desde activos sobre-mantenidos hacia activos en posición estructuralmente crítica que hoy reciben atención solo cuando aparece síntoma.</p>
             </div>
+        </div>
+    </div>
+
+    <!-- CTA CONVERSAR (antes de límites) -->
+    <div class="final-cta-section">
+        <p style="font-size:18px; line-height:1.7; color:var(--color-bg); max-width:68ch; margin: 0 auto var(--space-md);">Si tu última post-mortem identificó un nodo origen al que se podía haber intervenido antes, una sesión de 45 minutos con el topograma de tu red y el log de los últimos 12 meses de eventos basta para mostrar qué configuraciones críticas aparecen recurrentemente en tu sistema.</p>
+        <div class="cta-group" style="justify-content: center;">
+            <a href="/contacto?dominio=redes" class="btn-accent">Agendar →</a>
         </div>
     </div>
 
@@ -370,6 +378,32 @@
             <a href="/contacto?dominio=redes" class="btn-accent">Iniciar conversación →</a>
         </div>
     </div>
+
+    <!-- FAQ -->
+    <section class="faq-section" aria-label="Preguntas frecuentes sobre redes eléctricas">
+        <div class="eyebrow"><span class="dash"></span>Preguntas frecuentes</div>
+        <div class="faq-list">
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Cómo prevenir fallas en cascada y apagones en redes eléctricas de alta tensión?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>El instinto de la operación es buscar la causa del apagón en el evento iniciador — la línea que cayó, el rayo que impactó, el incendio que tomó el corredor. Esa señal casi nunca está ahí. El evento iniciador es típicamente menor y recurrente; lo que hace que esta vez termine en blackout es la configuración del sistema en los minutos previos.</p>
+                    <p>Cada blackout mayor de los últimos veinte años — Iberia 2025, Chile 2025, Nordeste EEUU 2003 — sigue el mismo patrón: una perturbación inicial encuentra al sistema en una configuración que parecía segura pero estaba sobre la frontera de estabilidad. Una protección dispara, los flujos se reconfiguran, otra línea se sobrecarga, otra protección dispara, y en segundos el colapso es total. Cada paso individualmente es seguro; la cascada está en el acoplamiento. Eso es riesgo sistémico — variables individualmente sanas que se vuelven peligrosas en su acoplamiento.</p>
+                    <p>La anticipación operacional sobre redes de alta tensión requiere ver dónde se mueve la frontera de estabilidad en tiempo real, no en el estudio anual de planificación. Modelamos las particiones débiles del grafo eléctrico bajo el despacho actual y proyectamos cómo se mueven con la demanda y los eventos previsibles.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Cómo asegurar la resiliencia y estabilidad de las redes de transmisión eléctrica ante eventos climáticos extremos?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>La planificación de transmisión asume fallas independientes y aplica criterio N-1: el sistema soporta la pérdida de cualquier elemento individual. El criterio funciona para eventos puntuales y aislados. Colapsa ante eventos correlacionados — una ola de calor que dispara incendios simultáneos en la cordillera de la costa, viento blanco que voltea torres en cadena, una combinación de mantenimientos programados que deja la red en N-0 efectivo cuando llega la perturbación. El blackout chileno de febrero 2025 dejó documentado que el modelo subestima sistemáticamente las correlaciones.</p>
+                    <p>La primera señal de un colapso en cascada no aparece donde se la busca. No está en la línea que finalmente se desconectó; está en la configuración del sistema completo en los minutos previos — qué particiones débiles tiene el grafo de transmisión en ese despacho específico, qué reservas están realmente disponibles, dónde están las líneas de fractura que la perturbación va a encontrar. Esa información se calcula sobre el espectro del Laplaciano de la red operativa, no sobre el diagrama unifilar de planificación.</p>
+                    <p>Modelamos la red como grafo dinámico donde la frontera de estabilidad se mueve con la demanda, el despacho y el estado de mantenimientos. Anticipación operacional consiste en detectar cuándo el sistema está pasando por configuración crítica antes de que aparezca el evento iniciador.</p>
+                </div>
+            </details>
+
+        </div>
+    </section>
 
     <footer>
         <div class="footer-inner">
@@ -475,5 +509,6 @@
             }
         });
     </script>
+    <script src="../assets/js/faq.js" defer></script>
 </body>
 </html>

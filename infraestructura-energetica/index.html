@@ -58,7 +58,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/shared.css">
 
     <style>
         .page-header {
@@ -162,12 +162,12 @@
 
     <div class="page-header">
         <span class="label">Infraestructura energética</span>
-        <h1>Tres sub-dominios donde la falla rara vez es local: redes eléctricas, hidrógeno verde y prevención de incendios forestales en interfaz humana.</h1>
+        <h1>Tres sub-dominios distintos con una propiedad en común: la falla, cuando llega, se propaga por rutas que no estaban en el diagrama.</h1>
     </div>
 
     <div class="body-section">
         <p>Los tres dominios comparten una propiedad operacional: la falla, cuando aparece, se propaga rápido y por rutas que no siempre coinciden con la topología visible del sistema. La intervención efectiva depende de identificar el nodo correcto antes de que el evento ocurra, no de responder bien una vez que ya está en curso.</p>
-        <p>SYGNODE trabaja sobre los tres dominios con la misma orientación: anticipar dónde se va a romper primero, en qué orden conviene intervenir, y con qué margen de tiempo. Las soluciones específicas y los operadores objetivo cambian entre los tres.</p>
+        <p>Sygnode trabaja los tres dominios con el mismo método: modelar el sistema como una red de elementos acoplados, identificar dónde la próxima falla tiene más probabilidad de iniciarse y por qué rutas se propagaría, y reducir el margen de respuesta del operador entre detección e intervención efectiva. Las soluciones específicas y los operadores objetivo cambian entre los tres.</p>
     </div>
 
     <div class="subdomains-section">
@@ -182,7 +182,7 @@
 
             <a href="/infraestructura-energetica/hidrogeno" class="subdomain-tile">
                 <h3>Hidrógeno verde</h3>
-                <p>Productores en operación, dueños de megaproyectos, y EPCs que los construyen. Tres operadores con problemas distintos en un mismo dominio.</p>
+                <p>Productores en operación, dueños de megaproyectos, y EPCs que los construyen. Anticipación de fallas operacionales en planta, identificación temprana de riesgos en construcción, y trazabilidad del proyecto para defensa ante cambios de alcance.</p>
                 <span class="tile-arrow">→</span>
             </a>
 
@@ -194,6 +194,30 @@
 
         </div>
     </div>
+
+    <!-- FAQ -->
+    <section class="faq-section" aria-label="Preguntas frecuentes sobre infraestructura energética">
+        <div class="eyebrow"><span class="dash"></span>Preguntas frecuentes</div>
+        <div class="faq-list">
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Cuáles son los riesgos más críticos en infraestructura energética donde la falla se propaga?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>En infraestructura energética los riesgos más críticos no son los eventos aislados, son los eventos con capacidad de propagación: una falla en un punto que aumenta la probabilidad de falla en otros puntos conectados. Esto aplica a redes eléctricas (fallas en cascada), plantas de hidrógeno (propagación entre subsistemas acoplados), y corredores de transmisión expuestos a incendios forestales (pérdida de múltiples líneas por evento climático correlacionado).</p>
+                    <p>La pregunta operativa correcta no es "¿cuál equipo puede fallar?" sino "¿qué combinación de estados del sistema está cerca de una transición de fase?". Esa pregunta requiere modelar el sistema como grafo de activos con dependencias dinámicas — no como lista de equipos con probabilidades independientes.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Qué diferencia hay entre riesgo operativo y riesgo de propagación en sistemas energéticos?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>El riesgo operativo convencional considera equipos individualmente: probabilidad de falla, consecuencia, prioridad de mitigación. Es útil para gestión de activos individuales pero no captura el comportamiento sistémico.</p>
+                    <p>El riesgo de propagación captura cómo un evento en un nodo cambia la probabilidad de eventos en nodos conectados. Un transformador que falla tiene un riesgo operativo definido. El mismo transformador en un nodo de alta conectividad de red tiene un riesgo de propagación que puede ser 5–10x mayor que su riesgo individual, porque su falla reconfigura flujos en el sistema completo. La diferencia entre ambas métricas define la prioridad real de inversión en mitigación.</p>
+                </div>
+            </details>
+
+        </div>
+    </section>
 
     <footer>
         <div class="footer-inner">
@@ -208,5 +232,6 @@
         </div>
     </footer>
 
+    <script src="../assets/js/faq.js" defer></script>
 </body>
 </html>

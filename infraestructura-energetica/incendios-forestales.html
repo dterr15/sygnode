@@ -50,7 +50,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/shared.css">
 
     <style>
         /* ─── PAGE HEADER ─── */
@@ -249,7 +249,7 @@
         <div class="vertical-hero-text">
             <a href="/infraestructura-energetica" class="breadcrumb" style="color:rgba(239,231,217,0.6);">← Infraestructura energética</a>
             <span class="label" style="color:rgba(239,231,217,0.6);">Prevención de incendios forestales</span>
-            <h1>Para zonas de interfaz humana: anticipación de eventos en función de condiciones acumuladas, priorización del patrullaje, y reducción del tiempo entre detección e intervención efectiva.</h1>
+            <h1>Para empresas forestales y operadores de infraestructura con activos en zona de riesgo de incendio: anticipación de ventanas críticas con días de antelación, priorización dinámica del patrullaje, y reducción del tiempo entre detección e intervención efectiva.</h1>
             <p class="lead">El fuego no es el evento. Las condiciones que lo preceden, sí.</p>
         </div>
     </section>
@@ -260,7 +260,7 @@
         <div class="problem-paragraphs">
             <div class="problem-para">
                 <span class="para-label">La escena</span>
-                <p>Variables meteorológicas, humedad de combustible, viento y actividad humana en la zona se mueven cada una dentro de rangos. Ninguna por sí sola gatilla alerta. La combinación, en cambio, define una ventana en que la probabilidad de inicio de incendio cambia sustancialmente. El alerta meteorológica oficial llega cuando varias variables ya están en zona extrema simultáneamente.</p>
+                <p>Variables meteorológicas, humedad de combustible, viento y actividad humana en la zona se mueven cada una dentro de rangos. Ninguna por sí sola gatilla alerta. La combinación, en cambio, define una ventana en que la probabilidad de inicio de incendio cambia sustancialmente. La alerta meteorológica oficial llega cuando varias variables ya están en zona extrema simultáneamente.</p>
             </div>
             <div class="problem-para">
                 <span class="para-label">Cuando nadie lo ve venir</span>
@@ -268,7 +268,7 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Una lectura integrada de las variables acumuladas en cada zona, con identificación temprana de áreas que están entrando en ventana de alta probabilidad — días, no horas, antes del pico. La salida operativa es un mapa diario de zonas en estado de vigilancia anticipada, con la ventana de tiempo donde la intervención preventiva tiene retorno.</p>
+                <p>Una lectura integrada de las variables acumuladas en cada zona, con identificación temprana de áreas que están entrando en ventana de alta probabilidad — típicamente 3 a 7 días antes del pico de riesgo, no horas. La salida operativa es un mapa diario de zonas en estado de vigilancia anticipada, con la ventana de tiempo donde la intervención preventiva tiene retorno.</p>
             </div>
         </div>
     </div>
@@ -286,7 +286,7 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Una recomendación semanal de redistribución del patrullaje, basada en el estado acumulado de cada zona y en los patrones de inicio de incendios históricos comparables. La salida operativa es un mapa de patrullaje recomendado con justificación por zona.</p>
+                <p>Una lectura semanal del estado de riesgo por zona con la priorización resultante para el patrullaje — qué zonas requieren cobertura intensificada, cuáles pueden bajar intensidad, dónde conviene reposicionar puestos de observación. La decisión de redistribución queda en el operador; Sygnode entrega la lectura que sustenta esa decisión.</p>
             </div>
         </div>
     </div>
@@ -296,7 +296,7 @@
         <div class="problem-paragraphs">
             <div class="problem-para">
                 <span class="para-label">La escena</span>
-                <p>Un foco se detecta por observación visual, por satélite, por reporte ciudadano. El tiempo entre detección y llegada de la primera brigada al lugar es la variable que más correlaciona con la magnitud final del incendio. Ese tiempo depende de dónde están las brigadas en ese momento y de qué tan accesible es el foco.</p>
+                <p>Un foco se detecta por observación visual, por satélite, por reporte ciudadano. El tiempo entre detección y llegada de la primera brigada al lugar es la variable que más correlaciona con la magnitud final del incendio — la literatura de combate forestal documenta que un foco controlado en los primeros 30 a 60 minutos se contiene en la enorme mayoría de los casos, mientras que pasada esa ventana la probabilidad de control inicial cae sustancialmente. Ese tiempo depende de dónde están las brigadas en ese momento y de qué tan accesible es el foco.</p>
             </div>
             <div class="problem-para">
                 <span class="para-label">Cuando nadie lo ve venir</span>
@@ -304,8 +304,23 @@
             </div>
             <div class="problem-para">
                 <span class="para-label">Lo que entrega SYGNODE</span>
-                <p>Una recomendación de pre-posicionamiento de brigadas y recursos en función del mapa de probabilidad anticipada, días antes del posible evento. La salida operativa es un plan de pre-posicionamiento semanal, ajustable a medida que las condiciones cambian.</p>
+                <p>Una recomendación de pre-posicionamiento de brigadas y recursos en función del mapa de probabilidad anticipada, días antes del posible evento. La salida operativa es un plan de pre-posicionamiento de brigadas y recursos sustentado en el mapa de probabilidad anticipada, días antes del posible evento. El plan se actualiza a medida que las condiciones cambian, y se ofrece como input para la decisión del operador, que mantiene el criterio final sobre dónde reposicionar.</p>
             </div>
+        </div>
+    </div>
+
+    <!-- CTA ESTACIONAL (antes de Límites) -->
+    <div class="final-cta-section" id="cta-preseason" style="display:none">
+        <p style="font-size:18px; line-height:1.7; color:var(--color-bg); max-width:68ch; margin: 0 auto var(--space-md);">Si entras a la próxima temporada de alto riesgo con el mismo plan de patrullaje del año pasado, una sesión de 45 minutos sobre el historial de focos de tu zona y las variables meteorológicas acumuladas basta para mostrar dónde la priorización debería ser distinta.</p>
+        <div class="cta-group" style="justify-content: center;">
+            <a href="/contacto?dominio=incendios-forestales" class="btn-accent">Agendar →</a>
+        </div>
+    </div>
+
+    <div class="final-cta-section" id="cta-inseason" style="display:none">
+        <p style="font-size:18px; line-height:1.7; color:var(--color-bg); max-width:68ch; margin: 0 auto var(--space-md);">Si estás en plena temporada y el plan de patrullaje sigue siendo el de pre-temporada, una sesión de 45 minutos sobre el historial reciente de focos y las variables meteorológicas acumuladas basta para mostrar dónde la priorización debería ajustarse esta semana.</p>
+        <div class="cta-group" style="justify-content: center;">
+            <a href="/contacto?dominio=incendios-forestales" class="btn-accent">Agendar →</a>
         </div>
     </div>
 
@@ -370,6 +385,68 @@
             <a href="/contacto?dominio=incendios-forestales" class="btn-accent">Iniciar conversación →</a>
         </div>
     </div>
+
+    <!-- FAQ -->
+    <section class="faq-section" aria-label="Preguntas frecuentes sobre prevención de incendios forestales">
+        <div class="eyebrow"><span class="dash"></span>Preguntas frecuentes</div>
+        <div class="faq-list">
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Cómo proteger estratégicamente líneas de transmisión eléctrica y subestaciones contra la propagación de incendios forestales?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>El instinto es invertir uniformemente sobre el corredor — más franja de servidumbre, más detección, más respuesta, distribuido a lo largo de los kilómetros vulnerables. La pregunta útil es otra: ¿qué tramos del corredor, si arden simultáneamente, dejan caer la línea?</p>
+                    <p>La respuesta no es uniforme. Algunos tramos tienen redundancia eléctrica efectiva, otros son cuellos de botella sin alternativa. Tratar todos los kilómetros con la misma intensidad de inversión iguala costos altos a beneficios bajos. La asignación correcta concentra recursos en los tramos cuya falla simultánea destruye la conectividad efectiva del sistema, y eso es un análisis topológico del grafo eléctrico acoplado con el grafo de propagación de fuego, no una decisión visual sobre el mapa. La franja al ancho mínimo regulatorio en zona de pino y eucalipto con vientos cálidos es exposición conocida; tratarla igual que zona árida sin vegetación crítica es desperdicio de CAPEX.</p>
+                    <p>Modelamos el riesgo sistémico del corredor completo: dónde la pérdida simultánea de tramos colapsa la conectividad, dónde la propagación del fuego puede tomar múltiples tramos en una sola ventana de viento, qué inversiones de mitigación reducen más riesgo por peso.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Qué planes de mitigación de incendios exige la institucionalidad ambiental para aprobar proyectos industriales cerca de zonas boscosas?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>Los planes para aprobación ambiental cubren caracterización del riesgo, medidas durante construcción, medidas durante operación, y plan de respuesta ante incendio activo. La parte técnica donde el SEA está apretando es la modelación predictiva — proyectos que presentan planes basados en escenarios suaves cuando la zona tiene historial documentado de eventos extremos están entrando en vía de observación segura.</p>
+                    <p>Los proyectos en zonas con historial de incendios mayores — Valparaíso, Maule, Biobío, Araucanía — enfrentan exigencias mayores y revisión más estricta de los supuestos de modelación. Herramientas como FlamMap, BehavePlus o FARSITE — calibradas con datos locales de combustible, viento y topografía — permiten simular escenarios y dimensionar las medidas de mitigación con base cuantitativa. Planes que no incluyen modelación o usan parámetros genéricos sin justificación local son técnicamente débiles aunque cumplan formalmente. La exposición del proyecto no está en la norma cumplida; está en el supuesto modelístico que el revisor ambiental va a cuestionar.</p>
+                    <p>Construimos el plan con modelación predictiva calibrada localmente, defendible bajo escrutinio técnico, con escenarios extremos justificados. El plan presentado ya tiene resueltas las observaciones técnicas que el SEA va a levantar.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Cómo modelar de forma predictiva el riesgo topográfico y de biomasa para incendios cerca de instalaciones críticas?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>La modelación clásica acopla cuatro capas: combustible, topografía, meteorología y patrones de ignición histórica. El modelo de propagación estándar es Rothermel con sus implementaciones operativas (BehavePlus, FlamMap, FARSITE). Para instalaciones críticas la modelación va más allá del escenario único — se simulan miles de escenarios para construir mapas probabilísticos de exposición. Esa es la base técnica y es necesaria. No es suficiente.</p>
+                    <p>Lo que falta en la modelación clásica es la dinámica temporal del riesgo. La carga de combustible cambia estación a estación, las condiciones meteorológicas tienen estructura temporal con ventanas de riesgo extremo, y la probabilidad de ignición depende de actividad humana y eventos de tormenta eléctrica. Tratar incendios como eventos independientes en el tiempo subestima los días de riesgo extremo — que es exactamente cuando el evento ocurre. Los días críticos no se distribuyen uniformemente; están correlacionados, se agrupan en ventanas, se excitan entre sí. Esa estructura temporal es donde está el riesgo sistémico real.</p>
+                    <p>Sygnode incorpora dinámica de excitación temporal sobre la modelación de propagación clásica. La anticipación operacional sobre instalaciones críticas requiere ver no solo "se puede quemar", sino "con qué probabilidad, en qué ventana temporal, y bajo qué condiciones acopladas".</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Cuáles son los estándares técnicos para el diseño y mantenimiento de franjas de seguridad bajo tendidos eléctricos?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>El marco normativo (NSEG 5 E.n.71, reglamento SEC, DS 109/MINSEGPRES, normativa CONAF) define distancias mínimas y anchos según tensión. Cumplir la norma es piso, no techo. Cumplir piso en zona de alto riesgo es exposición conocida.</p>
+                    <p>Un ancho que cumple norma SEC en línea de 110 kV en zona árida sin viento dominante puede ser insuficiente en la misma tensión en zona de pino con vientos cálidos estacionales. La práctica internacional reciente — empujada por eventos mayores en California, Australia y Chile — está moviendo el estándar de facto hacia franjas más anchas, especies de bajo riesgo en bordes, y gestión activa de combustible más allá de los límites mínimos. El segundo punto donde se rompe la cadena es el mantenimiento: una franja bien diseñada en proyecto que no se mantiene con frecuencia adecuada vuelve al estado de riesgo en 2 a 4 años según el régimen vegetal. Programas efectivos usan inspección sistemática (incluida sobrevuelo con LiDAR para tendidos largos) y priorización por riesgo, no rotación geográfica.</p>
+                    <p>Diseñamos franja por tramo con criterio técnico calibrado al régimen local — tasa de crecimiento vegetal, especies adyacentes, topografía, vientos, criticidad eléctrica del tramo. Gestión vegetacional priorizada donde la consecuencia eléctrica y la propagación de fuego son mayores, no asignación uniforme por kilómetro.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Qué tecnologías de alerta temprana y monitoreo son más eficientes para activos aislados en zonas de alto riesgo de incendios?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>El instinto es elegir "la mejor" tecnología — cámaras IR, satélite, sensores distribuidos, IA de detección. Ninguna individual es suficiente. La detección satelital tiene resolución temporal de 10-15 minutos y pierde eventos pequeños iniciales; las cámaras fijas tienen cobertura limitada y dependen de visibilidad; los sensores de campo tienen falsos positivos. La combinación con fusión de evidencia entre fuentes — donde cada fuente tiene nivel de confianza calibrado — produce el desempeño operacional real.</p>
+                    <p>La parte subestimada es la respuesta. Detectar un foco a los 5 minutos del inicio no sirve si la cadena de respuesta tarda 90 minutos en activarse. El sistema completo incluye protocolos de verificación rápida, escalamiento automático según severidad, y conexión directa con brigadas y CONAF para activar respuesta sin pasar por capas burocráticas. La métrica operacional correcta no es "tiempo de detección" — es "tiempo desde el inicio del fuego hasta la primera respuesta efectiva en el lugar", que es típicamente 10x el tiempo de detección si la cadena no está diseñada como sistema acoplado.</p>
+                    <p>Diseñamos el sistema de alerta como cadena completa — detección multi-fuente con fusión de evidencia, verificación, escalamiento, respuesta — calibrada al activo específico. Ver el evento y activar la respuesta efectiva mientras todavía es manejable, no después.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-trigger">¿Cómo desarrollar protocolos de continuidad operacional bajo amenazas activas de incendios forestales de gran magnitud?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                <div class="faq-body">
+                    <p>El protocolo intuitivo activa medidas cuando el incendio se acerca al activo. El protocolo técnicamente correcto activa medidas antes de que la amenaza sea visible — cuando los indicadores adelantados (FWI alto, eventos de ignición en la cuenca visual, pronósticos meteorológicos de viento cálido sostenido) muestran configuración crítica del entorno. Esto cuesta inconvenientes operativos en falsos positivos pero gana ventaja crítica cuando el evento es real.</p>
+                    <p>Los ajustes operacionales eléctricos bajo amenaza activa — el modelo PSPS (Public Safety Power Shutoff) que California adoptó post-2017 — son la palanca más controversial y la más estudiada. Apagar voluntariamente segmentos de red para evitar que se conviertan en fuente de ignición es operacionalmente costoso pero estadísticamente justificado en zonas y temporadas específicas. La decisión correcta requiere modelar el trade-off entre riesgo de ignición por línea energizada y riesgo de daño a clientes por desconexión, y eso depende del estado del sistema en cada momento. No es decisión con regla fija; es decisión bajo incertidumbre sobre un sistema acoplado.</p>
+                    <p>Diseñamos el protocolo con umbrales calibrados al activo, decisión de PSPS modelada como problema de optimización bajo incertidumbre, y cadena completa de respuesta integrada. La decisión correcta sobre la medida correcta cuando todavía hay tiempo de tomarla, no improvisación bajo amenaza visible.</p>
+                </div>
+            </details>
+
+        </div>
+    </section>
 
     <footer>
         <div class="footer-inner">
@@ -443,6 +520,22 @@
             heroObs.observe(hero);
         })();
 
+        // ─── CTA ESTACIONAL ───
+        (function() {
+            fetch('/api/season')
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var id = data.inSeason ? 'cta-inseason' : 'cta-preseason';
+                    var el = document.getElementById(id);
+                    if (el) el.style.display = '';
+                })
+                .catch(function() {
+                    // Fallback: mostrar pre-temporada si la API falla (ej. entorno local)
+                    var el = document.getElementById('cta-preseason');
+                    if (el) el.style.display = '';
+                });
+        })();
+
         // ─── NOTIFY FORM ───
         document.getElementById('notifyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -475,5 +568,6 @@
             }
         });
     </script>
+    <script src="../assets/js/faq.js" defer></script>
 </body>
 </html>
