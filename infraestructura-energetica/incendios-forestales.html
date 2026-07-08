@@ -37,6 +37,69 @@
           "isPartOf": {"@id": "https://sygnode.cl/infraestructura-energetica#service"}
         },
         {
+          "@type": "FAQPage",
+          "@id": "https://sygnode.cl/infraestructura-energetica/incendios-forestales#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "¿Cómo proteger estratégicamente líneas de transmisión eléctrica y subestaciones contra la propagación de incendios forestales?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "La pregunta útil no es cuántos kilómetros proteger, sino qué tramos del corredor, si arden simultáneamente, dejan caer la línea. Algunos tramos tienen redundancia eléctrica efectiva y otros son cuellos de botella sin alternativa; tratar todos los kilómetros con la misma intensidad de inversión iguala costos altos a beneficios bajos. SYGNODE modela el riesgo sistémico del corredor completo —el grafo eléctrico acoplado con el grafo de propagación de fuego— identificando dónde la pérdida simultánea de tramos colapsa la conectividad y qué inversiones de mitigación reducen más riesgo por peso invertido."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Qué planes de mitigación de incendios exige la institucionalidad ambiental para aprobar proyectos industriales cerca de zonas boscosas?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Los planes para aprobación ambiental cubren caracterización del riesgo, medidas durante construcción y operación, y plan de respuesta ante incendio activo. Donde el SEA está apretando es en la modelación predictiva: proyectos en zonas con historial de incendios mayores —Valparaíso, Maule, Biobío, Araucanía— enfrentan revisión estricta de los supuestos. Herramientas como FlamMap, BehavePlus o FARSITE calibradas con datos locales de combustible, viento y topografía permiten dimensionar las medidas con base cuantitativa. SYGNODE construye el plan con modelación predictiva calibrada localmente y escenarios extremos justificados, defendible bajo escrutinio técnico."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cómo modelar de forma predictiva el riesgo topográfico y de biomasa para incendios cerca de instalaciones críticas?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "La modelación clásica acopla cuatro capas —combustible, topografía, meteorología y patrones de ignición histórica— sobre el modelo de propagación de Rothermel y sus implementaciones operativas (BehavePlus, FlamMap, FARSITE). Lo que falta en esa modelación es la dinámica temporal del riesgo: los días críticos no se distribuyen uniformemente, se agrupan en ventanas correlacionadas y se excitan entre sí. SYGNODE incorpora dinámica de excitación temporal sobre la modelación clásica: no solo si se puede quemar, sino con qué probabilidad, en qué ventana temporal y bajo qué condiciones acopladas."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cuáles son los estándares técnicos para el diseño y mantenimiento de franjas de seguridad bajo tendidos eléctricos?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "El marco normativo (NSEG 5 E.n.71, reglamento SEC, DS 109/MINSEGPRES, normativa CONAF) define distancias mínimas y anchos según tensión — cumplir la norma es piso, no techo. La práctica internacional post-eventos de California, Australia y Chile mueve el estándar de facto hacia franjas más anchas, especies de bajo riesgo en bordes y gestión activa de combustible. Una franja bien diseñada que no se mantiene vuelve al estado de riesgo en 2 a 4 años. SYGNODE diseña franja por tramo con criterio técnico calibrado al régimen local y prioriza la gestión vegetacional donde la consecuencia eléctrica y la propagación de fuego son mayores."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Qué tecnologías de alerta temprana y monitoreo son más eficientes para activos aislados en zonas de alto riesgo de incendios?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ninguna tecnología individual es suficiente: la detección satelital tiene resolución de 10-15 minutos y pierde eventos iniciales, las cámaras fijas dependen de visibilidad, los sensores de campo tienen falsos positivos. El desempeño operacional real viene de la fusión de evidencia entre fuentes con niveles de confianza calibrados — y de la cadena de respuesta: la métrica correcta no es el tiempo de detección sino el tiempo desde el inicio del fuego hasta la primera respuesta efectiva en el lugar. SYGNODE diseña el sistema de alerta como cadena completa —detección multi-fuente, verificación, escalamiento, respuesta— calibrada al activo específico."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cómo desarrollar protocolos de continuidad operacional bajo amenazas activas de incendios forestales de gran magnitud?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "El protocolo técnicamente correcto activa medidas antes de que la amenaza sea visible, cuando los indicadores adelantados —FWI alto, eventos de ignición en la cuenca visual, pronóstico de viento cálido sostenido— muestran configuración crítica del entorno. La palanca más estudiada es el ajuste operacional eléctrico bajo amenaza activa (modelo PSPS adoptado en California post-2017), que requiere modelar el trade-off entre riesgo de ignición por línea energizada y daño a clientes por desconexión. SYGNODE diseña el protocolo con umbrales calibrados al activo y la decisión de PSPS modelada como optimización bajo incertidumbre."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://sygnode.cl/infraestructura-energetica/incendios-forestales#breadcrumb",
+          "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://sygnode.cl/"},
+            {"@type": "ListItem", "position": 2, "name": "Infraestructura energética", "item": "https://sygnode.cl/infraestructura-energetica"},
+            {"@type": "ListItem", "position": 3, "name": "Prevención de incendios forestales", "item": "https://sygnode.cl/infraestructura-energetica/incendios-forestales"}
+          ]
+        },
+        {
           "@type": "WebPage",
           "@id": "https://sygnode.cl/infraestructura-energetica/incendios-forestales#webpage",
           "url": "https://sygnode.cl/infraestructura-energetica/incendios-forestales",
@@ -449,6 +512,17 @@
     </section>
 
     <footer>
+        <nav class="footer-domains" aria-label="Dominios SYGNODE">
+            <a href="/decision-assurance">Decision Assurance</a>
+            <a href="/litigios">Litigios</a>
+            <a href="/operaciones-industriales">Operaciones industriales</a>
+            <a href="/salud-operacional">Salud operacional</a>
+            <a href="/inversiones">Inversiones</a>
+            <a href="/infraestructura-energetica">Infraestructura energética</a>
+            <a href="/infraestructura-energetica/redes">Redes eléctricas</a>
+            <a href="/infraestructura-energetica/hidrogeno">Hidrógeno verde</a>
+            <a href="/infraestructura-energetica/incendios-forestales">Incendios forestales</a>
+        </nav>
         <div class="footer-inner">
             <span class="footer-brand"><span class="accent-dot"></span>SYGNODE · 2026</span>
             <div class="footer-links">

@@ -54,6 +54,54 @@
                 "@type": "Answer",
                 "text": "SYGNODE entrega un sistema de anticipación que identifica cuándo un activo crítico está entrando en ventana de riesgo, con suficiente anticipación para que la intervención sea planificada y no reactiva. El output es accionable: qué activo, cuándo intervenir, con qué evidencia."
               }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cómo auditar y medir la salud operacional integral de infraestructuras industriales envejecidas?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "La auditoría tradicional inspecciona activos uno por uno y produce un score agregado donde la información se pierde: el promedio mezcla activos sanos con activos al borde del colapso. Las firmas operacionales que preceden a la degradación visible —aumentos en frecuencia de alarmas menores, drift lento en variables de proceso, protecciones que disparan sin causa identificable— son detectables analizando la serie temporal completa de eventos contra una baseline calibrada, tratando la planta como sistema acoplado. SYGNODE entrega mapas, no scores: qué subsistemas están en qué condición, qué activos son críticos por conectividad operacional y dónde están los acoplamientos peligrosos."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Qué estrategias de ingeniería previenen de manera efectiva las paradas de planta no programadas?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Más mantenimiento preventivo uniforme no es más confiabilidad: es más costo sin atacar los modos de fallo críticos. La pregunta de fondo es cuáles equipos, si fallan, paran la planta, y eso se responde modelando la planta como grafo de procesos donde cada nodo es un equipo y las aristas codifican dependencia operacional. SYGNODE identifica los modos de fallo críticos del sistema acoplado y prioriza intervenciones por reducción real de riesgo sistémico, no por inercia presupuestaria. La RCA disciplinada de eventos pasados es la palanca subestimada: capturar la huella técnica de cada parada reduce recurrencia en orden de magnitud sobre 5 años."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cómo optimizar la confiabilidad y disponibilidad técnica sin disparar los costos de mantenimiento?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "La distribución típica del presupuesto de mantenimiento sigue una regla 80/20 invertida: el 80% se gasta en equipos que generan el 20% del riesgo operacional, porque el presupuesto se asigna por inercia histórica. Un análisis basado en topología del proceso y consecuencia de falla redistribuye el presupuesto sin aumentarlo, mejorando simultáneamente disponibilidad y costo unitario. SYGNODE entrega reasignación de presupuesto por riesgo real, con criterio técnico por equipo sobre dónde aplica mantenimiento por condición y dónde no."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cuáles son los estándares internacionales más efectivos para la gestión de riesgos en procesos críticos (Process Safety)?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Los estándares centrales son OSHA PSM, CCPS Risk Based Process Safety, IEC 61511, ISO 45001 y, para Chile, DS 132 de minería y la normativa SEC. Pero el estándar no es lo que previene accidentes; es la implementación rigurosa. El indicador útil de un PSM efectivo no es el cumplimiento documental, son los leading indicators: cuántos near-miss se reportan e investigan, qué porcentaje de hallazgos de MOC y PHA tienen acciones cerradas en plazo, y qué porcentaje de equipos de seguridad crítica tienen mantenimiento al día."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cómo transicionar de un mantenimiento reactivo a un modelo predictivo/prescriptivo en operaciones mineras o energéticas?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "La transición se ejecuta en cuatro etapas no negociables: estabilización del mantenimiento preventivo y correctivo, instrumentación y captura de datos de condición sobre equipos críticos, construcción y calibración de modelos de predicción de falla, y cierre del lazo prescriptivo donde el modelo no solo predice sino propone la intervención óptima. El error caro es saltar etapas: plataformas predictivas sobre activos sin instrumentación adecuada producen dashboards sin valor operacional. SYGNODE entrega la arquitectura completa: instrumentación, modelado y motor prescriptivo."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Qué evaluaciones técnicas justifican de manera segura la extensión de la vida útil de un activo industrial?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "La pregunta técnica útil no es cuántos años más aguanta el activo, sino qué componentes específicos determinan el límite real de vida útil y qué evaluación hay sobre cada uno: ensayos no destructivos, modelado de fatiga acumulada, evaluación de degradación de materiales, y obsolescencia de sistemas de control y protección, que a menudo es el factor decisivo. SYGNODE entrega la evaluación de extensión de vida útil como sistema completo: estructura, control, cumplimiento normativo proyectado y comparativa contra alternativas."
+              }
             }
           ]
         },
@@ -484,6 +532,17 @@
     </section>
 
     <footer>
+        <nav class="footer-domains" aria-label="Dominios SYGNODE">
+            <a href="/decision-assurance">Decision Assurance</a>
+            <a href="/litigios">Litigios</a>
+            <a href="/operaciones-industriales">Operaciones industriales</a>
+            <a href="/salud-operacional">Salud operacional</a>
+            <a href="/inversiones">Inversiones</a>
+            <a href="/infraestructura-energetica">Infraestructura energética</a>
+            <a href="/infraestructura-energetica/redes">Redes eléctricas</a>
+            <a href="/infraestructura-energetica/hidrogeno">Hidrógeno verde</a>
+            <a href="/infraestructura-energetica/incendios-forestales">Incendios forestales</a>
+        </nav>
         <div class="footer-inner">
             <span class="footer-brand"><span class="accent-dot"></span>SYGNODE · 2026</span>
             <div class="footer-links">

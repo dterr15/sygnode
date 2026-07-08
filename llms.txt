@@ -1,0 +1,22 @@
+# SYGNODE
+
+> SYGNODE es una firma chilena de modelado de riesgo sistémico y anticipación operacional para entornos complejos. Trabaja con organizaciones donde una falla local puede escalar rápidamente en costo, continuidad o exposición: la primera señal de falla casi nunca aparece donde se la busca, y SYGNODE integra las señales distribuidas que los sistemas convencionales no conectan.
+
+SYGNODE opera desde Chile y es liderada por Daniel Terreros, Ingeniero Civil Eléctrico con experiencia en sistemas y procesamiento de señales. El proceso de trabajo típico es: conversación de scoping, piloto acotado de 4 a 6 semanas sobre datos reales, y revisión conjunta.
+
+## Servicios
+
+- [Decision Assurance](https://sygnode.cl/decision-assurance): Soporte a decisiones operacionales donde el costo del error es asimétrico. Due diligence técnico con monitoreo continuo post-cierre, sistema nervioso operacional para megaproyectos, trazabilidad auditable de procesos críticos.
+- [Litigios](https://sygnode.cl/litigios): Anticipación operacional para estudios jurídicos con cartera viva. Ventanas de exposición en el calendario, detección temprana de clientes en riesgo, proyección de carga del equipo. También peritajes técnicos para arbitrajes (ICC, LCIA, CIAC), disputas EPC, cuantificación de lucro cesante y RCA con validez forense.
+- [Operaciones industriales](https://sygnode.cl/operaciones-industriales): Anticipación de fallas en activos críticos cuya parada no planificada cuesta más que cualquier intervención preventiva. Auditoría de salud operacional, priorización de mantenimiento por riesgo sistémico, transición a mantenimiento predictivo/prescriptivo, extensión de vida útil.
+- [Salud operacional](https://sygnode.cl/salud-operacional): Anticipación de cuellos de botella en centros de salud con demanda estocástica: derivaciones que se traban, readmisiones evitables, capacidad mal distribuida.
+- [Inversiones](https://sygnode.cl/inversiones): Anticipación de correlación oculta en carteras donde un evento no anticipado mueve varios activos a la vez, integrando señales operacionales, de cadena de suministro y de estructura financiera.
+- [Infraestructura energética](https://sygnode.cl/infraestructura-energetica): Sistemas donde la falla se propaga.
+  - [Redes eléctricas](https://sygnode.cl/infraestructura-energetica/redes): Anticipación de fallas en cascada y blackouts, resiliencia ante eventos climáticos correlacionados, frontera de estabilidad en tiempo real.
+  - [Hidrógeno verde](https://sygnode.cl/infraestructura-energetica/hidrogeno): Riesgo operacional en megaproyectos de H2V, interconexión al SEN, integración de renovables, marco normativo de almacenamiento (Ley 21.505, NTSyCS).
+  - [Prevención de incendios forestales](https://sygnode.cl/infraestructura-energetica/incendios-forestales): Protección de líneas de transmisión, modelación predictiva de riesgo (FlamMap, Rothermel con dinámica de excitación temporal), franjas de seguridad, alerta temprana y protocolos de continuidad (PSPS).
+
+## Contacto
+
+- [Contacto](https://sygnode.cl/contacto): Conversaciones de scoping de 30 minutos directamente con el fundador.
+- [Sobre SYGNODE](https://sygnode.cl/sobre): Quiénes somos y cómo trabajamos.

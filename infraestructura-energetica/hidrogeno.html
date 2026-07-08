@@ -37,6 +37,53 @@
           "isPartOf": {"@id": "https://sygnode.cl/infraestructura-energetica#service"}
         },
         {
+          "@type": "FAQPage",
+          "@id": "https://sygnode.cl/infraestructura-energetica/hidrogeno#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "¿Cuáles son los riesgos operativos y de seguridad más críticos en plantas de hidrógeno verde?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Los riesgos visibles —fugas, deflagración, fragilización por hidrógeno en aceros— están bien cubiertos por NFPA 2, ISO 19880 y ATEX/IECEx, y no son donde se rompen los proyectos. Los proyectos de hidrógeno verde se rompen en el acoplamiento entre subsistemas que cada disciplina monitorea por separado: enfriamiento del electrolizador, degradación de membrana, consumo eléctrico, estrés sobre la interconexión a red intermitente y ciclos térmicos del stack. SYGNODE modela la planta como sistema acoplado e identifica las configuraciones donde el sistema queda a un disparo de cascada antes de que la cascada exista."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cómo evaluar la factibilidad técnica y los cuellos de botella en proyectos de interconexión al SEN?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "La revisión clásica cubre capacidad en el punto de conexión, estudios eléctricos exigidos por el Coordinador y costos de obras — necesario pero no suficiente. El cuello de botella más subestimado es de fila: la cartera de solicitudes al SEN supera tres veces la capacidad instalada actual, y un proyecto eléctricamente factible puede tener tiempos reales de conexión de 3 a 5 años. SYGNODE modela la red y la cartera de proyectos como grafo dinámico: qué refuerzos están comprometidos, qué proyectos en construcción cambian la congestión zonal y dónde se mueve el costo marginal esperado en el horizonte de decisión."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cuáles son las mejores estrategias de ingeniería para la integración masiva de energías renovables intermitentes?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Las cuatro herramientas conocidas son almacenamiento, flexibilidad de demanda, refuerzos de transmisión y servicios complementarios desde inversores. La pregunta real es cuál ataca el cuello de botella efectivo de cada zona del sistema: donde domina el vertimiento (Atacama), almacenamiento más transmisión; donde domina la inercia y estabilidad de frecuencia, grid-forming y servicios sintéticos; donde domina la rampa del atardecer, flexibilidad de demanda y respuesta rápida. Aplicar la misma receta a problemas distintos es el error estructural más caro del sector. SYGNODE entrega ese análisis dinámico como soporte de decisión de inversión."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Qué normativas técnicas de la CNE y SEC aplican a nuevas infraestructuras de almacenamiento energético?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "El marco central en Chile incluye la Ley 21.505 de almacenamiento, la NTSyCS del Coordinador Eléctrico, el Reglamento de Servicios Complementarios, el RIEI cuando aplica, y referencias internacionales como NFPA 855 para sistemas con celdas de litio. La trampa está en suponer que cumplir la norma vigente al momento del diseño asegura el modelo operativo durante la vida útil: el marco regulatorio del almacenamiento standalone se reescribió tres veces entre 2023 y 2025. SYGNODE entrega modelado de riesgo sistémico sobre la trayectoria probable del marco regulatorio y la sensibilidad del CAPEX a esos cambios."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://sygnode.cl/infraestructura-energetica/hidrogeno#breadcrumb",
+          "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://sygnode.cl/"},
+            {"@type": "ListItem", "position": 2, "name": "Infraestructura energética", "item": "https://sygnode.cl/infraestructura-energetica"},
+            {"@type": "ListItem", "position": 3, "name": "Hidrógeno verde", "item": "https://sygnode.cl/infraestructura-energetica/hidrogeno"}
+          ]
+        },
+        {
           "@type": "WebPage",
           "@id": "https://sygnode.cl/infraestructura-energetica/hidrogeno#webpage",
           "url": "https://sygnode.cl/infraestructura-energetica/hidrogeno",
@@ -586,6 +633,17 @@
     </section>
 
     <footer>
+        <nav class="footer-domains" aria-label="Dominios SYGNODE">
+            <a href="/decision-assurance">Decision Assurance</a>
+            <a href="/litigios">Litigios</a>
+            <a href="/operaciones-industriales">Operaciones industriales</a>
+            <a href="/salud-operacional">Salud operacional</a>
+            <a href="/inversiones">Inversiones</a>
+            <a href="/infraestructura-energetica">Infraestructura energética</a>
+            <a href="/infraestructura-energetica/redes">Redes eléctricas</a>
+            <a href="/infraestructura-energetica/hidrogeno">Hidrógeno verde</a>
+            <a href="/infraestructura-energetica/incendios-forestales">Incendios forestales</a>
+        </nav>
         <div class="footer-inner">
             <span class="footer-brand"><span class="accent-dot"></span>SYGNODE · 2026</span>
             <div class="footer-links">

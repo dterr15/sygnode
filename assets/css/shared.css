@@ -565,6 +565,29 @@ footer {
 
 .footer-links a:hover { opacity: 0.6; }
 
+.footer-domains {
+    max-width: 1280px;
+    height: auto;
+    margin: 0 auto var(--space-md);
+    padding-inline: 0;
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid rgba(31, 27, 23, 0.15);
+    display: flex;
+    justify-content: flex-start;
+    gap: var(--space-sm) var(--space-md);
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.footer-domains a {
+    font-size: 15px;
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    transition: opacity 150ms;
+}
+
+.footer-domains a:hover { opacity: 0.6; }
+
 /* ─── FADE-UP ANIMATION ─── */
 .fade-up {
     opacity: 0;

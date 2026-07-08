@@ -37,6 +37,37 @@
           "isPartOf": {"@id": "https://sygnode.cl/infraestructura-energetica#service"}
         },
         {
+          "@type": "FAQPage",
+          "@id": "https://sygnode.cl/infraestructura-energetica/redes#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "¿Cómo prevenir fallas en cascada y apagones en redes eléctricas de alta tensión?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "El evento iniciador de un blackout es típicamente menor y recurrente; lo que hace que esta vez termine en apagón es la configuración del sistema en los minutos previos. Cada blackout mayor de los últimos veinte años —Iberia 2025, Chile 2025, Nordeste de EEUU 2003— sigue el mismo patrón: una perturbación inicial encuentra al sistema en una configuración que parecía segura pero estaba sobre la frontera de estabilidad, y la cascada se produce en el acoplamiento. SYGNODE modela las particiones débiles del grafo eléctrico bajo el despacho actual y proyecta cómo se mueve la frontera de estabilidad con la demanda y los eventos previsibles."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cómo asegurar la resiliencia y estabilidad de las redes de transmisión eléctrica ante eventos climáticos extremos?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "La planificación de transmisión asume fallas independientes y aplica criterio N-1, que funciona para eventos puntuales pero colapsa ante eventos correlacionados: incendios simultáneos disparados por una ola de calor, viento que voltea torres en cadena, o mantenimientos programados que dejan la red en N-0 efectivo cuando llega la perturbación. SYGNODE modela la red como grafo dinámico donde la frontera de estabilidad se mueve con la demanda, el despacho y el estado de mantenimientos, detectando cuándo el sistema pasa por configuración crítica antes de que aparezca el evento iniciador."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://sygnode.cl/infraestructura-energetica/redes#breadcrumb",
+          "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://sygnode.cl/"},
+            {"@type": "ListItem", "position": 2, "name": "Infraestructura energética", "item": "https://sygnode.cl/infraestructura-energetica"},
+            {"@type": "ListItem", "position": 3, "name": "Redes eléctricas", "item": "https://sygnode.cl/infraestructura-energetica/redes"}
+          ]
+        },
+        {
           "@type": "WebPage",
           "@id": "https://sygnode.cl/infraestructura-energetica/redes#webpage",
           "url": "https://sygnode.cl/infraestructura-energetica/redes",
@@ -406,6 +437,17 @@
     </section>
 
     <footer>
+        <nav class="footer-domains" aria-label="Dominios SYGNODE">
+            <a href="/decision-assurance">Decision Assurance</a>
+            <a href="/litigios">Litigios</a>
+            <a href="/operaciones-industriales">Operaciones industriales</a>
+            <a href="/salud-operacional">Salud operacional</a>
+            <a href="/inversiones">Inversiones</a>
+            <a href="/infraestructura-energetica">Infraestructura energética</a>
+            <a href="/infraestructura-energetica/redes">Redes eléctricas</a>
+            <a href="/infraestructura-energetica/hidrogeno">Hidrógeno verde</a>
+            <a href="/infraestructura-energetica/incendios-forestales">Incendios forestales</a>
+        </nav>
         <div class="footer-inner">
             <span class="footer-brand"><span class="accent-dot"></span>SYGNODE · 2026</span>
             <div class="footer-links">

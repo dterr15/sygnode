@@ -44,6 +44,28 @@
           }
         },
         {
+          "@type": "FAQPage",
+          "@id": "https://sygnode.cl/infraestructura-energetica#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "¿Cuáles son los riesgos más críticos en infraestructura energética donde la falla se propaga?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "En infraestructura energética los riesgos más críticos no son los eventos aislados, son los eventos con capacidad de propagación: una falla en un punto que aumenta la probabilidad de falla en otros puntos conectados. Esto aplica a redes eléctricas (fallas en cascada), plantas de hidrógeno (propagación entre subsistemas acoplados) y corredores de transmisión expuestos a incendios forestales. La pregunta operativa correcta no es qué equipo puede fallar, sino qué combinación de estados del sistema está cerca de una transición de fase — lo que requiere modelar el sistema como grafo de activos con dependencias dinámicas."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Qué diferencia hay entre riesgo operativo y riesgo de propagación en sistemas energéticos?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "El riesgo operativo convencional considera equipos individualmente: probabilidad de falla, consecuencia, prioridad de mitigación. El riesgo de propagación captura cómo un evento en un nodo cambia la probabilidad de eventos en nodos conectados: un transformador en un nodo de alta conectividad de red puede tener un riesgo de propagación 5 a 10 veces mayor que su riesgo individual, porque su falla reconfigura flujos en el sistema completo. La diferencia entre ambas métricas define la prioridad real de inversión en mitigación."
+              }
+            }
+          ]
+        },
+        {
           "@type": "WebPage",
           "@id": "https://sygnode.cl/infraestructura-energetica#webpage",
           "url": "https://sygnode.cl/infraestructura-energetica",
@@ -220,6 +242,17 @@
     </section>
 
     <footer>
+        <nav class="footer-domains" aria-label="Dominios SYGNODE">
+            <a href="/decision-assurance">Decision Assurance</a>
+            <a href="/litigios">Litigios</a>
+            <a href="/operaciones-industriales">Operaciones industriales</a>
+            <a href="/salud-operacional">Salud operacional</a>
+            <a href="/inversiones">Inversiones</a>
+            <a href="/infraestructura-energetica">Infraestructura energética</a>
+            <a href="/infraestructura-energetica/redes">Redes eléctricas</a>
+            <a href="/infraestructura-energetica/hidrogeno">Hidrógeno verde</a>
+            <a href="/infraestructura-energetica/incendios-forestales">Incendios forestales</a>
+        </nav>
         <div class="footer-inner">
             <span class="footer-brand">SYGNODE · 2026</span>
             <div class="footer-links">
