@@ -327,6 +327,84 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
     border-left:1px solid var(--blue);border-bottom:1px solid var(--blue);transform:rotate(45deg);
     bottom:-5px;left:16px;}
 
+  /* ---- guided tour (overlay on top of the full graph view) ---- */
+  #tourStart{position:absolute;top:14px;right:14px;z-index:60;display:flex;align-items:center;gap:7px;
+    padding:9px 16px;border-radius:11px;font-size:12.5px;font-weight:700;color:#eaf4ff;cursor:pointer;
+    background:linear-gradient(160deg, rgba(78,161,255,.55) 0%, rgba(78,161,255,.25) 100%);
+    border:1px solid rgba(78,161,255,.5);
+    box-shadow:0 6px 18px rgba(78,161,255,.35), inset 0 1px 0 rgba(255,255,255,.2);
+    transition:transform .15s ease;}
+  #tourStart:hover{transform:scale(1.04);}
+  #tourStart.hidden{display:none;}
+  .ts-icon{font-size:11px;}
+
+  /* spotlight highlight used by the guided tour: a ring overlay for canvas
+     nodes (positioned via canvasToDOM, like node-callout) and an outline
+     glow for DOM rows (panel fields, exec-summary rows) */
+  .tour-spot-ring{position:fixed;z-index:65;border-radius:50%;pointer-events:none;
+    border:3px solid #ffb454;box-shadow:0 0 0 4px rgba(255,180,84,.25), 0 0 22px 4px rgba(255,180,84,.55);
+    opacity:0;transition:opacity .35s ease;animation:tourSpotPulse 1.4s ease-in-out infinite;}
+  .tour-spot-ring.show{opacity:1;}
+  @keyframes tourSpotPulse{
+    0%, 100% { box-shadow:0 0 0 4px rgba(255,180,84,.25), 0 0 22px 4px rgba(255,180,84,.55); }
+    50% { box-shadow:0 0 0 8px rgba(255,180,84,.12), 0 0 32px 10px rgba(255,180,84,.75); }
+  }
+  .tour-spot-box{position:fixed;z-index:65;border-radius:10px;pointer-events:none;
+    border:2.5px solid #ffb454;box-shadow:0 0 0 3px rgba(255,180,84,.2), 0 0 20px 3px rgba(255,180,84,.5);
+    opacity:0;transition:opacity .35s ease, left .5s ease, top .5s ease, width .5s ease, height .5s ease;
+    animation:tourSpotPulse 1.4s ease-in-out infinite;}
+  .tour-spot-box.show{opacity:1;}
+  .tour-row-highlight{position:relative;outline:2.5px solid #ffb454;outline-offset:3px;border-radius:6px;
+    box-shadow:0 0 0 5px rgba(255,180,84,.18), 0 0 18px 2px rgba(255,180,84,.45);
+    animation:tourRowPulse 1.4s ease-in-out infinite;}
+  @keyframes tourRowPulse{
+    0%, 100% { box-shadow:0 0 0 5px rgba(255,180,84,.18), 0 0 18px 2px rgba(255,180,84,.45); }
+    50% { box-shadow:0 0 0 8px rgba(255,180,84,.1), 0 0 26px 6px rgba(255,180,84,.6); }
+  }
+
+
+  /* fixed to the viewport (not the graph container) so they stay visible
+     across Grafo completo / Vista simple / Resumen ejecutivo while the tour
+     is active — the narration box must never disappear when the tour swaps
+     views to show the same event somewhere else */
+  #tourCaption{display:none;position:fixed;left:50%;bottom:92px;transform:translateX(-50%);
+    width:min(640px,86%);padding:16px 22px;border-radius:14px;text-align:center;z-index:90;
+    background:linear-gradient(160deg, rgba(40,52,68,.86) 0%, rgba(18,24,32,.8) 100%);
+    backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 10px 32px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.12);
+    opacity:0;transition:opacity .45s ease, transform .45s ease;pointer-events:none;}
+  body.tour-mode #tourCaption{display:block;}
+  #tourCaption.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .tour-caption-text{font-size:14.5px;line-height:1.5;color:#eaf4ff;}
+  .tour-caption-date{margin-top:8px;font-size:11px;font-weight:700;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--blue);}
+
+  #tourControls{display:none;position:fixed;left:50%;bottom:20px;transform:translateX(-50%);
+    align-items:center;gap:14px;padding:9px 16px;border-radius:14px;z-index:90;
+    background:linear-gradient(160deg, rgba(40,52,68,.85) 0%, rgba(18,24,32,.78) 100%);
+    backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 10px 32px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.12);}
+  body.tour-mode #tourControls{display:flex;}
+  body.tour-mode #tourStart{display:none;}
+  #fullGraphWrap.tour-active::before{content:"";position:absolute;inset:0;z-index:50;
+    background:rgba(5,8,12,.35);pointer-events:none;}
+  #tourPlayPause, #tourRestart{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.14);
+    background:linear-gradient(160deg, rgba(78,161,255,.55) 0%, rgba(78,161,255,.25) 100%);
+    color:#eaf4ff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:transform .15s ease;}
+  #tourPlayPause:hover, #tourRestart:hover{transform:scale(1.08);}
+  #tourRestart{background:linear-gradient(160deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.03) 100%);font-size:16px;}
+  .tour-progress{display:flex;align-items:center;gap:6px;}
+  .tour-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.25);cursor:pointer;transition:background .2s ease, transform .2s ease;}
+  .tour-dot:hover{transform:scale(1.25);}
+  .tour-dot.done{background:var(--blue);border-color:var(--blue);}
+  .tour-dot.current{background:#fff;border-color:#fff;box-shadow:0 0 0 3px rgba(78,161,255,.4);}
+  #tourSpeed{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:var(--text-dim);
+    border-radius:7px;font-size:11px;padding:4px 6px;cursor:pointer;}
+
   #mercuryOverlay{position:fixed;inset:0;z-index:420;display:none;
     background:rgba(11,15,20,.88);align-items:center;justify-content:center;flex-direction:column;
     transition:opacity .5s ease;}
@@ -395,7 +473,7 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
 
 <div id="mercuryOverlay">
   <div class="mercury-ring"></div>
-  <div class="mercury-title">Ejecutar Mercurio</div>
+  <div class="mercury-title">Iniciando Motor SYGNODE</div>
   <div class="mercury-sub">Aquí comienza el análisis real con el modelo y los datos precargados.</div>
 </div>
 
@@ -492,6 +570,7 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
           <div class="nd-sub" id="ndSub"></div>
           <div id="ndBody"></div>
         </div>
+        <button id="tourStart" title="Recorrido guiado"><span class="ts-icon">▶</span> Recorrido guiado</button>
       </div>
       <div class="graph-hint">Arrastra para mover nodos · rueda para zoom · clic en un nodo para ver su detalle · el grafo se actualiza con el cursor de arriba</div>
     </div>
@@ -528,6 +607,21 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
     </a>
     <div class="foot-note">Datos del run (timeline.jsonl, node_attention.jsonl, purchase_orders.csv, work_orders.csv, asset_parts.csv, wo_parts.csv, part_suppliers.csv) · equipo A001.</div>
   </main>
+
+  <div id="tourCaption">
+    <div class="tour-caption-text" id="tourCaptionText"></div>
+    <div class="tour-caption-date" id="tourCaptionDate"></div>
+  </div>
+  <div id="tourControls">
+    <button id="tourPlayPause" title="Reproducir / pausar">▶</button>
+    <div class="tour-progress" id="tourProgress"></div>
+    <select id="tourSpeed" title="Velocidad">
+      <option value="0.6">0.6x</option>
+      <option value="1" selected>1x</option>
+      <option value="1.8">1.8x</option>
+    </select>
+    <button id="tourExit" title="Salir del recorrido">✕</button>
+  </div>
   <button id="helpFab" title="Mostrar / ocultar instrucciones"></button>
 </div>
 
@@ -1591,6 +1685,319 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       });
     });
   }
+
+  // ---------------- guided tour (narrated walkthrough) ----------------
+  // Every stop below is anchored to a real, already-verified event in this
+  // run's data (work_orders / purchase_orders / stock_movements) \u2014 nothing
+  // here is invented or projected. The script only picks WHICH known moments
+  // to show and in what order; all numbers still come from the live render.
+  const TOUR_SCRIPT = [
+    {at: "2020-02-01T00:00:00", text: "El motor SYGNODE comienza a observar A001 \u2014 un compresor de aire cr\u00edtico \u2014 y su repuesto P001. Todo en orden: 1 unidad en bodega.", duration: 13200,
+      target: {type:"node", nodeId:"asset:A001"}, sideTarget: {type:"simpleCard", cardId:"cardEquip"}},
+    {at: "2020-04-18T00:00:00", text: "Primera falla: WO-M001. Se usa la \u00fanica unidad en stock. Bodega emite la reposici\u00f3n \u2014 el repuesto no estar\u00e1 disponible por un tiempo.", duration: 14700,
+      target: {type:"node", nodeId:"asset:A001"}, sideTarget: {type:"simpleCard", cardId:"cardEquip"}},
+    {at: "2020-04-22T09:00:00", text: "Abastecimiento ordena PO-PRE \u2014 reposici\u00f3n est\u00e1ndar, 28 d\u00edas de plazo.", duration: 14000,
+      target: {type:"node", nodeId:"po:PO-PRE"}, sideTarget: {type:"simpleCard", cardId:"cardProcurement"}},
+    {at: "2020-05-20T09:00:00", text: "Llega el repuesto. Bodega vuelve a tener cobertura \u2014 32 d\u00edas despu\u00e9s de la falla.", duration: 14000,
+      target: {type:"panelRow", nodeId:"part:P001", labelText:"Stock f\u00edsico"}, sideTarget: {type:"simpleCard", cardId:"cardWarehouse"}},
+    {at: "2020-05-29T23:30:00", text: "Segunda falla: WO-M002 \u2014 solo 9 d\u00edas despu\u00e9s de recuperar stock. El intervalo entre fallas se est\u00e1 acortando.", duration: 14700,
+      target: {type:"panelRow", nodeId:"part:P001", labelText:"Stock f\u00edsico"}, sideTarget: {type:"simpleCard", cardId:"cardEquip"}},
+    {at: "2020-05-15T09:00:00", text: "Abastecimiento ya hab\u00eda ordenado PO-NORM el 15 de mayo \u2014 pero con 56 d\u00edas de plazo, no alcanza a llegar a tiempo para la pr\u00f3xima falla.", duration: 15500,
+      target: {type:"node", nodeId:"po:PO-NORM"}, sideTarget: {type:"simpleCard", cardId:"cardProcurement"}},
+    {at: "2020-06-05T10:00:00", text: "Tercera falla: WO-M003. Bodega sigue en 0 \u2014 el repuesto est\u00e1ndar a\u00fan no llega.", duration: 14700,
+      target: {type:"panelRow", nodeId:"part:P001", labelText:"Stock f\u00edsico"}, sideTarget: {type:"simpleCard", cardId:"cardWarehouse"}},
+    {at: "2020-06-05T10:30:00", text: "Abastecimiento reacciona con una compra de emergencia \u2014 PO-EXP. Plazo: 2.16 d\u00edas, no 28.", duration: 14700,
+      target: {type:"node", nodeId:"po:PO-EXP"}, sideTarget: {type:"simpleCard", cardId:"cardProcurement"}},
+    {at: "2020-06-07T14:15:00", text: "Llega la compra de emergencia. Horas reales de equipo detenido evitadas frente a esperar el plazo est\u00e1ndar.", duration: 14700,
+      target: {type:"panelRow", nodeId:"part:P001", labelText:"Stock f\u00edsico"}, sideTarget: {type:"simpleCard", cardId:"cardWarehouse"}},
+    {at: "2020-07-10T09:00:00", text: "PO-NORM finalmente llega \u2014 56 d\u00edas despu\u00e9s de ordenada. El stock se recupera, pero ya fue tarde dos veces.", duration: 14700,
+      target: {type:"node", nodeId:"po:PO-NORM"}, sideTarget: {type:"simpleCard", cardId:"cardWarehouse"}},
+    {at: "2020-07-15T14:30:00", text: "Cuarta falla: WO-M004 \u2014 el patr\u00f3n se repite. El punto de reorden actual (1 unidad) no protege contra la frecuencia real de fallas.", duration: 15500,
+      target: {type:"node", nodeId:"asset:A001"}, sideTarget: {type:"execCard", cardId:"execCOO"}},
+    {at: "2020-07-15T19:00:00", text: "Con la pol\u00edtica \u00f3ptima de SYGNODE, estas ventanas de exposici\u00f3n se habr\u00edan evitado. Revisa el costo real evitado abajo.", duration: 17000, gotoExec: true,
+      target: {type:"execRow", labelText:"Riesgo evitado"}},
+  ];
+
+  function findFrameForDate(dateStr){
+    const target = new Date(dateStr+"Z").getTime();
+    const targetOffset = (target - T0.getTime()) / 60000;
+    let lo = 0, hi = frames.length-1, best = 0, bestDiff = Infinity;
+    while(lo <= hi){
+      const mid = (lo+hi)>>1;
+      const diff = Math.abs(frames[mid][idx.min_offset] - targetOffset);
+      if(diff < bestDiff){ bestDiff = diff; best = mid; }
+      if(frames[mid][idx.min_offset] < targetOffset) lo = mid+1; else hi = mid-1;
+    }
+    return best;
+  }
+
+  (function initTour(){
+    const tourStartBtn = document.getElementById("tourStart");
+    const fullGraphWrap = document.getElementById("fullGraphWrap");
+    const tourCaption = document.getElementById("tourCaption");
+    const tourCaptionText = document.getElementById("tourCaptionText");
+    const tourCaptionDate = document.getElementById("tourCaptionDate");
+    const tourControls = document.getElementById("tourControls");
+    const tourPlayPause = document.getElementById("tourPlayPause");
+    const tourProgress = document.getElementById("tourProgress");
+    const tourSpeed = document.getElementById("tourSpeed");
+    const tourExit = document.getElementById("tourExit");
+
+    const stopFrames = TOUR_SCRIPT.map(s => findFrameForDate(s.at));
+
+    stopFrames.forEach((_, i) => {
+      const dot = document.createElement("div");
+      dot.className = "tour-dot";
+      dot.dataset.step = i;
+      dot.title = TOUR_SCRIPT[i].text.slice(0,40)+"\u2026";
+      tourProgress.appendChild(dot);
+    });
+    const dots = Array.from(tourProgress.querySelectorAll(".tour-dot"));
+
+    let tourPlaying = false;
+    let tourStep = -1;
+    let tourActive = false;
+    let spotRAF = null;
+    let currentSpotEl = null;
+    let seq = 0; // bumped on every goToStep so stale async phases (setTimeout/rAF
+                 // from a step the user already skipped past) can detect they're
+                 // obsolete and quit instead of corrupting the new step's state
+
+    // ---- spotlight: a pulsing ring/box over the exact element the narration
+    // is talking about, following it live (canvas nodes move with physics/pan/zoom) ----
+    function clearSpotlight(){
+      if(spotRAF) cancelAnimationFrame(spotRAF);
+      spotRAF = null;
+      if(currentSpotEl){ currentSpotEl.remove(); currentSpotEl = null; }
+      document.querySelectorAll(".tour-row-highlight").forEach(el => el.classList.remove("tour-row-highlight"));
+    }
+
+    function spotlightNode(nodeId, mySeq){
+      clearSpotlight();
+      if(!fullGraphNetwork) return;
+      const ring = document.createElement("div");
+      ring.className = "tour-spot-ring";
+      document.body.appendChild(ring);
+      currentSpotEl = ring;
+      function track(){
+        if(seq !== mySeq || currentSpotEl !== ring){ ring.remove(); return; }
+        try{
+          const canvasEl = document.getElementById("fullGraphCanvas");
+          const canvasRect = canvasEl.getBoundingClientRect();
+          const pos = fullGraphNetwork.getPositions([nodeId])[nodeId];
+          if(!pos){ spotRAF = requestAnimationFrame(track); return; }
+          const domPos = fullGraphNetwork.canvasToDOM(pos);
+          const scale = fullGraphNetwork.getScale();
+          const node = visNodeIndex[nodeId];
+          const baseR = (node ? node.size : 18) * scale + 14;
+          const cx = canvasRect.left + domPos.x;
+          const cy = canvasRect.top + domPos.y;
+          ring.style.left = (cx - baseR) + "px";
+          ring.style.top = (cy - baseR) + "px";
+          ring.style.width = (baseR*2) + "px";
+          ring.style.height = (baseR*2) + "px";
+          ring.classList.add("show");
+        } catch(e){ /* node not in dataset yet */ }
+        spotRAF = requestAnimationFrame(track);
+      }
+      track();
+      try{ fullGraphNetwork.focus(nodeId, {scale: Math.max(fullGraphNetwork.getScale(), 1), animation:{duration:500, easingFunction:"easeInOutQuad"}}); } catch(e){}
+    }
+
+    function spotlightPanelRow(nodeId, labelText){
+      clearSpotlight();
+      currentOpenNodeId = nodeId;
+      showNodeDetail(nodeId, atForFrame(frames[currentFrameIdx]));
+      setTimeout(() => {
+        const panel = document.getElementById("nodeDetailPanel");
+        const row = Array.from(panel.querySelectorAll(".mini-row, .exp-row"))
+          .find(r => r.textContent.includes(labelText));
+        if(row){
+          row.classList.add("tour-row-highlight");
+          row.scrollIntoView({block:"nearest", behavior:"smooth"});
+        }
+      });
+    }
+
+    function spotlightExecRow(labelText){
+      clearSpotlight();
+      setTimeout(() => {
+        const row = Array.from(document.querySelectorAll("#execView .exp-row, #execView .exp-total"))
+          .find(r => r.textContent.includes(labelText));
+        if(row){
+          row.classList.add("tour-row-highlight");
+          row.scrollIntoView({block:"center", behavior:"smooth"});
+        }
+      });
+    }
+
+    function spotlightSimpleCard(cardId){
+      clearSpotlight();
+      setTimeout(() => {
+        const card = document.getElementById(cardId);
+        if(card){
+          card.classList.add("tour-row-highlight");
+          card.scrollIntoView({block:"center", behavior:"smooth"});
+        }
+      });
+    }
+
+    function spotlightExecCard(cardId){
+      clearSpotlight();
+      setTimeout(() => {
+        const card = document.getElementById(cardId)?.closest(".exec-card");
+        if(card){
+          card.classList.add("tour-row-highlight");
+          card.scrollIntoView({block:"center", behavior:"smooth"});
+        }
+      });
+    }
+
+    function applyTarget(target){
+      if(!target) return;
+      if(target.type === "node") spotlightNode(target.nodeId, seq);
+      else if(target.type === "panelRow") spotlightPanelRow(target.nodeId, target.labelText);
+      else if(target.type === "execRow") spotlightExecRow(target.labelText);
+      else if(target.type === "simpleCard") spotlightSimpleCard(target.cardId);
+      else if(target.type === "execCard") spotlightExecCard(target.cardId);
+    }
+
+    function wait(ms, mySeq){
+      return new Promise(resolve => {
+        const t = setTimeout(() => resolve(seq===mySeq), ms);
+      });
+    }
+
+    // Each non-closing stop plays in three phases within its own duration:
+    // 1) full graph, spotlight on the node/panel   (45% of the time)
+    // 2) a quick pass through Vista simple / Resumen ejecutivo, same event highlighted there (35%)
+    // 3) back to full graph for a beat before the next stop begins        (20%)
+    // The closing stop (gotoExec) skips this and just goes straight to Resumen ejecutivo.
+    // runStepSequence is the ONLY driver of advancement: there is no separate
+    // parallel timer racing against it (a prior version had scheduleNext()
+    // fire off stop.duration while this function also spent stop.duration on
+    // its own phases, so the external timer would invalidate seq and abort
+    // phase 2/3 before they ran). When a step's phases finish, THIS function
+    // asks for the next step itself.
+    async function runStepSequence(i, mySeq){
+      const stop = TOUR_SCRIPT[i];
+      const frameI = stopFrames[i];
+      slider.value = frameI;
+      render(frameI);
+      if(fullGraphNetwork) updateFullGraphColors(frameI);
+      refreshOpenNodeDetail(frameI);
+
+      tourCaptionText.textContent = stop.text;
+      tourCaptionDate.textContent = fmtDT(stop.at);
+      tourCaption.classList.remove("show");
+      setTimeout(() => tourCaption.classList.add("show"), 0);
+
+      dots.forEach((d,di) => {
+        d.classList.toggle("current", di===i);
+        d.classList.toggle("done", di<i);
+      });
+
+      const speed = () => Number(tourSpeed.value) || 1;
+
+      if(stop.gotoExec){
+        if(!(await wait(Math.min(1200, stop.duration*0.3)/speed(), mySeq))) return;
+        switchView("exec");
+        if(!(await wait(250/speed(), mySeq))) return;
+        // the "Riesgo evitado" row only exists in the exec block's "avoided"
+        // sub-view (it defaults to "timeline") — switch it before spotlighting
+        const avoidedBtn = document.querySelector('[data-exp-view="avoided"]');
+        if(avoidedBtn && !avoidedBtn.classList.contains("active")) avoidedBtn.click();
+        if(!(await wait(250/speed(), mySeq))) return;
+        applyTarget(stop.target);
+        await wait(stop.duration*0.4/speed(), mySeq);
+        advanceIfPlaying(i, mySeq);
+        return;
+      }
+
+      const phase1 = Math.round(stop.duration*0.45);
+      const phase2 = Math.round(stop.duration*0.35);
+      const phase3 = stop.duration - phase1 - phase2;
+
+      // phase 1: full graph, node/panel spotlight
+      if(!document.getElementById("fullGraphView").classList.contains("active")) switchView("full");
+      if(!(await wait(500/speed(), mySeq))) return;
+      applyTarget(stop.target);
+      if(!(await wait((phase1-500)/speed(), mySeq))) return;
+
+      // phase 2: pass through the side view (Vista simple / Resumen ejecutivo)
+      if(stop.sideTarget){
+        clearSpotlight();
+        const sideView = stop.sideTarget.type==="execCard" ? "exec" : "simple";
+        switchView(sideView);
+        if(!(await wait(350/speed(), mySeq))) return;
+        applyTarget(stop.sideTarget);
+        if(!(await wait((phase2-350)/speed(), mySeq))) return;
+      }
+
+      // phase 3: back to full graph for a beat before the next stop
+      clearSpotlight();
+      switchView("full");
+      if(!(await wait(300/speed(), mySeq))) return;
+      applyTarget(stop.target);
+      if(!(await wait(Math.max(0, phase3-300)/speed(), mySeq))) return;
+
+      advanceIfPlaying(i, mySeq);
+    }
+
+    function advanceIfPlaying(fromStep, mySeq){
+      if(seq !== mySeq || !tourPlaying) return;
+      if(fromStep >= TOUR_SCRIPT.length-1){ setPlaying(false); return; }
+      goToStep(fromStep+1);
+    }
+
+    function goToStep(i){
+      if(i<0 || i>=TOUR_SCRIPT.length) return;
+      seq++;
+      const mySeq = seq;
+      tourStep = i;
+      clearSpotlight();
+      runStepSequence(i, mySeq);
+    }
+
+    function setPlaying(on){
+      tourPlaying = on;
+      tourPlayPause.textContent = on ? "\u23f8" : "\u25b6";
+      // resuming play on the CURRENT step just lets its in-flight phases keep
+      // going (they already check tourPlaying via advanceIfPlaying); nothing
+      // to kick off here beyond the flag itself
+    }
+
+    function enterTour(){
+      tourActive = true;
+      document.body.classList.add("tour-mode");
+      fullGraphWrap.classList.add("tour-active");
+      if(!fullGraphNetwork) initFullGraph();
+      goToStep(0);
+      setPlaying(true);
+    }
+
+    function exitTour(){
+      tourActive = false;
+      seq++; // invalidate any in-flight phase sequence
+      setPlaying(false);
+      clearSpotlight();
+      document.body.classList.remove("tour-mode");
+      fullGraphWrap.classList.remove("tour-active");
+      tourCaption.classList.remove("show");
+      tourStep = -1;
+    }
+
+    tourStartBtn.addEventListener("click", () => {
+      switchView("full");
+      setTimeout(enterTour, 60);
+    });
+    tourPlayPause.addEventListener("click", () => setPlaying(!tourPlaying));
+    tourExit.addEventListener("click", () => {
+      switchView("full");
+      exitTour();
+    });
+    dots.forEach((d,i) => d.addEventListener("click", () => { setPlaying(false); goToStep(i); }));
+  })();
 
   // ---------------- intro overlay (demo show) ----------------
   // Purely cosmetic: a staged "connecting data sources" sequence before the
