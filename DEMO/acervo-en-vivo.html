@@ -1,0 +1,326 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>ACERVO en vivo</title>
+<style>
+/* Layout: pieza de demo a pantalla — frontera vertical, cliente izq / SYGNODE der, consola de eventos abajo */
+:root{
+  --bg:#20201c; --panel:#2a2a24; --panel-2:#323129; --line:#45443b;
+  --cream:#efe9dd; --muted:#a8a498; --faint:#75736a;
+  --coral:#e8593c;
+  --teal:#5dcaa5; --amber:#ef9f27; --red:#e24b4a; --lock:#c9a24a;
+  --coral-soft:rgba(232,89,60,.16); --teal-soft:rgba(93,202,165,.14);
+  --serif:'Spectral',Georgia,serif; --sans:'Inter',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--cream);font-family:var(--sans);line-height:1.5;margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding-block:28px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--coral);margin:0 0 10px}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(26px,4vw,38px);line-height:1.1;margin:0 0 10px;text-wrap:balance}
+h1 em{font-style:italic;color:var(--coral)}
+.lede{color:var(--muted);font-size:15px;max-width:60ch;margin:0 0 22px}
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:24px}
+button.play{font-family:var(--sans);font-weight:500;font-size:14px;background:var(--coral);color:#2a120b;border:none;border-radius:8px;padding:11px 20px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+button.play:hover{background:#f06a4d}
+button.play:disabled{opacity:.5;cursor:default}
+button.ghost{font-family:var(--sans);font-size:13px;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:10px 16px;cursor:pointer}
+button.ghost:hover{border-color:var(--faint);color:var(--cream)}
+.audience{display:flex;gap:6px;margin-left:auto}
+.audience button{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--faint);border:1px solid var(--line);border-radius:6px;padding:7px 11px;cursor:pointer}
+.audience button[aria-pressed=true]{color:var(--cream);border-color:var(--coral);background:var(--coral-soft)}
+
+.stage{display:grid;grid-template-columns:1fr 64px 1fr;gap:0;align-items:stretch;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
+@media(max-width:720px){.stage{grid-template-columns:1fr;}.frontier{display:none}}
+.zone{padding:18px 18px 20px;min-width:0}
+.zone-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:4px}
+.zone-title{font-family:var(--serif);font-size:18px;font-weight:500}
+.zone-sub{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.zone.client{background:linear-gradient(180deg,rgba(93,202,165,.05),transparent 40%)}
+.zone.sygnode{background:linear-gradient(180deg,rgba(127,119,221,.06),transparent 40%);border-left:1px solid var(--line)}
+@media(max-width:720px){.zone.sygnode{border-left:none;border-top:1px solid var(--line)}}
+
+.frontier{position:relative;background:repeating-linear-gradient(180deg,var(--line) 0 5px,transparent 5px 12px);width:1px;justify-self:center}
+.frontier::after{content:"FRONTERA";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg);font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--faint);white-space:nowrap;background:var(--panel);padding:6px 0}
+
+.doc{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:12px}
+.doc-title{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.row{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:center;padding:6px 0;border-top:1px solid rgba(69,68,59,.5);font-size:13px}
+.row:first-of-type{border-top:none}
+.row .k{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--faint)}
+.row .v{font-family:var(--mono);font-size:13px;min-width:0;overflow-wrap:anywhere;transition:color .35s}
+.v.real{color:var(--cream)}
+.v.aliased{color:var(--teal)}
+.v.flip{animation:flip .5s ease}
+@keyframes flip{0%{opacity:0;transform:translateY(-4px)}100%{opacity:1;transform:none}}
+
+.pipeline{margin-top:16px;display:flex;flex-direction:column;gap:7px}
+.step{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--faint);padding:8px 10px;border:1px solid transparent;border-radius:8px;transition:all .3s}
+.step .dot{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);flex:none;display:grid;place-items:center;font-size:10px;color:var(--faint);transition:all .3s}
+.step .lbl{min-width:0}
+.step .lbl b{font-weight:500;color:inherit;display:block;font-size:13px}
+.step .lbl span{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.03em}
+.step.active{color:var(--cream);border-color:var(--coral);background:var(--coral-soft)}
+.step.active .dot{border-color:var(--coral);color:var(--coral)}
+.step.done{color:var(--muted)}
+.step.done .dot{border-color:var(--teal);background:var(--teal);color:#04342c}
+.step.gate.done .dot{border-color:var(--teal);background:var(--teal)}
+.step.gate.fail .dot{border-color:var(--red);background:var(--red);color:#fff}
+
+.vault{margin-top:16px;border:1px solid var(--lock);border-radius:10px;padding:13px 14px;background:rgba(201,162,74,.07);opacity:.5;transition:opacity .5s}
+.vault.sealed{opacity:1}
+.vault-head{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--lock);margin-bottom:8px}
+.vault-items{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--mono);font-size:11px;color:var(--cream);background:rgba(201,162,74,.13);border:1px solid rgba(201,162,74,.3);border-radius:6px;padding:4px 9px}
+.vault-note{font-size:12px;color:var(--muted);margin-top:9px}
+
+.bundle{margin-top:16px;border:1px dashed var(--line);border-radius:10px;padding:14px;min-height:92px;display:flex;flex-direction:column;justify-content:center;gap:8px;transition:border-color .4s}
+.bundle.arrived{border-color:var(--teal);border-style:solid}
+.bundle.waiting{align-items:center;justify-content:center;color:var(--faint);font-size:13px;text-align:center}
+.bundle-head{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal)}
+.hash{font-family:var(--mono);font-size:11px;color:var(--muted);overflow-wrap:anywhere}
+.payload{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px}
+.pl{font-family:var(--mono);font-size:10px;padding:5px 8px;border-radius:6px;background:var(--panel-2);border:1px solid var(--line);color:var(--muted)}
+.pl b{color:var(--teal);font-weight:500}
+
+.engine{margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:14px;opacity:.4;transition:opacity .5s}
+.engine.running{opacity:1;border-color:#7f77dd}
+.engine-head{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#a59cf0;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.bars{display:flex;align-items:flex-end;gap:5px;height:46px;margin-bottom:10px}
+.bar{flex:1;background:#534ab7;border-radius:3px 3px 0 0;height:20%;transition:height .4s}
+.engine.running .bar{animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
+.engine-note{font-size:12px;color:var(--muted)}
+.engine-note b{color:var(--cream);font-weight:500}
+
+.result{margin-top:12px;font-size:13px;color:var(--faint);border-top:1px solid var(--line);padding-top:12px;transition:color .4s}
+.result.show{color:var(--cream)}
+.result .big{font-family:var(--serif);font-size:16px;color:var(--teal)}
+
+.console{margin-top:22px;border:1px solid var(--line);border-radius:12px;background:#1b1b17;overflow:hidden}
+.console-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line)}
+.console-head .t{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.console-head .legend{display:flex;gap:12px;font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.console-head .legend b{font-weight:400}
+.c1{color:var(--amber)}.c2{color:var(--teal)}.c3{color:#a59cf0}
+.log{font-family:var(--mono);font-size:11.5px;line-height:1.7;padding:12px 14px;max-height:200px;overflow-y:auto;margin:0}
+.log .entry{display:grid;grid-template-columns:62px 48px 1fr;gap:10px;opacity:0;animation:fadein .3s forwards}
+@keyframes fadein{to{opacity:1}}
+.log .ts{color:var(--faint)}
+.log .layer{font-weight:500}
+.log .msg{color:var(--muted);overflow-wrap:anywhere}
+.log .msg .h{color:var(--cream)}
+
+.ciso-only{display:none}
+body[data-aud="ciso"] .ciso-only{display:block}
+body[data-aud="ciso"] .payload{display:grid}
+body[data-aud="gerente"] .payload{display:none}
+body[data-aud="gerente"] .hash{display:none}
+
+.footnote{margin-top:18px;font-size:12px;color:var(--faint);max-width:70ch}
+.footnote b{color:var(--muted);font-weight:500}
+a{color:var(--coral)}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<div class="wrap">
+  <p class="eyebrow">ACERVO · custodia de datos en vivo</p>
+  <h1>Sus datos se vuelven <em>ilegibles</em> antes de salir de su empresa.</h1>
+  <p class="lede">Mire el recorrido completo: un registro de mantenimiento entra legible, se transforma dentro de su propio entorno, y lo único que cruza hacia SYGNODE es un paquete cifrado del que no se puede recuperar ningún nombre. Las llaves para volver atrás nunca salen.</p>
+
+  <div class="controls">
+    <button class="play" id="play"><span id="playicon">▶</span> <span id="playlabel">Iniciar recorrido</span></button>
+    <button class="ghost" id="reset">Reiniciar</button>
+    <div class="audience" role="group" aria-label="Vista">
+      <button id="aud-ger" aria-pressed="true">Gerencia</button>
+      <button id="aud-ciso" aria-pressed="false">CISO</button>
+    </div>
+  </div>
+
+  <div class="stage">
+    <!-- CLIENTE -->
+    <div class="zone client">
+      <div class="zone-head"><span class="zone-title">Su empresa</span><span class="zone-sub">los datos no salen de aquí</span></div>
+
+      <div class="doc">
+        <div class="doc-title"><span>Registro de mantenimiento · entrada</span></div>
+        <div class="row"><span class="k">Equipo</span><span class="v real" data-real="Compresor APU-3 (Línea 2)" data-alias="EQ-7f3a9c">Compresor APU-3 (Línea 2)</span></div>
+        <div class="row"><span class="k">Repuesto</span><span class="v real" data-real="Válvula Grundfos 06-B" data-alias="PART-2b1c4e">Válvula Grundfos 06-B</span></div>
+        <div class="row"><span class="k">Proveedor</span><span class="v real" data-real="Atlas Copco Chile" data-alias="ORG-9d4e71">Atlas Copco Chile</span></div>
+        <div class="row"><span class="k">Técnico</span><span class="v real" data-real="Juan Pérez M." data-alias="PER-5a8f20">Juan Pérez M.</span></div>
+        <div class="row"><span class="k">Costo rep.</span><span class="v real" data-real="$1.240.000" data-alias="$ 418.904 ×k">$1.240.000</span></div>
+        <div class="row"><span class="k">Plazo repos.</span><span class="v real" data-real="21 días" data-alias="21 días">21 días</span></div>
+      </div>
+
+      <div class="pipeline" id="pipeline">
+        <div class="step" data-step="ingest"><span class="dot">1</span><span class="lbl"><b>Ingesta</b><span>huella SHA-256 + registro</span></span></div>
+        <div class="step" data-step="canon"><span class="dot">2</span><span class="lbl"><b>Reconoce entidades</b><span>unifica nombres repetidos</span></span></div>
+        <div class="step" data-step="alias"><span class="dot">3</span><span class="lbl"><b>Reemplaza identidades</b><span>cada nombre → un código</span></span></div>
+        <div class="step" data-step="transform"><span class="dot">4</span><span class="lbl"><b>Transforma valores</b><span>oculta la escala real</span></span></div>
+        <div class="step gate" data-step="verify"><span class="dot">5</span><span class="lbl"><b>Verifica fidelidad</b><span>misma estructura, sin nombres</span></span></div>
+        <div class="step" data-step="emit"><span class="dot">6</span><span class="lbl"><b>Emite paquete cifrado</b><span>lo único que cruza</span></span></div>
+      </div>
+
+      <div class="vault" id="vault">
+        <div class="vault-head"><span>🔒 Se queda bajo llave · nunca viaja</span></div>
+        <div class="vault-items">
+          <span class="chip">Tabla código ↔ nombre real</span>
+          <span class="chip">Factor de los montos</span>
+          <span class="chip">Clave de reconstrucción</span>
+        </div>
+        <div class="vault-note">Sin esto, el paquete que salió no se puede revertir. Y esto nunca sale de su empresa.</div>
+      </div>
+    </div>
+
+    <div class="frontier"></div>
+
+    <!-- SYGNODE -->
+    <div class="zone sygnode">
+      <div class="zone-head"><span class="zone-title">SYGNODE</span><span class="zone-sub">nunca ve nombres reales</span></div>
+
+      <div class="bundle waiting" id="bundle"><span>Esperando el paquete cifrado…</span></div>
+
+      <div class="engine" id="engine">
+        <div class="engine-head">Motor · analiza sobre códigos</div>
+        <div class="bars"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+        <div class="engine-note">Detecta la combinación de riesgo <b>sin saber de qué equipo se trata</b>.</div>
+      </div>
+
+      <div class="result" id="result">
+        <div class="big" id="resulttext">—</div>
+        <div style="margin-top:6px;font-size:12px;color:var(--muted)" id="resultsub"></div>
+      </div>
+
+      <p class="footnote ciso-only" style="margin-top:16px"><b>Qué cruzó y qué no.</b> Cruzó: estructura del grafo, marcas de tiempo, montos transformados, todo bajo código. No cruzó: ningún nombre, la tabla de correspondencia, el factor de escala. Un compromiso total de SYGNODE no re-identifica a nadie.</p>
+    </div>
+  </div>
+
+  <!-- CONSOLA -->
+  <div class="console">
+    <div class="console-head">
+      <span class="t">Registro de auditoría · en vivo</span>
+      <div class="legend">
+        <span><b class="c1">■</b> acceso</span>
+        <span><b class="c2">■</b> actividad</span>
+        <span><b class="c3">■</b> SYGNODE</span>
+      </div>
+    </div>
+    <div class="log" id="log"></div>
+  </div>
+
+  <p class="footnote">Pieza de demostración con datos de ejemplo del caso MetroPT-3 (continuidad operacional). En producción, cada línea del registro corresponde a un evento real de la corrida, con su huella verificable. <b>El recorrido que ve es el mismo que ocurre con sus datos</b> — cambia la fuente, no el proceso.</p>
+</div>
+
+<script>
+(function(){
+  var playBtn=document.getElementById('play'),playLabel=document.getElementById('playlabel'),playIcon=document.getElementById('playicon');
+  var resetBtn=document.getElementById('reset');
+  var steps=Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var vals=Array.prototype.slice.call(document.querySelectorAll('.v'));
+  var vault=document.getElementById('vault'),bundle=document.getElementById('bundle'),engine=document.getElementById('engine');
+  var result=document.getElementById('result'),resultText=document.getElementById('resulttext'),resultSub=document.getElementById('resultsub');
+  var log=document.getElementById('log');
+  var running=false,timers=[],t0=0;
+
+  function at(ms,fn){timers.push(setTimeout(fn,ms));}
+  function clock(){var s=((Date.now()-t0)/1000).toFixed(1);return ('00'+s).slice(-4);}
+  function logline(layer,cls,msg){
+    var e=document.createElement('div');e.className='entry';
+    e.innerHTML='<span class="ts">'+clock()+'s</span><span class="layer '+cls+'">'+layer+'</span><span class="msg">'+msg+'</span>';
+    log.appendChild(e);log.scrollTop=log.scrollHeight;
+  }
+  function reset(){
+    timers.forEach(clearTimeout);timers=[];running=false;
+    steps.forEach(function(s){s.classList.remove('active','done','fail');});
+    vals.forEach(function(v){v.classList.remove('aliased','flip');v.classList.add('real');v.textContent=v.getAttribute('data-real');});
+    vault.classList.remove('sealed');
+    bundle.className='bundle waiting';bundle.innerHTML='<span>Esperando el paquete cifrado…</span>';
+    engine.classList.remove('running');
+    result.classList.remove('show');resultText.textContent='—';resultSub.textContent='';
+    log.innerHTML='';
+    playBtn.disabled=false;playIcon.textContent='▶';playLabel.textContent='Iniciar recorrido';
+  }
+  function activate(name){var s=steps.filter(function(x){return x.getAttribute('data-step')===name;})[0];if(s){s.classList.add('active');}return s;}
+  function done(name){var s=steps.filter(function(x){return x.getAttribute('data-step')===name;})[0];if(s){s.classList.remove('active');s.classList.add('done');}}
+
+  function run(){
+    if(running)return;reset();running=true;t0=Date.now();
+    playBtn.disabled=true;playIcon.textContent='●';playLabel.textContent='Ejecutando…';
+
+    at(100,function(){activate('ingest');logline('capa 2','c2','ingest · 6 campos recibidos · <span class="h">sha256:4f3a…c201</span>');});
+    at(900,function(){done('ingest');activate('canon');logline('capa 2','c2','canonicalize · 4 entidades únicas identificadas');});
+    at(1700,function(){
+      done('canon');activate('alias');
+      logline('capa 2','c2','alias · aplicando HMAC por entidad');
+    });
+    // flip identities one by one
+    var idOrder=[0,1,2,3];
+    idOrder.forEach(function(i,n){
+      at(1900+n*280,function(){
+        var v=vals[i];v.classList.remove('real');v.classList.add('aliased','flip');
+        v.textContent=v.getAttribute('data-alias');
+        setTimeout(function(){v.classList.remove('flip');},500);
+      });
+    });
+    at(3250,function(){done('alias');activate('transform');logline('capa 2','c2','transform_values · factor de escala aplicado');});
+    at(3600,function(){var v=vals[4];v.classList.remove('real');v.classList.add('aliased','flip');v.textContent=v.getAttribute('data-alias');setTimeout(function(){v.classList.remove('flip');},500);});
+    at(4300,function(){
+      done('transform');var g=activate('verify');
+      logline('capa 2','c2','verify_isomorphism · comparando espectro del grafo');
+    });
+    at(5200,function(){
+      done('verify');
+      logline('capa 2','c2','verify_isomorphism · <span class="h">OK</span> · estructura idéntica, 0 colisiones');
+      vault.classList.add('sealed');
+      logline('capa 1','c1','vault · tabla + factor sellados en bóveda local');
+    });
+    at(5900,function(){
+      var em=activate('emit');
+      logline('capa 2','c2','emit · empaquetando bundle D2');
+    });
+    at(6700,function(){
+      done('emit');
+      bundle.className='bundle arrived';
+      bundle.innerHTML='<div class="bundle-head">✓ paquete recibido en SYGNODE</div>'+
+        '<div class="hash">bundle_d2 · sha256:9a1c…7e4f · age/x25519</div>'+
+        '<div class="payload">'+
+        '<span class="pl">grafo: <b>códigos</b></span>'+
+        '<span class="pl">tiempos: <b>reales</b></span>'+
+        '<span class="pl">montos: <b>transf.</b></span>'+
+        '<span class="pl">nombres: <b>ninguno</b></span>'+
+        '</div>';
+      logline('capa 3','c3','SYGNODE · bundle recibido · firma verificada');
+    });
+    at(7500,function(){
+      engine.classList.add('running');
+      var bars=document.querySelectorAll('.bar');
+      bars.forEach(function(b){b.style.height=(20+Math.random()*75)+'%';});
+      logline('capa 3','c3','motor · corriendo sobre datos aliaseados');
+    });
+    at(9000,function(){
+      engine.classList.remove('running');
+      result.classList.add('show');
+      resultText.textContent='⚠ Exposición detectada en EQ-7f3a9c';
+      resultSub.textContent='Falla recurrente + stock de 1 unidad + plazo de reposición > intervalo entre fallas. Ventana para intervenir: ~14 días.';
+      logline('capa 3','c3','resultado · <span class="h">exposición</span> en 1 activo · parte emitido');
+      playBtn.disabled=false;playIcon.textContent='▶';playLabel.textContent='Ver de nuevo';running=false;
+    });
+    at(9400,function(){
+      logline('capa 3','c3','SYGNODE conserva: <span class="h">solo huellas</span> · ningún dato legible');
+    });
+  }
+
+  playBtn.addEventListener('click',run);
+  resetBtn.addEventListener('click',reset);
+
+  var audGer=document.getElementById('aud-ger'),audCiso=document.getElementById('aud-ciso');
+  function setAud(a){
+    document.body.setAttribute('data-aud',a);
+    audGer.setAttribute('aria-pressed',a==='gerente');
+    audCiso.setAttribute('aria-pressed',a==='ciso');
+  }
+  audGer.addEventListener('click',function(){setAud('gerente');});
+  audCiso.addEventListener('click',function(){setAud('ciso');});
+  setAud('gerente');
+})();
+</script>
+</body></html>
