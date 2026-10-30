@@ -2282,6 +2282,11 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       goToStep(0);
       setPlaying(true);
     }
+    // exposed so the end of the intro "mercury" sequence (a separate IIFE
+    // further down, sharing this outer scope's strict-mode block but not
+    // this inner closure) can auto-start the tour instead of waiting for
+    // the user to click #tourStart.
+    window.__sygnodeEnterTour = () => { switchView("full"); setTimeout(enterTour, 60); };
 
     function exitTour(){
       tourActive = false;
@@ -2468,7 +2473,10 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
         setTimeout(() => {
           if(skipped) return;
           mercuryOverlay.classList.remove("show", "fading");
-          // control is now handed back to the user — nothing else to do.
+          // auto-start the guided tour right as the overlay clears, instead
+          // of handing control back and waiting for the user to click
+          // #tourStart — this IS the handoff now.
+          if(typeof window.__sygnodeEnterTour === "function") window.__sygnodeEnterTour();
         }, 500);
       }, 3800);
     }
