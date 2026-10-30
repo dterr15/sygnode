@@ -62,7 +62,7 @@
     .masthead .meta { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-fg-muted); }
 
     .intro-grid .lead { font-family: var(--serif); font-size: 18px; line-height: 1.3; font-weight: 400; }
-    .intro-grid { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 7mm; margin-top: 6mm; padding-top: 5mm; border-top: 1px solid var(--color-line); }
+    .intro-grid { display: grid; grid-template-columns: 1fr; gap: 7mm; margin-top: 6mm; padding-top: 5mm; border-top: 1px solid var(--color-line); }
     .intro-grid p { font-size: 13px; margin-top: 0; }
     .intro-grid .strong { font-weight: 500; }
 
@@ -160,9 +160,10 @@
     }
     .cta > * { position: relative; }
     .cta .eyebrow { color: rgba(239, 231, 217, 0.6); }
-    .cta h2 { color: var(--color-bg); font-size: 22px; }
-    .demo-url { display: inline-block; margin-left: 14px; font-size: 12.5px; letter-spacing: 0.02em; color: rgba(239, 231, 217, 0.75); vertical-align: middle; margin-top: 4mm; }
+    .cta h2 { color: var(--color-bg); font-size: 22px; margin: 0; }
     .cta p { color: rgba(239, 231, 217, 0.8); font-size: 12.5px; max-width: 80ch; }
+    .cta-split { display: grid; grid-template-columns: 1fr 1fr; gap: 10mm; align-items: center; }
+    .cta-col:first-child { display: flex; flex-direction: column; align-items: flex-start; }
     .btn-accent {
         display: inline-block; margin-top: 4mm; background: var(--color-accent); color: var(--color-bg);
         font-size: 13.5px; font-weight: 500; letter-spacing: 0.02em; padding: 11px 20px; border-radius: 2px; text-decoration: none;
@@ -193,6 +194,7 @@
         .decide-item p { grid-column: 2; }
         .timeline { display: none; }
         .cta { grid-template-columns: 1fr; margin-top: 24px; }
+        .cta-split { grid-template-columns: 1fr; gap: 4mm; }
         .qr { display: none; }
     }
 </style>
@@ -209,15 +211,13 @@
     <h1>¿Cuánto le costó el último año que un equipo crítico quedara <em>detenido esperando un repuesto</em>?</h1>
 
     <div class="intro-grid">
-        <p class="lead">Una pieza de bajo costo puede mantener detenido un activo crítico durante días.</p>
-        <p>El problema rara vez es que nadie haya comprado, revisado bodega o gestionado el proveedor.</p>
-        <p class="strong">El problema aparece cuando el inventario disponible deja de ser suficiente para proteger la operación, y nadie lo ve a tiempo.</p>
+        <p class="strong">El problema es detectar la necesidad demasiado tarde para actuar y terminar asumiendo el costo.</p>
     </div>
 
     <div class="case">
         <div class="eyebrow"><span class="dash"></span>El caso MetroPT-3</div>
         <h2>Cada área actuó correctamente. <em>El equipo igual se detuvo.</em></h2>
-        <p class="case-intro">Este caso utiliza registros públicos de fallas de un sistema ferroviario y un escenario de abastecimiento para reconstruir cómo un equipo puede quedar fuera de servicio esperando un repuesto, aun cuando cada área haya actuado correctamente.</p>
+        <p class="case-intro">Caso real del Metro de Oporto, Portugal: los registros mostraron un cambio en el patrón de fallas, pero la información fragmentada entre áreas impidió anticiparlo y asegurar el repuesto a tiempo.</p>
         <p class="source">MetroPT-3 es un conjunto de datos industriales reales, obtenido del sistema de producción de aire comprimido (APU) de un tren del Metro de Oporto, Portugal. Fue desarrollado por investigadores de INESC TEC y la Universidad de Oporto y publicado en el repositorio UCI Machine Learning en marzo de 2023. <span class="src-url">archive.ics.uci.edu</span></p>
 
         <div class="areas">
@@ -269,7 +269,7 @@
         <h2>Conecta lo que cada área ya sabe.</h2>
         <div class="two-col">
         <p>SYGNODE conecta la información que ya existe en Mantenimiento, Bodega y Abastecimiento, sin reemplazar esos sistemas.</p>
-        <p>Reconstruye la relación entre activos, repuestos y proveedores, y detecta cuándo la combinación entre frecuencia de fallas, cobertura disponible y plazo de reposición empieza a comprometer la disponibilidad de un equipo crítico.</p>
+        <p>Muestra qué activos están quedando expuestos, con qué repuestos, ante qué proveedores y cuánto tiempo tiene antes de que la combinación de fallas, cobertura y reposición comprometa la disponibilidad.</p>
         </div>
         <p style="margin-top:8px; font-weight:500;">Cuando eso ocurre, entrega una señal diferenciada:</p>
         <div class="signals">
@@ -307,12 +307,14 @@
     </div>
 
     <div class="cta">
-        <div>
-            <div class="eyebrow"><span class="dash"></span>Ver el caso</div>
-            <h2>Ver cómo se forma la exposición en el caso MetroPT-3</h2>
-            <p>Recorra la secuencia completa: evolución de las fallas, cobertura de inventario, compras y momento en que la disponibilidad del equipo comienza a estar en riesgo.</p>
-            <a href="https://sygnode.cl/DEMO/metropt-3-demo" class="btn-accent">Ver el caso →</a>
-            <span class="demo-url">sygnode.cl/DEMO/metropt-3-demo</span>
+        <div class="cta-split">
+            <div class="cta-col">
+                <div class="eyebrow"><span class="dash"></span>Ir a SYGNODE</div>
+                <a href="https://sygnode.cl/DEMO/metropt-3-demo" class="btn-accent">Ver el caso →</a>
+            </div>
+            <div class="cta-col">
+                <h2>Ver cómo se forma la exposición en el caso MetroPT-3</h2>
+            </div>
         </div>
         <div class="footnote">
             <span>Demo construida con registros públicos de fallas MetroPT-3 y un escenario de abastecimiento.</span>
