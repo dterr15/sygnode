@@ -2185,9 +2185,35 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       else if(target.type === "execCard") spotlightExecCard(target.cardId);
     }
 
+    // Pausable wait: counts down `ms`, but genuinely freezes — not just
+    // blocks the NEXT step from starting — when the tour is paused. Every
+    // live wait() registers itself in activeWaits; setPlaying(false) cancels
+    // each one's in-flight setTimeout immediately and remembers how much
+    // time was left, setPlaying(true) resumes each from that remaining
+    // amount. (Previously only advanceIfPlaying, called once at the very
+    // end of a step's three phases, checked tourPlaying — every wait()
+    // inside those phases ran its timer to completion regardless, so
+    // pausing only ever took effect between stops, never mid-stop.)
+    const activeWaits = new Set();
     function wait(ms, mySeq){
       return new Promise(resolve => {
-        const t = setTimeout(() => resolve(seq===mySeq), ms);
+        const entry = {remaining: ms, timer: null, start: 0};
+        const finish = () => { activeWaits.delete(entry); resolve(seq === mySeq); };
+        entry.arm = () => {
+          entry.start = Date.now();
+          entry.timer = setTimeout(() => {
+            activeWaits.delete(entry);
+            if(seq !== mySeq){ finish(); return; }
+            finish();
+          }, Math.max(0, entry.remaining));
+        };
+        entry.pause = () => {
+          clearTimeout(entry.timer);
+          entry.remaining -= (Date.now() - entry.start);
+        };
+        activeWaits.add(entry);
+        if(tourPlaying) entry.arm();
+        else entry.paused = true;
       });
     }
 
@@ -2283,11 +2309,14 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
     }
 
     function setPlaying(on){
+      const wasPlaying = tourPlaying;
       tourPlaying = on;
       tourPlayPause.textContent = on ? "\u23f8" : "\u25b6";
-      // resuming play on the CURRENT step just lets its in-flight phases keep
-      // going (they already check tourPlaying via advanceIfPlaying); nothing
-      // to kick off here beyond the flag itself
+      if(on && !wasPlaying){
+        activeWaits.forEach(entry => { if(entry.paused){ entry.paused = false; entry.arm(); } });
+      } else if(!on && wasPlaying){
+        activeWaits.forEach(entry => { entry.pause(); entry.paused = true; });
+      }
     }
 
     function enterTour(){
