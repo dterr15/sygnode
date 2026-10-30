@@ -2364,6 +2364,14 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       if(!tourActive) return;
       if(e.key === "ArrowLeft"){ e.preventDefault(); setPlaying(false); goToStep(tourStep - 1); }
       else if(e.key === "ArrowRight"){ e.preventDefault(); setPlaying(false); goToStep(tourStep + 1); }
+      else if(e.key === " " || e.code === "Space"){
+        // don't hijack space on a focused control where it has its own
+        // meaning (e.g. the speed <select>, or re-activating a button)
+        const tag = (e.target && e.target.tagName) || "";
+        if(tag === "SELECT" || tag === "BUTTON" || tag === "INPUT") return;
+        e.preventDefault();
+        setPlaying(!tourPlaying);
+      }
     });
   })();
 
