@@ -103,6 +103,35 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
   .metric-row:last-child{border-bottom:none;}
   .metric-row .l{color:var(--text-dim);}
   .metric-row .v{font-family:var(--mono);font-weight:600;}
+
+  /* first-time field explainer: an automatic sweep (no hover needed — this
+     runs inside an unattended tour) that highlights one field row at a
+     time and shows a floating callout with an arrow pointing at it,
+     explaining what that field MEANS (never its value), pausing a beat on
+     each before moving to the next. Visual language matches .node-callout. */
+  .field-sweep-highlight{position:relative;z-index:2;background:rgba(31,122,224,.1);
+    outline:2px solid var(--blue);outline-offset:2px;border-radius:5px;
+    transition:background .25s ease, outline-color .25s ease;}
+  /* repeat appearance of an already-explained card: a quick joint pulse
+     across all its fields at once, no callout text (meaning already given) —
+     just enough motion to flag "same data, look at what changed" instead of
+     a dead static beat. */
+  .field-sweep-pulse{position:relative;z-index:2;border-radius:5px;
+    animation:fieldPulse .65s ease;}
+  @keyframes fieldPulse{
+    0%{background:rgba(31,122,224,0);outline:2px solid rgba(31,122,224,0);outline-offset:2px;}
+    35%{background:rgba(31,122,224,.16);outline:2px solid var(--blue);outline-offset:2px;}
+    100%{background:rgba(31,122,224,0);outline:2px solid rgba(31,122,224,0);outline-offset:2px;}
+  }
+  .field-callout{position:fixed;z-index:410;background:#eef6ff;border:1.5px solid var(--blue);
+    border-radius:8px;padding:10px 14px;font-size:12.5px;line-height:1.4;color:var(--text);max-width:240px;
+    box-shadow:0 8px 22px rgba(0,0,0,.4);opacity:0;transform:translateY(6px);
+    transition:opacity .3s ease, transform .3s ease, left .35s ease, top .35s ease;pointer-events:none;}
+  .field-callout.show{opacity:1;transform:translateY(0);}
+  .field-callout::before{content:"";position:absolute;width:9px;height:9px;background:#eef6ff;
+    border-left:1.5px solid var(--blue);border-bottom:1.5px solid var(--blue);transform:rotate(45deg);}
+  .field-callout.arrow-top::before{top:-5.5px;left:16px;}
+  .field-callout.arrow-bottom::before{bottom:-5.5px;left:16px;}
   .bar-track{height:6px;background:var(--panel2);border-radius:3px;overflow:hidden;margin:10px 0 4px;}
   .bar-fill{height:100%;border-radius:3px;transition:width .15s;}
   .foot-note{font-size:11px;color:var(--text-faint);text-align:center;padding:16px 0;}
@@ -499,7 +528,11 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
      across Grafo completo / Vista simple / Resumen ejecutivo while the tour
      is active — the narration box must never disappear when the tour swaps
      views to show the same event somewhere else */
-  #tourCaption{display:none;position:fixed;left:24px;bottom:92px;top:auto;
+  /* anchored top-left (below the header), not bottom — a resaltado card is
+     usually scrollIntoView'd to vertical CENTER of the viewport, and a
+     bottom-anchored caption box would end up sitting right on top of it;
+     the top strip under the header is free of that content almost always. */
+  #tourCaption{display:none;position:fixed;left:24px;top:86px;bottom:auto;
     width:min(300px,34vw);padding:18px 20px;border-radius:14px;text-align:left;z-index:90;
     background:linear-gradient(165deg, rgba(30,45,70,.95) 0%, rgba(12,20,35,.92) 100%);
     backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);
@@ -513,7 +546,30 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
   .tour-caption-date{margin-top:10px;font-size:11px;font-weight:700;letter-spacing:.04em;
     text-transform:uppercase;color:#f0956f;}
   @media (max-width:820px){
-    #tourCaption{left:12px;right:12px;width:auto;bottom:100px;}
+    #tourCaption{left:12px;right:12px;width:auto;top:76px;bottom:auto;}
+  }
+
+  /* big intro panel: a full-height, opaque third-of-screen strip that
+     takes over at the start of every tour stop — the narration text at
+     readable size, nothing competing behind it — then shrinks down into
+     the corner where the small #tourCaption bubble lives, so the
+     transition reads as "this becomes that", not two unrelated things. */
+  #tourIntroPanel{display:none;position:fixed;left:0;top:0;bottom:0;width:33.3vw;max-width:460px;
+    z-index:95;padding:0 32px;flex-direction:column;justify-content:center;
+    background:linear-gradient(165deg, rgba(20,32,52,.99) 0%, rgba(8,14,26,.99) 100%);
+    border-right:2px solid #d4613a;box-shadow:12px 0 40px rgba(0,0,0,.45);
+    opacity:0;transform-origin:24px 86px;transition:opacity .35s ease, transform .55s cubic-bezier(.4,0,.2,1);}
+  body.tour-mode #tourIntroPanel{display:flex;}
+  #tourIntroPanel.show{opacity:1;transform:none;}
+  #tourIntroPanel.collapsing{opacity:0;transform:scale(.08,.1) translate(-30vw,-38vh);
+    transition:opacity .4s ease .2s, transform .5s cubic-bezier(.6,0,.8,.2);}
+  .tour-intro-text{font-size:21px;line-height:1.4;color:#f2f6fb;font-weight:500;}
+  .tour-intro-date{margin-top:18px;font-size:13px;font-weight:700;letter-spacing:.05em;
+    text-transform:uppercase;color:#f0956f;}
+  @media (max-width:820px){
+    #tourIntroPanel{width:100vw;max-width:none;padding:0 24px;}
+    #tourIntroPanel.collapsing{transform:scale(.06,.08) translate(0,-42vh);}
+    .tour-intro-text{font-size:18px;}
   }
 
   #tourControls{display:none;position:fixed;left:50%;bottom:20px;transform:translateX(-50%);
@@ -638,7 +694,9 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
       <span class="sub">⚠ atención del motor ≠ probabilidad de falla</span>
     </div>
     <div class="header-brand">
-      <img src="../assets/img/Logo SYGNODE transparent.png" alt="SYGNODE" class="header-logo">
+      <a href="https://www.sygnode.cl" target="_blank" rel="noopener">
+        <img src="../assets/img/Logo SYGNODE transparent.png" alt="SYGNODE" class="header-logo">
+      </a>
     </div>
   </header>
 
@@ -858,6 +916,10 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
     <div class="foot-note">Datos del run (timeline.jsonl, node_attention.jsonl, purchase_orders.csv, work_orders.csv, asset_parts.csv, wo_parts.csv, part_suppliers.csv) · equipo A001.</div>
   </main>
 
+  <div id="tourIntroPanel">
+    <div class="tour-intro-text" id="tourIntroText"></div>
+    <div class="tour-intro-date" id="tourIntroDate"></div>
+  </div>
   <div id="tourCaption">
     <div class="tour-caption-text" id="tourCaptionText"></div>
     <div class="tour-caption-date" id="tourCaptionDate"></div>
@@ -1512,6 +1574,126 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
     if(anyNewlyRevealed && fullGraphNetwork) fullGraphNetwork.stabilize(60);
   }
 
+  // ---------------- first-time field explainers ----------------
+  // Maps a label's exact text (as it appears in .metric-row/.mini-row) to a
+  // plain-language explanation of what that FIELD means — never the value.
+  // Shared across the three Vista simple cards and the graph node detail
+  // panel, since several labels repeat verbatim across them (e.g. "Orden
+  // de trabajo" / "OT abierta ahora" both describe the same concept).
+  const FIELD_EXPLAIN = {
+    "Componente con mayor atención": "El sensor del equipo al que el motor le está prestando más atención ahora mismo — no implica que algo esté fallando.",
+    "Nivel de atención de ese componente": "Qué tan fuera de lo habitual se ve ese sensor comparado con su propio comportamiento normal — no es una medida física directa.",
+    "Orden de trabajo": "Si hay una intervención de mantenimiento abierta ahora mismo sobre este equipo.",
+    "Referencia: máx. atención observada en todo el run": "El nivel de atención más alto que este equipo alcanzó en todo el período mostrado, para poder comparar el valor actual contra ese máximo.",
+    "Stock físico actual": "Las unidades de este repuesto que hay físicamente en bodega en este instante.",
+    "Punto de reorden": "El nivel de stock por debajo del cual la política de inventario indica que hay que reponer.",
+    "Stock máximo de política": "El tope de unidades que la política define mantener en bodega para este repuesto.",
+    "Déficit de unidades (si hay necesidad vigente)": "Cuántas unidades faltan para cubrir una necesidad de mantenimiento ya abierta — 0 si no hay déficit.",
+    "Atención del motor sobre este repuesto": "Qué tan relevante es este repuesto para el motor en este instante, dada la combinación de fallas y cobertura.",
+    "Señal del motor": "La alerta que el motor genera cuando la combinación de fallas y cobertura empieza a comprometer la disponibilidad del equipo.",
+    "Stock físico": "Las unidades de este repuesto que hay físicamente en bodega en este instante.",
+    "Punto de reorden / máx.": "El rango de política: por debajo del primer número hay que reponer; el segundo es el tope de stock a mantener.",
+    "Proveedor": "Quién entrega este repuesto.",
+    "OC emitidas hasta ahora": "Cuántas órdenes de compra de este repuesto ya se han emitido, hasta el instante actual.",
+    "OT abierta ahora": "Si hay una orden de trabajo (intervención) abierta ahora mismo relacionada con este equipo o repuesto.",
+    "Eventos de OT conocidos hasta ahora": "El historial de órdenes de trabajo ya ocurridas para este repuesto, hasta el instante actual.",
+    "Es el de mayor atención ahora": "Si este sensor es, en este instante, el que más atención recibe del motor entre todos los del equipo.",
+    "Nivel de atención": "Qué tan fuera de lo habitual se ve este sensor comparado con su propio comportamiento normal.",
+    "Emitida": "La fecha en que esta orden de compra fue generada.",
+    "Promesa conocida": "La fecha de entrega que el proveedor comprometió al emitir la orden.",
+    "Recepción": "La fecha en que el repuesto efectivamente llegó — solo se muestra si ya ocurrió.",
+    "Estado en este frame": "Si la orden sigue pendiente, ya fue recibida, o superó su fecha prometida sin llegar.",
+    "Criticidad": "Qué tan importante es este equipo para la operación si llegara a fallar.",
+    "Repuestos suministrados (en este grafo)": "Cuántos repuestos distintos, de los que aparecen en este grafo, provienen de este proveedor.",
+  };
+  // Automatic sweep: the first time a card/panel of a given kind is shown,
+  // walk its recognized fields one at a time — highlight the row, show a
+  // floating callout with an arrow pointing at it explaining what the
+  // FIELD means (never its value), hold a beat, move to the next. No
+  // hover needed, since this runs unattended inside the guided tour.
+  // sweepGen guards against overlap: if a second sweep starts (or the
+  // panel is torn down) while one is mid-flight, the stale one's awaits
+  // resolve into a no-op instead of fighting over the shared callout el.
+  const explainedCards = new Set();
+  let sweepGen = 0;
+  let fieldCalloutEl = null;
+
+  function fieldCallout(){
+    if(!fieldCalloutEl){
+      fieldCalloutEl = document.createElement("div");
+      fieldCalloutEl.className = "field-callout";
+      document.body.appendChild(fieldCalloutEl);
+    }
+    return fieldCalloutEl;
+  }
+
+  function sweepWait(ms, myGen){
+    return new Promise(r => setTimeout(() => r(sweepGen === myGen), ms));
+  }
+
+  // On a repeat appearance of a card/panel we've already explained field by
+  // field, a full re-sweep would just repeat the same explanations with no
+  // new information — but skipping it entirely leaves a dead, static beat.
+  // Instead: a quick joint pulse across all recognized fields at once (no
+  // callout text, since the meaning was already explained), just enough
+  // motion to say "same kind of data, look at what changed."
+  async function pulseFieldsOnce(container){
+    if(!container) return;
+    const rows = Array.from(container.querySelectorAll(".metric-row, .mini-row")).filter(row => {
+      const labelEl = row.querySelector(".l") || row.firstElementChild;
+      return labelEl && !labelEl.classList.contains("v") && FIELD_EXPLAIN[labelEl.textContent.trim()];
+    });
+    if(!rows.length) return;
+    sweepGen++;
+    const myGen = sweepGen;
+    rows.forEach(row => row.classList.add("field-sweep-pulse"));
+    if(!(await sweepWait(650, myGen))){ rows.forEach(row => row.classList.remove("field-sweep-pulse")); return; }
+    rows.forEach(row => row.classList.remove("field-sweep-pulse"));
+  }
+
+  async function explainFieldsOnce(container, key){
+    if(!container) return;
+    if(explainedCards.has(key)) return pulseFieldsOnce(container);
+    explainedCards.add(key);
+
+    const rows = Array.from(container.querySelectorAll(".metric-row, .mini-row")).filter(row => {
+      const labelEl = row.querySelector(".l") || row.firstElementChild;
+      return labelEl && !labelEl.classList.contains("v") && FIELD_EXPLAIN[labelEl.textContent.trim()];
+    });
+    if(!rows.length) return;
+
+    sweepGen++;
+    const myGen = sweepGen;
+    const callout = fieldCallout();
+
+    if(!(await sweepWait(500, myGen))) return;
+
+    for(const row of rows){
+      if(sweepGen !== myGen) return;
+      const labelEl = row.querySelector(".l") || row.firstElementChild;
+      const text = labelEl.textContent.trim();
+
+      row.classList.add("field-sweep-highlight");
+      row.scrollIntoView({block:"nearest", behavior:"smooth"});
+
+      const rect = row.getBoundingClientRect();
+      const spaceAbove = rect.top;
+      const putBelow = spaceAbove < 110;
+      callout.className = "field-callout " + (putBelow ? "arrow-top" : "arrow-bottom");
+      callout.textContent = FIELD_EXPLAIN[text];
+      callout.style.left = Math.max(12, Math.min(rect.left, window.innerWidth - 252)) + "px";
+      callout.style.top = putBelow ? (rect.bottom + 12) + "px" : (rect.top - 12) + "px";
+      if(!putBelow) callout.style.transform = "translateY(-100%)";
+      else callout.style.transform = "";
+      requestAnimationFrame(() => callout.classList.add("show"));
+
+      if(!(await sweepWait(5500, myGen))){ row.classList.remove("field-sweep-highlight"); return; }
+      row.classList.remove("field-sweep-highlight");
+      callout.classList.remove("show");
+      if(!(await sweepWait(200, myGen))) return;
+    }
+  }
+
   function showNodeDetail(nodeId, atStr){
     const n = D.graph_nodes.find(x => x.id === nodeId);
     if(!n || !nodeKnownAt(n, atStr)) return;
@@ -1567,6 +1749,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       body += `<div class="mini-row"><span>Repuestos suministrados (en este grafo)</span><span class="v">${D.graph_nodes.filter(x=>x.group==='part').filter(p => D.meta.parts_meta[p.label]?.supplier_id === n.label).length}</span></div>`;
     }
     document.getElementById("ndBody").innerHTML = body;
+    return explainFieldsOnce(document.getElementById("ndBody"), "node:" + n.group);
   }
 
   // ---------------- Resumen ejecutivo (GG / COO / CFO) ----------------
@@ -1945,7 +2128,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
         <div class="exp-row"><span class="l">Costo de equipo detenido (real, ${esc(D.meta.asset_id)})</span><span class="v">${fmtClp(downtimeClpHour)} / hora</span></div>
         <div class="exp-row" style="border-top:1px dashed var(--border);padding-top:10px;margin-top:4px;"><span class="l">${recvMove ? "Duración total de la ventana" : "Tiempo restante esperado hasta la llegada"}</span><span class="v">${fmtHours(recvMove ? totalWindowHours : remainingHours)}</span></div>
         <div class="exp-row"><span class="l">${recvMove ? "Déficit confirmado (ventana ya cerrada)" : "Probabilidad de falla antes de esa llegada (1 − e^(−t/MTBF))"}</span><span class="v ${pFailBeforeArrival>0.5?'red':''}">${recvMove ? "100% — hecho conocido" : (pFailBeforeArrival*100).toFixed(1)+"%"}</span></div>
-        <div class="exp-row"><span class="l">Riesgo económico de esta ventana (${recvMove?'':'prob. × '}pieza + ${knownDowntimeHours.toFixed(1)} h reales de equipo detenido)</span><span class="v red">${fmtClp(realTotalCost)}</span></div>
+        <div class="exp-row"><span class="l">Riesgo económico de esta ventana (${recvMove?'':'prob. × '}pieza + horas reales de equipo detenido)</span><span class="v red">${fmtClp(realTotalCost)}</span></div>
         <div class="exp-row"><span class="l">Riesgo de esta ventana bajo la política óptima SYGNODE</span><span class="v">${fmtClp(sygnodeExpectedCost)}</span></div>
         <div class="exp-total">
           <span class="l">Riesgo evitado en esta ventana (lo que se arriesgó por no tener el stock de seguridad óptimo)</span>
@@ -2015,15 +2198,15 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
   const TOUR_SCRIPT = [
     {at: "2020-02-01T00:00:00", text: "El motor SYGNODE comienza a observar A001 \u2014 un compresor de aire cr\u00edtico \u2014 y su repuesto P001. Todo en orden: 1 unidad en bodega.", duration: 13200,
       target: {type:"node", nodeId:"asset:A001"}, sideTarget: {type:"simpleCard", cardId:"cardEquip"}},
-    {at: "2020-04-18T00:00:00", text: "Primera falla: WO-M001. Se usa la \u00fanica unidad en stock. Bodega emite la reposici\u00f3n \u2014 el repuesto no estar\u00e1 disponible por un tiempo.", duration: 14700,
+    {at: "2020-04-18T00:00:00", text: "Primera falla: WO-M001. Se usa la \u00fanica unidad en stock. Bodega emite la reposici\u00f3n \u2014 el repuesto no estar\u00e1 disponible por un tiempo. 77 d\u00edas desde que el motor empez\u00f3 a observar: la primera vez que la cobertura de A001 llega a cero.", duration: 14700,
       target: {type:"node", nodeId:"asset:A001"}, sideTarget: {type:"simpleCard", cardId:"cardEquip"}},
     {at: "2020-04-22T09:00:00", text: "Abastecimiento ordena PO-PRE \u2014 reposici\u00f3n est\u00e1ndar, 28 d\u00edas de plazo.", duration: 14000,
       target: {type:"node", nodeId:"po:PO-PRE"}, sideTarget: {type:"simpleCard", cardId:"cardProcurement"}},
     {at: "2020-05-20T09:00:00", text: "Llega el repuesto. Bodega vuelve a tener cobertura \u2014 32 d\u00edas despu\u00e9s de la falla.", duration: 14000,
       target: {type:"panelRow", nodeId:"part:P001", labelText:"Stock f\u00edsico"}, sideTarget: {type:"simpleCard", cardId:"cardWarehouse"}},
-    {at: "2020-05-29T23:30:00", text: "Segunda falla: WO-M002 \u2014 solo 9 d\u00edas despu\u00e9s de recuperar stock. El intervalo entre fallas se est\u00e1 acortando.", duration: 14700,
+    {at: "2020-05-29T23:30:00", text: "Segunda falla: WO-M002 \u2014 la misma pieza P001 vuelve a fallar, solo 9 d\u00edas despu\u00e9s de recuperar stock. Entre la primera y la segunda falla pasaron 41 d\u00edas; esta vez, menos de 10. El intervalo entre fallas se est\u00e1 acortando.", duration: 14700,
       target: {type:"panelRow", nodeId:"part:P001", labelText:"Stock f\u00edsico"}, sideTarget: {type:"simpleCard", cardId:"cardEquip"}},
-    {at: "2020-05-15T09:00:00", text: "Abastecimiento ya hab\u00eda ordenado PO-NORM el 15 de mayo \u2014 pero con 56 d\u00edas de plazo, no alcanza a llegar a tiempo para la pr\u00f3xima falla.", duration: 15500,
+    {at: "2020-05-15T09:00:00", text: "Retrocedamos un momento: abastecimiento ya hab\u00eda ordenado PO-NORM el 15 de mayo \u2014 antes incluso de esta segunda falla \u2014 pero con 56 d\u00edas de plazo, no alcanza a llegar a tiempo para la pr\u00f3xima.", duration: 15500,
       target: {type:"node", nodeId:"po:PO-NORM"}, sideTarget: {type:"simpleCard", cardId:"cardProcurement"}},
     {at: "2020-06-05T10:00:00", text: "Tercera falla: WO-M003. Bodega sigue en 0 \u2014 el repuesto est\u00e1ndar a\u00fan no llega.", duration: 14700,
       target: {type:"panelRow", nodeId:"part:P001", labelText:"Stock f\u00edsico"}, sideTarget: {type:"simpleCard", cardId:"cardWarehouse"}},
@@ -2058,6 +2241,9 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
     const tourCaption = document.getElementById("tourCaption");
     const tourCaptionText = document.getElementById("tourCaptionText");
     const tourCaptionDate = document.getElementById("tourCaptionDate");
+    const tourIntroPanel = document.getElementById("tourIntroPanel");
+    const tourIntroText = document.getElementById("tourIntroText");
+    const tourIntroDate = document.getElementById("tourIntroDate");
     const tourControls = document.getElementById("tourControls");
     const tourPlayPause = document.getElementById("tourPlayPause");
     const tourProgress = document.getElementById("tourProgress");
@@ -2093,11 +2279,21 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       spotRAF = null;
       if(currentSpotEl){ currentSpotEl.remove(); currentSpotEl = null; }
       document.querySelectorAll(".tour-row-highlight").forEach(el => el.classList.remove("tour-row-highlight"));
+      // abort any in-flight field sweep (its sweepWait()s will see a stale
+      // generation and quit) and hide its floating callout + highlight.
+      sweepGen++;
+      if(fieldCalloutEl) fieldCalloutEl.classList.remove("show");
+      document.querySelectorAll(".field-sweep-highlight").forEach(el => el.classList.remove("field-sweep-highlight"));
     }
 
     function spotlightNode(nodeId, mySeq){
       clearSpotlight();
       if(!fullGraphNetwork) return;
+      // open the node detail panel too — same as a real click on the node —
+      // so the tour shows what actually happens when a viewer clicks it,
+      // not just a ring around it.
+      currentOpenNodeId = nodeId;
+      const sweepPromise = showNodeDetail(nodeId, atForFrame(frames[currentFrameIdx]));
       const ring = document.createElement("div");
       ring.className = "tour-spot-ring";
       document.body.appendChild(ring);
@@ -2125,12 +2321,13 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       }
       track();
       try{ fullGraphNetwork.focus(nodeId, {scale: Math.max(fullGraphNetwork.getScale(), 1), animation:{duration:500, easingFunction:"easeInOutQuad"}}); } catch(e){}
+      return sweepPromise;
     }
 
     function spotlightPanelRow(nodeId, labelText){
       clearSpotlight();
       currentOpenNodeId = nodeId;
-      showNodeDetail(nodeId, atForFrame(frames[currentFrameIdx]));
+      const sweepPromise = showNodeDetail(nodeId, atForFrame(frames[currentFrameIdx]));
       setTimeout(() => {
         const panel = document.getElementById("nodeDetailPanel");
         const row = Array.from(panel.querySelectorAll(".mini-row, .exp-row"))
@@ -2140,6 +2337,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
           row.scrollIntoView({block:"nearest", behavior:"smooth"});
         }
       });
+      return sweepPromise;
     }
 
     function spotlightExecRow(labelText){
@@ -2156,12 +2354,15 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
 
     function spotlightSimpleCard(cardId){
       clearSpotlight();
-      setTimeout(() => {
-        const card = document.getElementById(cardId);
-        if(card){
-          card.classList.add("tour-row-highlight");
-          card.scrollIntoView({block:"center", behavior:"smooth"});
-        }
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const card = document.getElementById(cardId);
+          if(card){
+            card.classList.add("tour-row-highlight");
+            card.scrollIntoView({block:"center", behavior:"smooth"});
+            explainFieldsOnce(card, "simpleCard:" + cardId).then(resolve);
+          } else resolve();
+        });
       });
     }
 
@@ -2176,12 +2377,15 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       });
     }
 
+    // Returns a Promise when applying this target kicked off a first-time
+    // field sweep (so the caller can wait for it instead of cutting it off
+    // by switching views/steps mid-explanation); undefined otherwise.
     function applyTarget(target){
       if(!target) return;
-      if(target.type === "node") spotlightNode(target.nodeId, seq);
-      else if(target.type === "panelRow") spotlightPanelRow(target.nodeId, target.labelText);
+      if(target.type === "node") return spotlightNode(target.nodeId, seq);
+      else if(target.type === "panelRow") return spotlightPanelRow(target.nodeId, target.labelText);
       else if(target.type === "execRow") spotlightExecRow(target.labelText);
-      else if(target.type === "simpleCard") spotlightSimpleCard(target.cardId);
+      else if(target.type === "simpleCard") return spotlightSimpleCard(target.cardId);
       else if(target.type === "execCard") spotlightExecCard(target.cardId);
     }
 
@@ -2239,7 +2443,6 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       tourCaptionText.textContent = stop.text;
       tourCaptionDate.textContent = fmtDT(stop.at);
       tourCaption.classList.remove("show");
-      setTimeout(() => tourCaption.classList.add("show"), 0);
 
       dots.forEach((d,di) => {
         d.classList.toggle("current", di===i);
@@ -2247,6 +2450,26 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       });
 
       const speed = () => Number(tourSpeed.value) || 1;
+
+      // big intro: takes over a third of the screen with the narration at
+      // readable size for 5.5s (pausable, like everything else here), then
+      // shrinks into the corner where the small caption bubble lives —
+      // the small bubble only appears once the big one has collapsed into
+      // it, so it always reads as "this became that", not two separate cues.
+      // INTRO_MS is carved out of stop.duration up front (not subtracted
+      // from phase1 after the fact) so the spotlight dwell right before the
+      // next transition never gets starved by how long the intro ran.
+      const INTRO_MS = 5500, INTRO_COLLAPSE_MS = 550;
+      tourIntroText.textContent = stop.text;
+      tourIntroDate.textContent = fmtDT(stop.at);
+      tourIntroPanel.classList.remove("collapsing");
+      requestAnimationFrame(() => tourIntroPanel.classList.add("show"));
+      if(!(await wait(INTRO_MS/speed(), mySeq))){ tourIntroPanel.classList.remove("show","collapsing"); return; }
+      tourIntroPanel.classList.remove("show");
+      tourIntroPanel.classList.add("collapsing");
+      tourCaption.classList.add("show");
+      if(!(await wait(INTRO_COLLAPSE_MS/speed(), mySeq))){ tourIntroPanel.classList.remove("collapsing"); return; }
+      tourIntroPanel.classList.remove("collapsing");
 
       if(stop.gotoExec){
         if(!(await wait(Math.min(1200, stop.duration*0.3)/speed(), mySeq))) return;
@@ -2263,9 +2486,16 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
         return;
       }
 
-      const phase1 = Math.round(stop.duration*0.45);
-      const phase2 = Math.round(stop.duration*0.35);
-      const phase3 = stop.duration - phase1 - phase2;
+      // No phase 3 here: it used to return to the full graph and
+      // re-apply the SAME target already shown in phase 1 — pure
+      // repetition with no new motion or narration. Its time budget is
+      // folded into phase 1 so the spotlight dwell doesn't feel rushed.
+      // Phases split the time left AFTER the intro, not stop.duration as a
+      // whole — otherwise a longer intro quietly eats into the spotlight
+      // dwell that comes right before the next transition.
+      const remaining = Math.max(stop.duration - INTRO_MS - INTRO_COLLAPSE_MS, 4000);
+      const phase1 = stop.sideTarget ? Math.round(remaining*0.55) : remaining;
+      const phase2 = remaining - phase1;
 
       // phase 1: full graph, node/panel spotlight
       if(!document.getElementById("fullGraphView").classList.contains("active")) switchView("full");
@@ -2279,16 +2509,21 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
         const sideView = stop.sideTarget.type==="execCard" ? "exec" : "simple";
         switchView(sideView);
         if(!(await wait(350/speed(), mySeq))) return;
-        applyTarget(stop.sideTarget);
+        const sweep = applyTarget(stop.sideTarget);
         if(!(await wait((phase2-350)/speed(), mySeq))) return;
+        // if this target triggered a first-time field sweep (slower than
+        // the normal phase-2 budget), give it room to finish instead of
+        // cutting the explanation off mid-field — capped so a stuck sweep
+        // can't stall the tour forever, and still abortable if the user
+        // skips to another step while it's running.
+        if(sweep){
+          await Promise.race([
+            sweep,
+            new Promise(r => setTimeout(r, 30000)),
+          ]);
+          if(seq !== mySeq) return;
+        }
       }
-
-      // phase 3: back to full graph for a beat before the next stop
-      clearSpotlight();
-      switchView("full");
-      if(!(await wait(300/speed(), mySeq))) return;
-      applyTarget(stop.target);
-      if(!(await wait(Math.max(0, phase3-300)/speed(), mySeq))) return;
 
       advanceIfPlaying(i, mySeq);
     }
@@ -2341,6 +2576,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       document.body.classList.remove("tour-mode");
       fullGraphWrap.classList.remove("tour-active");
       tourCaption.classList.remove("show");
+      tourIntroPanel.classList.remove("show", "collapsing");
       tourStep = -1;
     }
 
