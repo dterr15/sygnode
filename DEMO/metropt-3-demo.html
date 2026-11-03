@@ -584,6 +584,27 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
     .tour-intro-text{font-size:18px;}
   }
 
+  /* welcome screen shown once, before the tour's first stop — same visual
+     language as #tourIntroPanel (dark 1/3-screen strip, coral accent) but
+     a static business-context message with an explicit "start" button
+     instead of an auto-advancing narration beat, since the user should
+     read this at their own pace before the timed tour takes over. */
+  #tourWelcomePanel{display:none;position:fixed;left:0;top:0;bottom:0;width:33.3vw;max-width:460px;
+    z-index:96;padding:0 32px;flex-direction:column;justify-content:center;gap:14px;
+    background:linear-gradient(165deg, rgba(20,32,52,.99) 0%, rgba(8,14,26,.99) 100%);
+    border-right:2px solid #d4613a;box-shadow:12px 0 40px rgba(0,0,0,.45);}
+  body.tour-welcome #tourWelcomePanel{display:flex;}
+  .tour-welcome-eyebrow{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#f0956f;}
+  #tourWelcomePanel p{font-size:16px;line-height:1.5;color:#f2f6fb;font-weight:500;margin:0;}
+  #tourWelcomeStart{align-self:flex-start;margin-top:6px;background:#d4613a;color:#fff;border:none;
+    border-radius:8px;padding:11px 20px;font-size:14px;font-weight:700;cursor:pointer;
+    transition:background .15s ease, transform .15s ease;}
+  #tourWelcomeStart:hover{background:#e67a52;transform:translateY(-1px);}
+  @media (max-width:820px){
+    #tourWelcomePanel{width:100vw;max-width:none;padding:0 24px;}
+    #tourWelcomePanel p{font-size:15px;}
+  }
+
   #tourControls{display:none;position:fixed;left:50%;bottom:20px;transform:translateX(-50%);
     align-items:center;gap:14px;padding:9px 16px;border-radius:14px;z-index:90;
     background:linear-gradient(165deg, rgba(30,45,70,.9) 0%, rgba(12,20,35,.85) 100%);
@@ -953,6 +974,12 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
   <div id="tourIntroPanel">
     <div class="tour-intro-text" id="tourIntroText"></div>
     <div class="tour-intro-date" id="tourIntroDate"></div>
+  </div>
+  <div id="tourWelcomePanel">
+    <div class="tour-welcome-eyebrow">Antes de empezar</div>
+    <p>Este caso sigue un solo equipo y unos pocos repuestos — deliberadamente simple, para que se vea cada paso con claridad.</p>
+    <p>SYGNODE es capaz de dar visibilidad para una gran cantidad de equipos y sus componentes críticos, priorizando dónde poner atención en una operación compleja con decenas o cientos de variables.</p>
+    <button id="tourWelcomeStart">Comenzar recorrido →</button>
   </div>
   <div id="tourCaption">
     <div class="tour-caption-text" id="tourCaptionText"></div>
@@ -2231,6 +2258,15 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
   // here is invented or projected. The script only picks WHICH known moments
   // to show and in what order; all numbers still come from the live render.
   const TOUR_SCRIPT = [
+    // Orientation stop: explains what each field MEANS before the story
+    // starts, so the first real event (next stop) doesn't have to carry
+    // both "here's what happened" AND "here's what this field is" at
+    // once. orientationCards sweeps through Equipo/Bodega/Abastecimiento
+    // in Vista simple one at a time \u2014 runStepSequence has a dedicated
+    // branch for this (like gotoExec) instead of the normal phase1/phase2.
+    {at: "2020-02-01T00:00:00", text: "Antes de ver qu\u00e9 pas\u00f3, veamos qu\u00e9 significa cada dato. Este es el estado inicial: un equipo (A001), su repuesto cr\u00edtico (P001) y la cadena de abastecimiento que lo resguarda.", duration: 29000,
+      target: {type:"node", nodeId:"asset:A001"}, orientation: true,
+      orientationCards: ["cardEquip", "cardWarehouse", "cardProcurement"]},
     {at: "2020-02-01T00:00:00", text: "El motor SYGNODE comienza a observar A001 \u2014 un compresor de aire cr\u00edtico \u2014 y su repuesto P001. Todo en orden: 1 unidad en bodega.", duration: 13200,
       target: {type:"node", nodeId:"asset:A001"}, sideTarget: {type:"simpleCard", cardId:"cardEquip"}},
     {at: "2020-04-18T00:00:00", text: "Primera falla: WO-M001. Se usa la \u00fanica unidad en stock. Bodega emite la reposici\u00f3n \u2014 el repuesto no estar\u00e1 disponible por un tiempo. 77 d\u00edas desde que el motor empez\u00f3 a observar: la primera vez que la cobertura de A001 llega a cero.", duration: 14700,
@@ -2286,6 +2322,8 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
     const tourExit = document.getElementById("tourExit");
     const tourPrev = document.getElementById("tourPrev");
     const tourNext = document.getElementById("tourNext");
+    const tourWelcomePanel = document.getElementById("tourWelcomePanel");
+    const tourWelcomeStart = document.getElementById("tourWelcomeStart");
 
     const stopFrames = TOUR_SCRIPT.map(s => findFrameForDate(s.at));
 
@@ -2506,6 +2544,31 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       if(!(await wait(INTRO_COLLAPSE_MS/speed(), mySeq))){ tourIntroPanel.classList.remove("collapsing"); return; }
       tourIntroPanel.classList.remove("collapsing");
 
+      if(stop.orientation){
+        // dedicated branch: sweep Equipo/Bodega/Abastecimiento in Vista
+        // simple one after another, each getting its own full field
+        // explanation — a one-time orientation beat so later stops (the
+        // actual story) don't have to interrupt their own narration to
+        // explain a field the first time it's seen.
+        switchView("simple");
+        if(!(await wait(500/speed(), mySeq))) return;
+        for(const cardId of stop.orientationCards){
+          const card = document.getElementById(cardId);
+          if(!card) continue;
+          card.classList.add("tour-row-highlight");
+          card.scrollIntoView({block:"center", behavior:"smooth"});
+          const sweep = explainFieldsOnce(card, "simpleCard:" + cardId);
+          if(sweep){
+            await Promise.race([sweep, new Promise(r => setTimeout(r, 30000))]);
+            if(seq !== mySeq) return;
+          }
+          card.classList.remove("tour-row-highlight");
+          if(!(await wait(300/speed(), mySeq))) return;
+        }
+        advanceIfPlaying(i, mySeq);
+        return;
+      }
+
       if(stop.gotoExec){
         if(!(await wait(Math.min(1200, stop.duration*0.3)/speed(), mySeq))) return;
         switchView("exec");
@@ -2589,7 +2652,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       }
     }
 
-    function enterTour(){
+    function beginTourStops(){
       tourActive = true;
       document.body.classList.add("tour-mode");
       fullGraphWrap.classList.add("tour-active");
@@ -2597,6 +2660,19 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       goToStep(0);
       setPlaying(true);
     }
+
+    // one-time business-context welcome screen, shown before the first
+    // timed stop: explains this is a deliberately trivial single-asset
+    // case and that SYGNODE's real advantage is the same visibility at
+    // scale, across many assets at once. Waits for an explicit click
+    // (not a timer) so the user reads it at their own pace.
+    function enterTour(){
+      document.body.classList.add("tour-welcome");
+    }
+    tourWelcomeStart.addEventListener("click", () => {
+      document.body.classList.remove("tour-welcome");
+      beginTourStops();
+    });
     // exposed so the end of the intro "mercury" sequence (a separate IIFE
     // further down, sharing this outer scope's strict-mode block but not
     // this inner closure) can auto-start the tour instead of waiting for
@@ -2609,6 +2685,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       setPlaying(false);
       clearSpotlight();
       document.body.classList.remove("tour-mode");
+      document.body.classList.remove("tour-welcome");
       fullGraphWrap.classList.remove("tour-active");
       tourCaption.classList.remove("show");
       tourIntroPanel.classList.remove("show", "collapsing");
@@ -2695,9 +2772,14 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
               // click, so it inherits whatever reliability that path has.
               const fullBtn = document.querySelector('#viewToggle button[data-view="full"]');
               if(fullBtn) fullBtn.click();
-              // give the graph's physics a moment to settle into a readable
-              // layout before pointing callouts at specific nodes.
-              setTimeout(startVigilanceSequence, 1800);
+              // straight to the welcome slide right after sources finish
+              // connecting — "Preparar la vigilancia" (node callouts) and
+              // "Iniciando Motor SYGNODE" used to play here first, but the
+              // business-context welcome slide now does that handoff job,
+              // so those two intermediate beats are skipped entirely.
+              setTimeout(() => {
+                if(typeof window.__sygnodeEnterTour === "function") window.__sygnodeEnterTour();
+              }, 500);
             }, 650);
           }, 700);
           return;
