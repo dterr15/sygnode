@@ -90,8 +90,15 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
   .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px 18px;
     backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
     box-shadow:0 8px 24px rgba(31,90,160,.12);}
-  .card h2{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-faint);
-    margin:0 0 12px;font-weight:700;display:flex;align-items:center;gap:8px;}
+  /* solid color pill per card, same language as the help-block headers:
+     each subsystem (equipo/bodega/abastecimiento) gets its own identity
+     color so the three cards read as distinct categories at a glance. */
+  .card h2{font-size:12.5px;color:#fff;margin:0 0 12px;font-weight:700;
+    display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:7px;
+    box-shadow:0 2px 6px rgba(15,42,68,.18);background:var(--blue);}
+  #cardEquip h2{background:var(--blue);}
+  #cardWarehouse h2{background:var(--green);}
+  #cardProcurement h2{background:var(--amber);}
   .state-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:20px;
     font-size:12px;font-weight:700;margin-bottom:10px;}
   .state-pill.red{background:var(--red-bg);color:var(--red);}
@@ -233,9 +240,14 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
   .exec-gg{border-top-color:#8a5cf6;}
   .exec-coo{border-top-color:#4ea1ff;}
   .exec-cfo{border-top-color:#3ecf8e;}
-  .exec-head{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
-  .exec-icon{font-size:14px;color:var(--text-faint);}
-  .exec-role{font-weight:700;font-size:13.5px;}
+  .exec-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  /* solid pill per role, same language as the help-block headers — the
+     icon moves inside the pill so role + icon read as one unit */
+  .exec-role{font-weight:700;font-size:12.5px;color:#fff;padding:6px 14px;border-radius:7px;
+    box-shadow:0 2px 6px rgba(15,42,68,.18);display:inline-flex;align-items:center;gap:7px;}
+  .exec-gg .exec-role{background:#8a5cf6;}
+  .exec-coo .exec-role{background:#4ea1ff;}
+  .exec-cfo .exec-role{background:#3ecf8e;color:#063a26;}
   .exec-q{font-size:11.5px;color:var(--text-faint);font-style:italic;margin-bottom:14px;}
   .exec-metric{margin-bottom:14px;}
   .exec-metric .label{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-faint);
@@ -619,18 +631,30 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
   .mercury-sub{font-size:13px;color:var(--text-dim);max-width:420px;text-align:center;}
   .help-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1200px;margin:0 auto;}
   @media (max-width:900px){.help-grid{grid-template-columns:1fr;}}
-  .help-block h3{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-faint);
-    margin:0 0 10px;font-weight:700;display:flex;align-items:center;gap:7px;}
-  .help-block p{font-size:12.5px;color:var(--text-dim);line-height:1.55;margin:0 0 10px;}
-  .help-steps{margin:0;padding-left:18px;font-size:12.5px;color:var(--text-dim);line-height:1.7;}
-  .help-steps li{margin-bottom:4px;}
-  .help-steps b{color:var(--text);}
-  .help-warn{list-style:none;margin:0;padding:0;font-size:12px;color:var(--text-dim);line-height:1.6;}
-  .help-warn li{padding-left:16px;position:relative;margin-bottom:7px;}
-  .help-warn li::before{content:"→";position:absolute;left:0;color:var(--blue);font-size:11px;}
-  .help-jump{background:var(--panel2);border:1px solid var(--blue-border, var(--border));color:var(--blue);
-    border-radius:6px;padding:3px 9px;font-size:11.5px;cursor:pointer;font-family:var(--mono);}
-  .help-jump:hover{background:var(--blue);color:#0b0f14;}
+  /* pill headers: solid color block + white bold text, like a labeled tab,
+     so each column reads as its own category at a glance instead of a
+     faint uppercase label blending into the body text below it */
+  .help-block h3{font-size:13px;letter-spacing:.02em;color:#fff;
+    margin:0 0 14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;
+    padding:7px 16px;border-radius:7px;box-shadow:0 2px 6px rgba(15,42,68,.18);}
+  .help-block:nth-child(1) h3{background:var(--blue);}
+  .help-block:nth-child(2) h3{background:var(--amber);}
+  .help-block:nth-child(3) h3{background:var(--green);}
+  .help-block p{font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 10px;}
+  .help-block p b{color:var(--text);font-weight:700;}
+  .help-steps{margin:0;padding-left:0;list-style:none;font-size:13px;color:var(--text-dim);line-height:1.5;}
+  .help-steps li{margin-bottom:10px;padding-left:22px;position:relative;}
+  .help-steps li::before{content:counter(help-step);counter-increment:help-step;
+    position:absolute;left:0;top:1px;width:15px;height:15px;border-radius:50%;
+    background:var(--amber);color:#fff;font-size:9.5px;font-weight:700;line-height:15px;text-align:center;}
+  .help-steps{counter-reset:help-step;}
+  .help-steps b{color:var(--text);font-weight:700;}
+  .help-warn{list-style:none;margin:0;padding:0;font-size:12.5px;color:var(--text-dim);line-height:1.55;}
+  .help-warn li{padding-left:20px;position:relative;margin-bottom:9px;}
+  .help-warn li::before{content:"→";position:absolute;left:0;top:0;color:var(--green);font-size:13px;font-weight:700;}
+  .help-jump{background:var(--amber);border:1px solid var(--amber);color:#fff;
+    border-radius:6px;padding:3px 9px;font-size:11.5px;cursor:pointer;font-family:var(--mono);font-weight:700;}
+  .help-jump:hover{filter:brightness(1.1);}
 
   #fullGraphWrap{position:relative;height:560px;border:1px solid var(--border);border-radius:10px;
     background:var(--panel2);overflow:hidden;}
@@ -643,7 +667,17 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
     overflow-y:auto;background:var(--panel);border:1px solid var(--border);border-radius:9px;
     padding:14px 16px;display:none;box-shadow:0 4px 18px rgba(0,0,0,.4);}
   #nodeDetailPanel.open{display:block;}
-  #nodeDetailPanel h3{font-size:13px;margin:0 0 4px;}
+  /* same solid-pill language as the help-block headers and the Vista
+     simple cards, colored per node group to match the graph legend
+     (Activo/Sensor/Repuesto/Orden de compra/Proveedor) */
+  #nodeDetailPanel h3{font-size:12.5px;color:#fff;margin:0 0 8px;font-weight:700;
+    display:inline-block;padding:5px 12px;border-radius:7px;
+    box-shadow:0 2px 6px rgba(15,42,68,.18);background:var(--text-faint);}
+  #nodeDetailPanel[data-group="asset"] h3{background:#4ea1ff;}
+  #nodeDetailPanel[data-group="sensor"] h3{background:#8a5cf6;}
+  #nodeDetailPanel[data-group="part"] h3{background:#1f9e6e;}
+  #nodeDetailPanel[data-group="po"] h3{background:#c084fc;color:#2a0f47;}
+  #nodeDetailPanel[data-group="supplier"] h3{background:#5e7088;}
   #nodeDetailPanel .nd-sub{font-size:11px;color:var(--text-faint);margin-bottom:10px;}
   #nodeDetailPanel .nd-close{position:absolute;top:10px;right:12px;cursor:pointer;color:var(--text-faint);
     font-size:14px;background:none;border:none;}
@@ -789,17 +823,17 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
     <div id="execView">
       <div class="exec-grid">
         <div class="exec-card exec-gg">
-          <div class="exec-head"><span class="exec-icon">◆</span><span class="exec-role">General</span></div>
+          <div class="exec-head"><span class="exec-role">◆ General</span></div>
           <div class="exec-q">¿Qué parte del negocio está comprometida?</div>
           <div class="exec-body" id="execGG"></div>
         </div>
         <div class="exec-card exec-coo">
-          <div class="exec-head"><span class="exec-icon">⚙</span><span class="exec-role">Operación</span></div>
+          <div class="exec-head"><span class="exec-role">⚙ Operación</span></div>
           <div class="exec-q">¿Qué activo intervenir, cómo y cuándo?</div>
           <div class="exec-body" id="execCOO"></div>
         </div>
         <div class="exec-card exec-cfo">
-          <div class="exec-head"><span class="exec-icon">$</span><span class="exec-role">Financiero</span></div>
+          <div class="exec-head"><span class="exec-role">$ Financiero</span></div>
           <div class="exec-q">¿Cuánto dinero está en riesgo y cuánto cuesta protegerlo?</div>
           <div class="exec-body" id="execCFO"></div>
         </div>
@@ -1699,6 +1733,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
     if(!n || !nodeKnownAt(n, atStr)) return;
     const panel = document.getElementById("nodeDetailPanel");
     panel.classList.add("open");
+    panel.dataset.group = n.group;
     document.getElementById("ndTitle").textContent = n.label;
     document.getElementById("ndSub").textContent = n.sublabel || n.group;
     let body = "";
