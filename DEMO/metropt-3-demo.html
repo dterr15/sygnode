@@ -1933,7 +1933,13 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       const otherSide = putBelow
         ? {left: rect.left, top: rect.top - 12 - naturalH, width: naturalW, height: naturalH}
         : {left: rect.left, top: rect.bottom + 12, width: naturalW, height: naturalH};
-      const placed = placeAvoidingOverlap([callout, container], preferred, [otherSide]);
+      // #ndBody's own ancestor, #nodeDetailPanel, is itself in the
+      // obstacle list (it's the fixed node-detail panel) — without
+      // excluding it too, a field living inside that panel can never
+      // place its callout above/below the row without "colliding" with
+      // its own container, same issue as a Vista simple card's own edges.
+      const ownPanel = container.closest("#nodeDetailPanel");
+      const placed = placeAvoidingOverlap(ownPanel ? [callout, container, ownPanel] : [callout, container], preferred, [otherSide]);
 
       callout.className = "field-callout " + (placed.top < rect.top ? "arrow-bottom" : "arrow-top");
       callout.style.left = placed.left + "px";
@@ -2731,7 +2737,10 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
           const card = document.getElementById(cardId);
           if(card){
             card.classList.add("tour-row-highlight");
-            card.scrollIntoView({block:"center", behavior:"smooth"});
+            // instant, same reason as the orientation sweep above: a
+            // still-animating smooth scroll would hand explainFieldsOnce
+            // a mid-scroll row position for its very first callout.
+            card.scrollIntoView({block:"center", behavior:"auto"});
             explainFieldsOnce(card, "simpleCard:" + cardId).then(resolve);
           } else resolve();
         });
@@ -2856,7 +2865,11 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
           const card = document.getElementById(cardId);
           if(!card) continue;
           card.classList.add("tour-row-highlight");
-          card.scrollIntoView({block:"center", behavior:"smooth"});
+          // instant: explainFieldsOnce measures row positions right after
+          // this call, and a still-animating smooth scroll would hand it
+          // a mid-scroll position instead of where the card actually
+          // settles, placing the first field's callout far from its row.
+          card.scrollIntoView({block:"center", behavior:"auto"});
           const sweep = explainFieldsOnce(card, "simpleCard:" + cardId);
           if(sweep){
             await Promise.race([sweep, new Promise(r => setTimeout(r, 30000))]);
