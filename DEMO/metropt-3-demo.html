@@ -68,9 +68,15 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
     padding:6px 20px;border-left:1px solid var(--border);}
   .header-logo{display:block;height:48px;width:auto;object-fit:contain;}
 
+  /* sticky, not fixed: it scrolls normally with the page until it would
+     scroll off the top, then sticks to the viewport edge — so it's always
+     reachable on a long page without permanently eating screen space when
+     the user is already looking at it near the top. */
   #cursorbar{padding:8px 20px;border-bottom:1px solid var(--border);background:var(--panel);
     backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
-    display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+    position:sticky;top:0;z-index:80;}
+  #cursorbar.stuck{box-shadow:0 6px 18px rgba(15,42,68,.18);}
   #cursorbar button{background:var(--panel2);border:1px solid var(--border);color:var(--text);
     border-radius:6px;padding:6px 10px;cursor:pointer;font-size:13px;}
   #cursorbar button:hover{border-color:var(--blue);color:var(--blue);}
@@ -316,6 +322,45 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
   .exp-total .v{font-size:19px;font-weight:750;color:var(--red);font-family:var(--mono);}
   .exp-total .v.nd{color:var(--text-faint);font-size:13px;font-style:italic;font-weight:400;}
   .exp-empty{font-size:12px;color:var(--text-faint);font-style:italic;padding:10px 0;}
+
+  /* hard-cost block: the already-incurred downtime cost, shown FIRST and
+     visually distinct from the probabilistic "riesgo evitado" below it —
+     a dark, certain-looking card (same register as a fact, not an
+     estimate) vs. the lighter rows that follow, which carry explicit
+     probability/model language. The two are never summed into one number
+     so a skeptic can always tell which part is solid and which is a model. */
+  .exp-hard-block{background:linear-gradient(165deg, rgba(20,32,52,.97) 0%, rgba(8,14,26,.97) 100%);
+    border-radius:12px;padding:18px 20px;margin-bottom:16px;border:1px solid rgba(212,97,58,.4);}
+  .exp-hard-eyebrow{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:#f0956f;margin-bottom:8px;}
+  .exp-hard-value{font-size:28px;font-weight:750;color:#f2f6fb;font-family:var(--mono);line-height:1.1;}
+  .exp-hard-sub{font-size:12px;color:#b9c6d6;margin-top:6px;line-height:1.4;}
+
+  /* stock-policy contrast: client's configured reorder point vs SYGNODE's
+     suggested optimum, pulled out of the dense technical row list into its
+     own side-by-side block so the ONE number that matters (1 vs 2 units)
+     doesn't get lost among lead time / MTBF / holding cost rows. Recomputed
+     every frame like the rest of Resumen ejecutivo — S* can genuinely
+     change as more failures are observed (see .stock-contrast-value.pulse),
+     so this reads as SYGNODE reacting live, not a fixed fact. */
+  .stock-contrast{display:flex;align-items:center;gap:14px;background:var(--panel2);
+    border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:14px;}
+  .stock-contrast-col{flex:1;text-align:center;}
+  .stock-contrast-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;
+    color:var(--text-faint);margin-bottom:6px;}
+  .stock-contrast-value{font-size:26px;font-weight:750;font-family:var(--mono);line-height:1;
+    transition:color .3s ease;}
+  .stock-contrast-value.client{color:var(--text-dim);}
+  .stock-contrast-value.sygnode{color:var(--green);}
+  .stock-contrast-arrow{font-size:20px;color:var(--text-faint);flex:0 0 auto;}
+  .stock-contrast-note{font-size:11.5px;color:var(--text-dim);text-align:center;
+    margin:-4px 0 14px;line-height:1.4;}
+  @keyframes stockBump{
+    0%{transform:scale(1);}
+    30%{transform:scale(1.28);}
+    100%{transform:scale(1);}
+  }
+  .stock-contrast-value.pulse{animation:stockBump .6s cubic-bezier(.34,1.56,.64,1);}
 
   /* ---------------- tratamiento de datos (protección, conceptual) ---------------- */
   .tdat-intro{font-size:13px;color:var(--text-dim);line-height:1.6;max-width:820px;margin:0 0 26px;}
@@ -1692,6 +1737,106 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
     return new Promise(r => setTimeout(() => r(sweepGen === myGen), ms));
   }
 
+  // ---------------- generic narrative-box collision avoidance ----------------
+  // Measures real DOM rects (getBoundingClientRect) instead of assuming a
+  // fixed position is always safe — a callout placed by CSS or by "space
+  // above this row" alone can still land on top of an open detail panel,
+  // a highlighted card, or the tour controls bar depending on what's on
+  // screen at that moment. Shared by every narrative box (field-callout,
+  // tourCaption) instead of each reinventing its own placement rules.
+  function rectsOverlap(a, b){
+    return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+  }
+
+  // Elements a narrative box should never sit on top of, queried fresh each
+  // time (not cached) since what's open/visible changes stop to stop.
+  function obstacleRects(excludeEl, opts){
+    // .tour-spot-ring.show is the pulsing ring that tracks whichever graph
+    // node the current stop is pointing at — it already follows the node
+    // in real time (physics/pan/zoom), so treating it as an obstacle is
+    // how a caption avoids covering the exact node the narration is about,
+    // without needing to know anything about canvas/vis-network internals.
+    let selectors = "#nodeDetailPanel.open, .tour-row-highlight, #tourControls, #viewToggleFloat, #cursorbar, .tour-spot-ring.show, #viewToggle, #helpPanel:not(.closed)";
+    // on a narrow viewport a caption that only avoids the specific node
+    // can still blanket most of the graph canvas, covering OTHER nodes
+    // the narration never mentioned but that are still relevant context —
+    // so below a width threshold, the whole graph area is off-limits too.
+    if(opts && opts.avoidGraph && window.innerWidth < 900) selectors += ", #fullGraphWrap";
+    return Array.from(document.querySelectorAll(selectors))
+      .filter(el => el !== excludeEl && el.offsetParent !== null)
+      .map(el => {
+        const r = el.getBoundingClientRect();
+        if(!el.classList.contains("tour-spot-ring")) return r;
+        // pad the ring's own rect so the caption keeps a visible gap
+        // around the node instead of touching the ring's edge exactly
+        const pad = 40;
+        return {left: r.left-pad, top: r.top-pad, right: r.right+pad, bottom: r.bottom+pad,
+          width: r.width+pad*2, height: r.height+pad*2};
+      })
+      .filter(r => r.width > 0 && r.height > 0);
+  }
+
+  // Tries `preferred` first, then each of `alternatives` (in order), then
+  // — if every placement still overlaps something — shrinks the box into
+  // the single largest obstacle-free rectangle it can find in the viewport,
+  // so it always stays visible (never fully hidden behind other UI) instead
+  // of picking a placement that happens to collide the least.
+  function placeAvoidingOverlap(el, preferred, alternatives, margin, opts){
+    margin = margin || 10;
+    const obstacles = obstacleRects(el, opts);
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const candidates = [preferred, ...alternatives];
+    for(const rect of candidates){
+      const clamped = {
+        left: Math.max(margin, Math.min(rect.left, vw - rect.width - margin)),
+        top: Math.max(margin, Math.min(rect.top, vh - rect.height - margin)),
+        width: rect.width, height: rect.height,
+      };
+      clamped.right = clamped.left + clamped.width;
+      clamped.bottom = clamped.top + clamped.height;
+      if(!obstacles.some(o => rectsOverlap(clamped, o))){
+        return {left: clamped.left, top: clamped.top, width: clamped.width, height: clamped.height, shrunk:false};
+      }
+    }
+    // fallback: no clean placement — shrink to the largest free rect we
+    // can find, scanning a coarse grid of candidate top-left corners
+    // derived from the obstacles themselves (their edges are exactly
+    // where free space boundaries change).
+    const xs = [margin, ...obstacles.map(o => o.right + margin)].filter(x => x < vw - margin);
+    const ys = [margin, ...obstacles.map(o => o.bottom + margin)].filter(y => y < vh - margin);
+    let best = null;
+    for(const x of xs){
+      for(const y of ys){
+        let maxW = vw - margin - x, maxH = vh - margin - y;
+        for(const o of obstacles){
+          const overlapsCol = x < o.right && x + maxW > o.left;
+          const overlapsRow = y < o.bottom && y + maxH > o.top;
+          if(overlapsRow && o.left >= x) maxW = Math.min(maxW, o.left - x);
+          if(overlapsCol && o.top >= y) maxH = Math.min(maxH, o.top - y);
+        }
+        const area = Math.max(0, maxW) * Math.max(0, maxH);
+        if(maxW > 140 && maxH > 60 && (!best || area > best.area)){
+          best = {left:x, top:y, width:maxW, height:maxH, area};
+        }
+      }
+    }
+    if(best){
+      return {
+        left: best.left, top: best.top,
+        width: Math.min(preferred.width, best.width),
+        height: Math.min(preferred.height, best.height),
+        shrunk: best.width < preferred.width || best.height < preferred.height,
+      };
+    }
+    // nothing free at all (extremely cramped viewport) — keep the preferred
+    // spot clamped to the viewport rather than disappearing.
+    return {
+      left: Math.max(margin, Math.min(preferred.left, vw - preferred.width - margin)),
+      top: Math.max(margin, Math.min(preferred.top, vh - preferred.height - margin)),
+      width: preferred.width, height: preferred.height, shrunk:false,
+    };
+  }
+
   // On a repeat appearance of a card/panel we've already explained field by
   // field, a full re-sweep would just repeat the same explanations with no
   // new information — but skipping it entirely leaves a dead, static beat.
@@ -1738,14 +1883,41 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       row.scrollIntoView({block:"nearest", behavior:"smooth"});
 
       const rect = row.getBoundingClientRect();
+      // measure the callout's natural size first (text set, but not yet
+      // positioned/shown) so placeAvoidingOverlap can reason about its
+      // real footprint instead of a guessed constant width.
+      callout.className = "field-callout";
+      callout.style.transform = "";
+      callout.textContent = FIELD_EXPLAIN[text];
+      callout.style.left = "-9999px";
+      callout.style.top = "0px";
+      const naturalW = callout.offsetWidth, naturalH = callout.offsetHeight;
+
       const spaceAbove = rect.top;
       const putBelow = spaceAbove < 110;
-      callout.className = "field-callout " + (putBelow ? "arrow-top" : "arrow-bottom");
-      callout.textContent = FIELD_EXPLAIN[text];
-      callout.style.left = Math.max(12, Math.min(rect.left, window.innerWidth - 252)) + "px";
-      callout.style.top = putBelow ? (rect.bottom + 12) + "px" : (rect.top - 12) + "px";
-      if(!putBelow) callout.style.transform = "translateY(-100%)";
-      else callout.style.transform = "";
+      const preferred = putBelow
+        ? {left: rect.left, top: rect.bottom + 12, width: naturalW, height: naturalH}
+        : {left: rect.left, top: rect.top - 12 - naturalH, width: naturalW, height: naturalH};
+      // if the preferred side collides, try the other side of the same
+      // row before falling back to the generic shrink-to-fit
+      const otherSide = putBelow
+        ? {left: rect.left, top: rect.top - 12 - naturalH, width: naturalW, height: naturalH}
+        : {left: rect.left, top: rect.bottom + 12, width: naturalW, height: naturalH};
+      const placed = placeAvoidingOverlap(callout, preferred, [otherSide]);
+
+      callout.className = "field-callout " + (placed.top < rect.top ? "arrow-bottom" : "arrow-top");
+      callout.style.left = placed.left + "px";
+      callout.style.top = placed.top + "px";
+      callout.style.transform = "";
+      if(placed.shrunk){
+        callout.style.width = placed.width + "px";
+        callout.style.maxHeight = placed.height + "px";
+        callout.style.overflowY = "auto";
+      } else {
+        callout.style.width = "";
+        callout.style.maxHeight = "";
+        callout.style.overflowY = "";
+      }
       requestAnimationFrame(() => callout.classList.add("show"));
 
       if(!(await sweepWait(5500, myGen))){ row.classList.remove("field-sweep-highlight"); return; }
@@ -1948,6 +2120,12 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
   const ND = '<span class="nd">N/D</span>';
 
   let expViewMode = "timeline"; // "timeline" | "avoided"
+  // last S* shown, so a re-render can tell whether SYGNODE's suggested
+  // safety stock just changed (e.g. the slider crossed the 3rd failure,
+  // where the observed MTBF first justifies S*=2) and animate that moment
+  // instead of silently swapping the number — this is the live proof that
+  // the suggestion reacts to new data, not a static fact stated once.
+  let lastShownOptimalS = null;
 
   function renderExposureTimeline(atStr, elapsedHours, mtbfHours){
     const section = document.getElementById("expSection");
@@ -2102,7 +2280,34 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
     }
     const holdingPerUnitYear = holdingCostPerUnitPerYear();
 
+    // ---- hard cost, accumulated across every failure to date (not just
+    // the current window) ----
+    // NOT the WO's full opened_at→closed_at span — that includes normal
+    // repair time (diagnose, remove, install, test) that would happen
+    // regardless of stock availability, and attributing that to "lack of
+    // stock" would overstate the number SYGNODE could ever claim credit
+    // for. The part a missing spare actually adds is the wait BEFORE the
+    // part could be issued: opened_at → the ISSUE movement's own event_at
+    // (the exact moment the part left the shelf for this WO — immediate if
+    // stock was on hand, delayed if the WO had to wait for a delivery).
+    // Everything from the ISSUE onward is repair time, never counted here.
+    let hardDowntimeHours = 0;
+    if(downtimeClpHour != null){
+      deficitWindows.forEach(w => {
+        const wo = w.startMove.reference_id && D.work_orders.find(x => x.wo_id === w.startMove.reference_id);
+        if(!wo) return;
+        const openedAt = new Date(wo.opened_at+"Z");
+        const issuedAt = new Date(w.startMove.event_at+"Z");
+        const closedAt = (wo.closed_at && wo.closed_at <= atStr) ? new Date(wo.closed_at+"Z") : (wo.opened_at <= atStr ? new Date(atStr+"Z") : null);
+        if(!closedAt) return;
+        const waitEnd = issuedAt < closedAt ? issuedAt : closedAt; // never beyond the WO itself
+        hardDowntimeHours += Math.max(0, (waitEnd - openedAt) / 3600000);
+      });
+    }
+    const hardDowntimeCost = downtimeClpHour != null ? hardDowntimeHours * downtimeClpHour : null;
+
     let avoidedHtml;
+    let currentOptimalS = null; // exposed outside the branch so the caller can detect S* changing frame-to-frame
     if(stdLeadDaysObserved==null || mtbfDays==null || holdingPerUnitYear==null || downtimeClpHour==null){
       const missing = [];
       if(stdLeadDaysObserved==null) missing.push("lead time (ni observado ni nominal declarado en la política)");
@@ -2131,6 +2336,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
         const c = totalExpectedCostPerYear(S);
         if(c.total < best.total) best = {S, ...c};
       }
+      currentOptimalS = best.S;
 
       // cost of this window: if it has already closed (recvMove known), the
       // failure either did or didn't actually happen during it — a closed
@@ -2182,8 +2388,29 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       const avoidedCost = Math.max(0, realTotalCost - sygnodeExpectedCost);
 
       avoidedHtml = `
-        <div class="exp-row"><span class="l">Stock de seguridad del cliente (configurado)</span><span class="v">${clientRop} ud.</span></div>
-        <div class="exp-row"><span class="l">Stock de seguridad óptimo SYGNODE (minimiza costo total anual)</span><span class="v" style="color:${COLORS.green}">${best.S} ud.</span></div>
+        ${hardDowntimeCost != null ? `
+        <div class="exp-hard-block">
+          <div class="exp-hard-eyebrow">Costo duro, ya incurrido</div>
+          <div class="exp-hard-value">${fmtClp(hardDowntimeCost)}</div>
+          <div class="exp-hard-sub">${hardDowntimeHours.toFixed(1)} horas esperando el repuesto, en ${deficitWindows.length} falla${deficitWindows.length===1?'':'s'} de ${esc(D.meta.asset_id)} · ${fmtClp(downtimeClpHour)}/hora de equipo detenido.</div>
+        </div>` : ""}
+        <div class="exp-hard-eyebrow" style="color:var(--text-faint);margin-top:4px;">Riesgo evitado bajo la política óptima SYGNODE (modelo, no hecho consumado)</div>
+        <div class="stock-contrast" id="stockContrastBlock">
+          <div class="stock-contrast-col">
+            <div class="stock-contrast-label">Política actual (configurada)</div>
+            <div class="stock-contrast-value client">${clientRop} ud.</div>
+          </div>
+          <div class="stock-contrast-arrow">→</div>
+          <div class="stock-contrast-col">
+            <div class="stock-contrast-label">Ajuste sugerido por SYGNODE</div>
+            <div class="stock-contrast-value sygnode" id="stockContrastSygnodeValue" data-s="${best.S}">${best.S} ud.</div>
+          </div>
+        </div>
+        <div class="stock-contrast-note">${best.S > clientRop
+          ? `Esa diferencia de ${best.S - clientRop} unidad${(best.S-clientRop)===1?'':'es'} es la que hubiera evitado la espera de repuesto en las fallas con déficit.`
+          : (mtbfIsObserved
+              ? `El motor ya evalúa esto en cada falla — con el intervalo observado hasta ahora (${mtbfDays.toFixed(0)} días entre fallas), el modelo aún no justifica subir el stock. Seguirá reevaluando con cada nueva falla.`
+              : "Aún sin suficiente historial de fallas para que el motor pueda evaluar un ajuste.")}</div>
         <div class="exp-row"><span class="l">${leadIsObserved ? "Lead time estándar observado" : "Lead time (nominal declarado — aún sin OC estándar recibida)"}</span><span class="v ${leadIsObserved?'':'nd'}">${stdLeadDaysObserved.toFixed(1)} días</span></div>
         <div class="exp-row"><span class="l">${mtbfIsObserved ? "MTBF observado" : "MTBF (supuesto de arranque = lead time nominal, sin fallas previas aún)"}</span><span class="v ${mtbfIsObserved?'':'nd'}">${mtbfDays.toFixed(1)} días</span></div>
         <div class="exp-row"><span class="l">Costo de tener 1 ud./año (capital + almacenamiento + riesgo de no uso)</span><span class="v">${fmtClp(holdingPerUnitYear)}</span></div>
@@ -2250,6 +2477,21 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
         renderExecSummary(currentFrameIdx);
       });
     });
+
+    // live proof that the suggestion reacts to new data: when S* actually
+    // changes value between this render and the last one shown (e.g. the
+    // slider just crossed the 3rd failure, where the observed MTBF first
+    // justifies going from 1 to 2 units), bump it — on the FIRST render
+    // (lastShownOptimalS still null) there's nothing to compare against,
+    // so it shows plainly with no animation.
+    if(currentOptimalS != null){
+      const valueEl = document.getElementById("stockContrastSygnodeValue");
+      if(valueEl && lastShownOptimalS != null && currentOptimalS !== lastShownOptimalS){
+        valueEl.classList.add("pulse");
+        valueEl.addEventListener("animationend", () => valueEl.classList.remove("pulse"), {once:true});
+      }
+      lastShownOptimalS = currentOptimalS;
+    }
   }
 
   // ---------------- guided tour (narrated walkthrough) ----------------
@@ -2275,11 +2517,11 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       target: {type:"node", nodeId:"po:PO-PRE"}, sideTarget: {type:"simpleCard", cardId:"cardProcurement"}},
     {at: "2020-05-20T09:00:00", text: "Llega el repuesto. Bodega vuelve a tener cobertura \u2014 32 d\u00edas despu\u00e9s de la falla.", duration: 14000,
       target: {type:"panelRow", nodeId:"part:P001", labelText:"Stock f\u00edsico"}, sideTarget: {type:"simpleCard", cardId:"cardWarehouse"}},
-    {at: "2020-05-29T23:30:00", text: "Segunda falla: WO-M002 \u2014 la misma pieza P001 vuelve a fallar, solo 9 d\u00edas despu\u00e9s de recuperar stock. Entre la primera y la segunda falla pasaron 41 d\u00edas; esta vez, menos de 10. El intervalo entre fallas se est\u00e1 acortando.", duration: 14700,
+    {at: "2020-05-29T23:30:00", text: "Segunda falla: WO-M002 \u2014 la misma pieza P001 vuelve a fallar, solo 9 d\u00edas despu\u00e9s de recuperar stock. Entre la primera y la segunda falla pasaron 41 d\u00edas \u2014 el intervalo normal hasta ahora.", duration: 14700,
       target: {type:"panelRow", nodeId:"part:P001", labelText:"Stock f\u00edsico"}, sideTarget: {type:"simpleCard", cardId:"cardEquip"}},
     {at: "2020-05-15T09:00:00", text: "Retrocedamos un momento: abastecimiento ya hab\u00eda ordenado PO-NORM el 15 de mayo \u2014 antes incluso de esta segunda falla \u2014 pero con 56 d\u00edas de plazo, no alcanza a llegar a tiempo para la pr\u00f3xima.", duration: 15500,
       target: {type:"node", nodeId:"po:PO-NORM"}, sideTarget: {type:"simpleCard", cardId:"cardProcurement"}},
-    {at: "2020-06-05T10:00:00", text: "Tercera falla: WO-M003. Bodega sigue en 0 \u2014 el repuesto est\u00e1ndar a\u00fan no llega.", duration: 14700,
+    {at: "2020-06-05T10:00:00", text: "Tercera falla: WO-M003. Bodega sigue en 0 \u2014 el repuesto est\u00e1ndar a\u00fan no llega. Entre la segunda y la tercera falla pasaron solo 7 d\u00edas \u2014 muy por debajo del patr\u00f3n habitual (40 d\u00edas). Esa fue la se\u00f1al de alerta temprana: el punto de reorden nunca se ajust\u00f3 a ese cambio.", duration: 16500,
       target: {type:"panelRow", nodeId:"part:P001", labelText:"Stock f\u00edsico"}, sideTarget: {type:"simpleCard", cardId:"cardWarehouse"}},
     {at: "2020-06-05T10:30:00", text: "Abastecimiento reacciona con una compra de emergencia \u2014 PO-EXP. Plazo: 2.16 d\u00edas, no 28.", duration: 14700,
       target: {type:"node", nodeId:"po:PO-EXP"}, sideTarget: {type:"simpleCard", cardId:"cardProcurement"}},
@@ -2287,7 +2529,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       target: {type:"panelRow", nodeId:"part:P001", labelText:"Stock f\u00edsico"}, sideTarget: {type:"simpleCard", cardId:"cardWarehouse"}},
     {at: "2020-07-10T09:00:00", text: "PO-NORM finalmente llega \u2014 56 d\u00edas despu\u00e9s de ordenada. El stock se recupera, pero ya fue tarde dos veces.", duration: 14700,
       target: {type:"node", nodeId:"po:PO-NORM"}, sideTarget: {type:"simpleCard", cardId:"cardWarehouse"}},
-    {at: "2020-07-15T14:30:00", text: "Cuarta falla: WO-M004 \u2014 el patr\u00f3n se repite. El punto de reorden actual (1 unidad) no protege contra la frecuencia real de fallas.", duration: 15500,
+    {at: "2020-07-15T14:30:00", text: "Cuarta falla: WO-M004, 40 d\u00edas despu\u00e9s de la tercera. La se\u00f1al de alerta de junio nunca se convirti\u00f3 en un ajuste de pol\u00edtica \u2014 el punto de reorden (1 unidad) sigue sin proteger contra la frecuencia real de fallas.", duration: 16500,
       target: {type:"node", nodeId:"asset:A001"}, sideTarget: {type:"execCard", cardId:"execCOO"}},
     {at: "2020-07-15T19:00:00", text: "Con la pol\u00edtica \u00f3ptima de SYGNODE, estas ventanas de exposici\u00f3n se habr\u00edan evitado. Revisa el costo real evitado abajo.", duration: 17000, gotoExec: true,
       target: {type:"execRow", labelText:"Riesgo evitado"}},
@@ -2344,6 +2586,33 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
     let seq = 0; // bumped on every goToStep so stale async phases (setTimeout/rAF
                  // from a step the user already skipped past) can detect they're
                  // obsolete and quit instead of corrupting the new step's state
+
+    // tourCaption has a fixed CSS "home" (top-left, chosen to miss most
+    // content) but the view can switch underneath it mid-stop — a
+    // highlighted card or the open node detail panel can still land where
+    // it sits. Re-check on a light interval while it's visible instead of
+    // only once at the moment it's shown, so it reacts to whatever appears
+    // after it's already up.
+    const tourCaptionHome = {left: 24, top: 86, width: 0, height: 0};
+    function repositionTourCaption(){
+      if(!tourCaption.classList.contains("show")) return;
+      if(!tourCaptionHome.width){
+        tourCaptionHome.width = tourCaption.offsetWidth;
+        tourCaptionHome.height = tourCaption.offsetHeight;
+      }
+      const placed = placeAvoidingOverlap(tourCaption, tourCaptionHome, [
+        {left: window.innerWidth - tourCaptionHome.width - 24, top: 86, width: tourCaptionHome.width, height: tourCaptionHome.height},
+        {left: 24, top: window.innerHeight - tourCaptionHome.height - 100, width: tourCaptionHome.width, height: tourCaptionHome.height},
+        {left: window.innerWidth - tourCaptionHome.width - 24, top: window.innerHeight - tourCaptionHome.height - 100, width: tourCaptionHome.width, height: tourCaptionHome.height},
+      ], 10, {avoidGraph: true});
+      const atHome = placed.left === tourCaptionHome.left && placed.top === tourCaptionHome.top;
+      tourCaption.style.left = atHome ? "" : placed.left + "px";
+      tourCaption.style.top = atHome ? "" : placed.top + "px";
+      tourCaption.style.width = placed.shrunk ? placed.width + "px" : "";
+      tourCaption.style.maxHeight = placed.shrunk ? placed.height + "px" : "";
+      tourCaption.style.overflowY = placed.shrunk ? "auto" : "";
+    }
+    let captionRepositionTimer = null;
 
     // ---- spotlight: a pulsing ring/box over the exact element the narration
     // is talking about, following it live (canvas nodes move with physics/pan/zoom) ----
@@ -2541,6 +2810,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       tourIntroPanel.classList.remove("show");
       tourIntroPanel.classList.add("collapsing");
       tourCaption.classList.add("show");
+      repositionTourCaption();
       if(!(await wait(INTRO_COLLAPSE_MS/speed(), mySeq))){ tourIntroPanel.classList.remove("collapsing"); return; }
       tourIntroPanel.classList.remove("collapsing");
 
@@ -2656,9 +2926,16 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       tourActive = true;
       document.body.classList.add("tour-mode");
       fullGraphWrap.classList.add("tour-active");
+      // the help panel sits open by default at the top of the page layout
+      // (not an overlay) — left open, it pushes every scrollIntoView'd
+      // card further down the page, so a narrow viewport can end up
+      // scrolled to a point where the real content is off-screen entirely.
+      helpPanel.classList.add("closed");
+      helpFab.classList.remove("active");
       if(!fullGraphNetwork) initFullGraph();
       goToStep(0);
       setPlaying(true);
+      if(!captionRepositionTimer) captionRepositionTimer = setInterval(repositionTourCaption, 400);
     }
 
     // one-time business-context welcome screen, shown before the first
@@ -2688,8 +2965,10 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       document.body.classList.remove("tour-welcome");
       fullGraphWrap.classList.remove("tour-active");
       tourCaption.classList.remove("show");
+      tourCaption.style.left = tourCaption.style.top = tourCaption.style.width = tourCaption.style.maxHeight = tourCaption.style.overflowY = "";
       tourIntroPanel.classList.remove("show", "collapsing");
       tourStep = -1;
+      if(captionRepositionTimer){ clearInterval(captionRepositionTimer); captionRepositionTimer = null; }
     }
 
     tourStartBtn.addEventListener("click", () => {
@@ -2900,6 +3179,23 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
   })();
 
   render(0);
+
+  // sticky-shadow toggle: an IntersectionObserver watching a 1px sentinel
+  // placed right above #cursorbar fires when that sentinel scrolls out of
+  // view — exactly the moment position:sticky actually engages — so the
+  // bar can pick up a shadow only while it's genuinely floating, not while
+  // it's still sitting in its normal document-flow position near the top.
+  (function initCursorbarSticky(){
+    const cursorbar = document.getElementById("cursorbar");
+    if(!cursorbar) return;
+    const sentinel = document.createElement("div");
+    sentinel.style.cssText = "height:1px;";
+    cursorbar.parentNode.insertBefore(sentinel, cursorbar);
+    new IntersectionObserver(
+      ([entry]) => cursorbar.classList.toggle("stuck", !entry.isIntersecting),
+      {threshold:0}
+    ).observe(sentinel);
+  })();
 })();
 </script>
 </body>
