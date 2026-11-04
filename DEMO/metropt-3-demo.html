@@ -729,9 +729,16 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
   .graph-legend span{display:inline-flex;align-items:center;gap:6px;}
   .graph-legend i{width:10px;height:10px;border-radius:50%;display:inline-block;}
 
+  /* nearly opaque, not the usual translucent --panel: this sits directly
+     over the live graph canvas, whose nodes/labels keep moving under it
+     (physics, pan, zoom) — at --panel's normal ~50% opacity, a label that
+     happens to drift underneath bleeds through and mixes with the panel's
+     own text into an unreadable mess. A dense-text panel over moving
+     content needs to fully occlude it, not blend with it. */
   #nodeDetailPanel{position:absolute;top:12px;right:12px;width:260px;max-height:calc(100% - 24px);
-    overflow-y:auto;background:var(--panel);border:1px solid var(--border);border-radius:9px;
-    padding:14px 16px;display:none;box-shadow:0 4px 18px rgba(0,0,0,.4);}
+    overflow-y:auto;background:rgba(255,255,255,.96);border:1px solid var(--border);border-radius:9px;
+    padding:14px 16px;display:none;box-shadow:0 4px 18px rgba(0,0,0,.4);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
   #nodeDetailPanel.open{display:block;}
   /* same solid-pill language as the help-block headers and the Vista
      simple cards, colored per node group to match the graph legend
