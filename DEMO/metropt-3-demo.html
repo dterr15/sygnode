@@ -1756,14 +1756,28 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
     // in real time (physics/pan/zoom), so treating it as an obstacle is
     // how a caption avoids covering the exact node the narration is about,
     // without needing to know anything about canvas/vis-network internals.
-    let selectors = "#nodeDetailPanel.open, .tour-row-highlight, #tourControls, #viewToggleFloat, #cursorbar, .tour-spot-ring.show, #viewToggle, #helpPanel:not(.closed)";
+    let selectors = "#nodeDetailPanel.open, .tour-row-highlight, #tourControls, #viewToggleFloat, .tour-spot-ring.show, #viewToggle, #helpPanel:not(.closed)";
+    // #cursorbar is sticky to the viewport's top edge, so it's ALWAYS
+    // present there — treating it as a universal obstacle would mean "the
+    // row this field-callout points at" can almost never place its callout
+    // above the row (that space is permanently claimed), pushing it into
+    // the shrink-to-fit fallback and landing far from the row it's
+    // supposed to be pointing at. Only opt in where that matters (the big
+    // tourCaption bubble genuinely shouldn't cover the scrubber).
+    if(opts && opts.avoidCursorbar) selectors += ", #cursorbar";
     // on a narrow viewport a caption that only avoids the specific node
     // can still blanket most of the graph canvas, covering OTHER nodes
     // the narration never mentioned but that are still relevant context —
     // so below a width threshold, the whole graph area is off-limits too.
     if(opts && opts.avoidGraph && window.innerWidth < 900) selectors += ", #fullGraphWrap";
+    // excludeEl may be a single element or an array — a field-callout also
+    // needs to exclude the CARD containing the row it points at (e.g.
+    // cardWarehouse), since that card itself is a .tour-row-highlight
+    // obstacle, and a row near its edge would otherwise have nowhere to
+    // place a callout without "colliding" with its own container.
+    const excluded = Array.isArray(excludeEl) ? excludeEl : [excludeEl];
     return Array.from(document.querySelectorAll(selectors))
-      .filter(el => el !== excludeEl && el.offsetParent !== null)
+      .filter(el => !excluded.includes(el) && el.offsetParent !== null)
       .map(el => {
         const r = el.getBoundingClientRect();
         if(!el.classList.contains("tour-spot-ring")) return r;
@@ -1802,8 +1816,13 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
     // can find, scanning a coarse grid of candidate top-left corners
     // derived from the obstacles themselves (their edges are exactly
     // where free space boundaries change).
-    const xs = [margin, ...obstacles.map(o => o.right + margin)].filter(x => x < vw - margin);
-    const ys = [margin, ...obstacles.map(o => o.bottom + margin)].filter(y => y < vh - margin);
+    // an obstacle scrolled above/left of the viewport has a negative
+    // right/bottom — its "+margin" candidate would then be negative too,
+    // placing the callout off-screen instead of clamping into view, so
+    // candidates below `margin` are dropped the same as ones past the
+    // viewport's far edge.
+    const xs = [margin, ...obstacles.map(o => o.right + margin)].filter(x => x >= margin && x < vw - margin);
+    const ys = [margin, ...obstacles.map(o => o.bottom + margin)].filter(y => y >= margin && y < vh - margin);
     let best = null;
     for(const x of xs){
       for(const y of ys){
@@ -1822,7 +1841,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
     }
     if(best){
       return {
-        left: best.left, top: best.top,
+        left: Math.max(margin, best.left), top: Math.max(margin, best.top),
         width: Math.min(preferred.width, best.width),
         height: Math.min(preferred.height, best.height),
         shrunk: best.width < preferred.width || best.height < preferred.height,
@@ -1880,7 +1899,11 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       const text = labelEl.textContent.trim();
 
       row.classList.add("field-sweep-highlight");
-      row.scrollIntoView({block:"nearest", behavior:"smooth"});
+      // instant, not smooth: the callout's position is computed from this
+      // row's rect immediately after — a smooth scroll is still animating
+      // when that rect is read, so the callout would be placed against a
+      // mid-scroll position instead of where the row actually ends up.
+      row.scrollIntoView({block:"nearest", behavior:"auto"});
 
       const rect = row.getBoundingClientRect();
       // measure the callout's natural size first (text set, but not yet
@@ -1894,7 +1917,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       const naturalW = callout.offsetWidth, naturalH = callout.offsetHeight;
 
       const spaceAbove = rect.top;
-      const putBelow = spaceAbove < 110;
+      const putBelow = spaceAbove < 150; // leaves room for the sticky #cursorbar above
       const preferred = putBelow
         ? {left: rect.left, top: rect.bottom + 12, width: naturalW, height: naturalH}
         : {left: rect.left, top: rect.top - 12 - naturalH, width: naturalW, height: naturalH};
@@ -1903,7 +1926,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
       const otherSide = putBelow
         ? {left: rect.left, top: rect.top - 12 - naturalH, width: naturalW, height: naturalH}
         : {left: rect.left, top: rect.bottom + 12, width: naturalW, height: naturalH};
-      const placed = placeAvoidingOverlap(callout, preferred, [otherSide]);
+      const placed = placeAvoidingOverlap([callout, container], preferred, [otherSide]);
 
       callout.className = "field-callout " + (placed.top < rect.top ? "arrow-bottom" : "arrow-top");
       callout.style.left = placed.left + "px";
@@ -2604,7 +2627,7 @@ window.FRAMES_DATA = {"meta": {"part_id": "P001", "asset_id": "A001", "asset_typ
         {left: window.innerWidth - tourCaptionHome.width - 24, top: 86, width: tourCaptionHome.width, height: tourCaptionHome.height},
         {left: 24, top: window.innerHeight - tourCaptionHome.height - 100, width: tourCaptionHome.width, height: tourCaptionHome.height},
         {left: window.innerWidth - tourCaptionHome.width - 24, top: window.innerHeight - tourCaptionHome.height - 100, width: tourCaptionHome.width, height: tourCaptionHome.height},
-      ], 10, {avoidGraph: true});
+      ], 10, {avoidGraph: true, avoidCursorbar: true});
       const atHome = placed.left === tourCaptionHome.left && placed.top === tourCaptionHome.top;
       tourCaption.style.left = atHome ? "" : placed.left + "px";
       tourCaption.style.top = atHome ? "" : placed.top + "px";
